@@ -1,0 +1,161 @@
+/* Allgemeine Stile */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+  }
+  p{
+    font-weight: bold;
+  }
+  
+  /* Container für das Formular */
+  .proposal-list-container {
+    max-width: 1000px; /* Maximale Breite */
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box; /* Stellt sicher, dass Padding und Border nicht die Gesamtbreite beeinflussen */
+  }
+  label {
+    font-weight: bold; /* Macht alle Label-Texte fett */
+    font-size: large;
+  }
+  /* Titel des Formulars */
+  .title {
+    text-align: center;
+    color: #aa1515;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .nomination-semester{
+    text-align: left;
+    margin-top: 5rem;
+  }
+  
+  /* Formular-Layout */
+  .proposal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%; /* Verhindert, dass das Formular sich über die Seite hinaus ausdehnt */
+  }
+
+  .form-section{
+    text-align: left;
+    margin-bottom: 1.5rem;
+    width: 100%;
+  }
+  
+  
+  /* Stile für die Eingabefelder */
+  input, textarea {
+    width: 100%; /* Volle Breite für die Felder */
+    padding: 12px;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  
+  textarea {
+    resize: vertical;
+    height: 120px;
+  }
+  
+  .candidate-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+    width: 100%; /* Sicherstellen, dass es nicht breiter wird */
+  }
+  
+  .candidate-row input {
+    font-size: 0.9rem;
+  }
+  
+  /* Buttons */
+  .add-candidates-button, .remove-candidate-button {
+    background-color: #28a745;
+    color: white;
+    padding: 8px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .remove-candidate-button {
+    background-color: #dc3545;
+  }
+  
+  .add-candidates-button:hover, .remove-candidate-button:hover {
+    background-color: #218838;
+  }
+  
+  .remove-candidate-button:hover {
+    background-color: #c82333;
+  }
+  
+  /* Absende-Button */
+  .submit-button {
+    background-color: #28a745;
+    color: white;
+    padding: 14px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #218838;
+  }
+  
+  .submit-button:focus {
+    outline: none;
+  }
+  /* ifdNr */
+  .ifd-input {
+    width: 50px; /* Breite des Feldes verringern */
+    background-color: #f0f0f0; /* Gleiche Hintergrundfarbe wie deaktivierte Felder */
+    border: 1px solid #ccc; /* Gleicher Rahmen wie andere Felder */
+    text-align: center; /* Text zentrieren */
+    pointer-events: none; /* Keine Interaktion möglich */
+  }
+  /*consentForm*/
+  input[disabled] {
+    background-color: #f0f0f0;
+    pointer-events: none;
+  }
+  
+  /* Responsives Design: */
+  @media (max-width: 768px) {
+    /* Kandidatenfelder auf mobilen Geräten */
+    .candidate-row {
+      grid-template-columns: 1fr; /* Eine Spalte auf mobilen Geräten */
+    }
+  
+    .proposal-list-container {
+      padding: 1rem;
+    }
+  
+    .form-section {
+      margin-bottom: 1rem;
+    }
+  
+    .submit-button {
+      padding: 12px;
+    }
+  
+    .title {
+      font-size: 1.5rem;
+    }
+  }
+  

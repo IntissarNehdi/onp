@@ -1,11 +1,11 @@
 import './App.css'
+import ProposalList from './components/ProposalList'
 
 function App() {
 
   return (
-    <>
-    <h1> onp </h1>
-    </>
+    <ProposalList>
+    </ProposalList>
   )
 }
 
