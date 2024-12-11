@@ -1,0 +1,60 @@
+/* Ensure sections are stacked vertically */
+.container {
+    padding-top: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the sections horizontally */
+  }
+  
+  /* General styling for sections */
+  section {
+    width: 100%; /* Make sections take full width */
+    padding: 60px 20px; /* Vertical space for each section */
+    margin-bottom: 40px; /* Add space between sections */
+    box-sizing: border-box; /* Ensure padding doesn't overflow the section */
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    background-color: #f0f8ff; /* Light blue background */
+    color: #007bff; /* Blue text */
+  }
+  
+  .hero-section h1 {
+    font-size: 3rem; /* Large size for the title */
+    font-weight: bold;
+  }
+  
+  /* Info Section */
+  .info-section {
+    background-color: #fff; /* White background */
+    color: #333; /* Dark text */
+  }
+  
+  .info-section h2 {
+    font-size: 2rem;
+    color: #007bff; /* Blue color for subtitle */
+  }
+  
+  /* CTA Section */
+  .cta-section {
+    background-color: #f7f7f7; /* Light grey background */
+    color: #333; /* Dark text */
+  }
+  
+  .cta-section h2 {
+    font-size: 2rem;
+    color: #007bff; /* Blue color for subtitle */
+  }
+  
+  .cta-section button {
+    margin-top: 20px;
+    font-size: 1.2rem;
+  }
+  
+  /* Optional: Add margin for buttons */
+  button {
+    margin-top: 15px;
+    font-size: 1rem;
+  }
+  
