@@ -1,11 +1,12 @@
 import './App.css'
-import ProposalList from './components/ProposalList'
+
+import ConsentForm from './components/ConsentFormsFolder/ConsentForm'
 
 function App() {
 
   return (
-    <ProposalList>
-    </ProposalList>
+    <ConsentForm>
+    </ConsentForm>
   )
 }
 
