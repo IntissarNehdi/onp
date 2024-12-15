@@ -17,7 +17,7 @@ const ProposalList: React.FC = () => {
   const handleAddCandidates = () => {
     if (numCandidates < 1 || isNaN(numCandidates)) {
       alert("Bitte geben Sie eine gültige Zahl für die Anzahl der Kandidaten ein.");
-      return;
+      return;//return 
     }
 
     // Wenn die Anzahl geändert wird, passen wir die Felder entsprechend an
