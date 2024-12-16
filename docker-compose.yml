@@ -1,10 +1,15 @@
 services:
   backend:
-    build: .
+    build: ./backend
+    image: backend:latest
     ports:
-      - "5000:5000"
+      - "8000:8000"
     networks:
       - internal_network
+    volumes:
+      - ./backend:/app
+    environment:
+      - DEBUG=True
 
   frontend:
     image: frontend:latest
