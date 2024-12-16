@@ -1,4 +1,6 @@
 import './App.css'
+import AttachementForm from './components/AttachementForm'
+
 import ProposalList from './components/ProposalList'
 
 function App() {
