@@ -136,7 +136,7 @@ export default function LoginPage() {
             </CardContent>
             <CardActions>
               <Button size="small" color="primary">
-                Forgot password?
+                Forgot password?dsfadsf
               </Button>
               <Button size="small" color="primary">
                 Don't have an account? Sign Up

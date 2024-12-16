@@ -98,7 +98,7 @@ export default function LoginPage() {
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
                 <LockOutlinedIcon sx={{ m: 1, bgcolor: 'secondary.main', color: 'white', p: 1, borderRadius: '50%' }} />
                 <Typography component="h1" variant="h5">
-                  Sign in
+                  Sign dSDASin
                 </Typography>
               </Box>
               <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
