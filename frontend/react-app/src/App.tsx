@@ -1,13 +1,13 @@
 import './App.css'
-import AttachementForm from './components/AttachementForm'
+import ConsentForm from './components/ConsentFormsFolder/ConsentForm'
+import Attachement from './components/ProposalList/AttachementForm'
+import ProposalList from './components/ProposalList/ProposalList'
 
-import ProposalList from './components/ProposalList'
 
 function App() {
 
   return (
-    <ProposalList>
-    </ProposalList>
+    <ProposalList />
   )
 }
 
