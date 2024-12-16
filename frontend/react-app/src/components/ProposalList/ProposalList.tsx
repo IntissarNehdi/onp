@@ -241,6 +241,18 @@ const handleFBChange = (event: { target: { value: React.SetStateAction<string>; 
       setPhoneError("Eine Telefonnummer muss mindestens 7 Zeichen lang sein.");
     }
   };
+
+  const addCandidates = ()  => {
+    // Simple POST request with a JSON body using fetch
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: 'React POST Request Example' })
+    };
+    fetch('https://reqres.in/api/posts', requestOptions)
+        .then(response => response.json())
+
+}
   return (
     <div className="proposal-list-container">
       <img
@@ -526,7 +538,7 @@ const handleFBChange = (event: { target: { value: React.SetStateAction<string>; 
           disabled
         />
       </section>
-          <button type="submit" className="submit-button">
+          <button  type="submit" className="submit-button"onClick={addCandidates}>
             Abschicken
           </button>
      
