@@ -22,6 +22,7 @@ const ConsentForm: React.FC<ConsentFormProps> = ({ selectedInput1, selectedInput
   const [studyArea, setStudyArea] = useState('');
   const [listPassword, setListPassword] = useState('');
   const [semester, setSemester] = useState('winterSemester'); // Default to "winterSemester"
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [shortStudyArea, setShortStudyArea] = useState('');
   const [semesterYear, setSemesterYear] = useState<string>(''); // Semesterjahr
   
