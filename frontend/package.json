@@ -9,13 +9,20 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+
   "dependencies": {
-    "bootstrap": "^5.3.3",
-    "bootstrap-icons": "^1.11.3",
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/icons-material": "^6.2.0",
+    "@mui/material": "^6.1.9",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "routes": "^2.1.0"
+    "react-router-dom": "^6.28.0",
+    "routes": "^2.1.0",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3"
   },
+
   "devDependencies": {
     "@eslint/js": "^9.15.0",
     "@types/react": "^18.3.12",
@@ -27,6 +34,6 @@
     "globals": "^15.12.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.15.0",
-    "vite": "^6.0.3"
+    "vite": "^6.0.1"
   }
 }

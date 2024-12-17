@@ -1,7 +1,14 @@
+version: '3.8'
+
 services:
+  backend:
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+      - internal_network
 
   frontend:
-    container_name: frontend
     image: frontend:latest
     build: ./frontend
     ports:
@@ -16,3 +23,4 @@ networks:
 
 volumes:
   pgdata_vol:
+  internal_network:
