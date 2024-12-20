@@ -126,7 +126,7 @@ const Einverstaendniserklaerung: React.FC = () => {
     setAddress(value);
   
     if (addressPattern.test(value)) {
-      setAddressError(''); // Clear error if valid
+      setAddressError(''); 
     } else {
       setAddressError(
         'Die Anschrift muss im Format "Straßenname Hausnummer, PLZ Wohnort" vorliegen.'
@@ -155,6 +155,7 @@ const Einverstaendniserklaerung: React.FC = () => {
   
     // Check the selected semester and apply the appropriate pattern
     let semesterYearPattern: RegExp;
+
   
     if (semester === "winterSemester") {
       // For Wintersemester: Expecting "nn/nn" format
