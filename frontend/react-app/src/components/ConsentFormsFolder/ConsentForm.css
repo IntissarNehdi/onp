@@ -233,15 +233,11 @@ textarea {
   display: block; /* Ensure label appears above the text */
 }
 
-
-
-
-
-
-
-
-
-
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
 
 /* Styling for disabled inputs */
 input[disabled] {
