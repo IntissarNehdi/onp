@@ -1,25 +1,21 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import LoginPage from './pages/LoginPage';
-import SuccessPage from './pages/SuccessPage';
-import ConsentForm from './components/ConsentFormsFolder/ConsentForm';
+import Navbar from './components/NavBar';
+import Footer from './components/Footer';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import Content from './components/Content';
+import imagePath from './assets/logotu.png';
 
-const theme = createTheme();
+
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/success" element={<SuccessPage />} />
-          <Route path="/consent" element={<ConsentForm selectedInput1={'in1'} selectedInput2={'in2'} />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <Navbar brandName="Hochschulwahl" imageScrPath={imagePath} />
+      <Content />
+      <Footer />
+    </div>
   );
 }
 

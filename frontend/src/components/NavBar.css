@@ -1,0 +1,19 @@
+.navbar {
+    background-color: white !important; /* Set the background of the navbar to white */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: add a slight shadow to make the navbar stand out */
+  }
+  
+  .navbar .navbar-brand {
+    color: #007bff; /* Set the brand color to blue */
+  }
+  
+  .navbar-nav .nav-link {
+    color: black !important; /* Ensure the text color is black */
+    font-size: 1.1rem; /* Slightly larger font size for better readability */
+    transition: color 0.3s ease-in-out; /* Smooth transition for hover effect */
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: #007bff; /* Change text color on hover */
+  }
+  
