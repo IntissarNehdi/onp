@@ -11,5 +11,17 @@ services:
       - /app/node_modules
       - ./frontend:/app
 
+  backend:
+    image: backend:latest
+    build: ./backend
+    ports:
+      - "8000:8000"
+    networks:
+      - internal_network
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - frontend
+
 networks:
   internal_network:
