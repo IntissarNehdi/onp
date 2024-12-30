@@ -4,7 +4,7 @@ import Footer from './components/Footer';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import Content from './components/content';
+import Content from './components/Content';
 import imagePath from './assets/logotu.png';
 
 

@@ -39,7 +39,7 @@ function Navbar({ brandName, imageScrPath }: NavBarProps) {
             <a className="nav-link text-light hover-link" href="#info">Mehr erfahren</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-light hover-link" href="#cta">Kontakt</a>
+            <a className="nav-link text-light hover-link" href="#footer">Kontakt</a>
           </li>
         </ul>
         <button className="btn btn-primary ms-3 me-4 rounded-pill hover-btn" type="button">Anmelden</button>
