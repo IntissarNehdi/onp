@@ -1,26 +1,28 @@
 import React, { useRef } from 'react';
 import './Content.css';
+import { useNavigate } from 'react-router-dom';
 
 const Content = () => {
   // Create refs for each section
   const heroRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate(); // Hook for navigation
+  
+  // Handle button click to navigate to login page
+  const handleButtonClick = () => {
+    navigate('/login'); // Navigate to the login page
+  };
 
-  // Function to scroll to the section
+  // Smooth scroll function
   const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement>) => {
     sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <div className="container">
-
       {/* Hero Section */}
-      <section
-        id="hero"
-        ref={heroRef}
-        className="hero-section text-center mb-5"
-      >
+      <section id="hero" ref={heroRef} className="hero-section text-center mb-5">
         <h1>Willkommen bei Hochschulwahl</h1>
         <p className="lead text-justify">
           Sag Tschüss zu Papierchaos – die digitale Einreichung von Kandidatenlisten für Hochschulwahlen ist da! Schnell und sicher.
@@ -30,11 +32,7 @@ const Content = () => {
       </section>
 
       {/* Info Section */}
-      <section
-        id="info"
-        ref={infoRef}
-        className="info-section mb-5"
-      >
+      <section id="info" ref={infoRef} className="info-section mb-5">
         <h2 className="text-center">So funktioniert die digitale Einreichung von Kandidatenlisten</h2>
         <div className="col-md-12">
           <p className="lead text-justify">
@@ -57,16 +55,12 @@ const Content = () => {
       </section>
 
       {/* Call-to-Action Section */}
-      <section
-        id="cta"
-        ref={ctaRef}
-        className="cta-section text-center mb-5"
-      >
+      <section id="cta" ref={ctaRef} className="cta-section text-center mb-5">
         <h2>Mach mit bei der Hochschulwahl!</h2>
-        <button className="btn btn-primary">Anmelden</button>
+        <button className="btn btn-primary" onClick={handleButtonClick}>
+          Anmelden
+        </button>
       </section>
-
-
     </div>
   );
 };

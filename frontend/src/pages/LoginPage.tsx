@@ -1,5 +1,3 @@
-'use client'
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -88,6 +86,11 @@ export default function LoginPage() {
     setOpenSnackbar(false);
   };
 
+  // Navigate to the homepage
+  const handleGoBack = () => {
+    navigate('/');
+  };
+
   return (
     <>
       <BackgroundBox />
@@ -146,8 +149,19 @@ export default function LoginPage() {
               </Button>
             </CardActions>
           </Card>
+
+          {/* Button to go back to Homepage */}
+          <Button
+            onClick={handleGoBack}
+            variant="outlined"
+            sx={{ mt: 3 }}
+            fullWidth
+          >
+            Back to Homepage
+          </Button>
         </Container>
       </ContentBox>
+
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
@@ -156,4 +170,3 @@ export default function LoginPage() {
     </>
   );
 }
-

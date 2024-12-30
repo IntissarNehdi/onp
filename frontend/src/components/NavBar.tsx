@@ -1,5 +1,6 @@
 import React from 'react';
 import './NavBar.css';
+import { useNavigate } from 'react-router-dom';
 
 interface NavBarProps {
   brandName: string;
@@ -7,6 +8,13 @@ interface NavBarProps {
 }
 
 function Navbar({ brandName, imageScrPath }: NavBarProps) {
+  const navigate = useNavigate(); // Hook for navigation
+
+  // Handle button click to navigate to login page
+  const handleLoginClick = () => {
+    navigate('/login'); // Redirect to the login page
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-gradient fixed-top shadow-lg">
       <a className="navbar-brand d-flex align-items-center" href="#">
@@ -42,7 +50,13 @@ function Navbar({ brandName, imageScrPath }: NavBarProps) {
             <a className="nav-link text-light hover-link" href="#footer">Kontakt</a>
           </li>
         </ul>
-        <button className="btn btn-primary ms-3 me-4 rounded-pill hover-btn" type="button">Anmelden</button>
+        <button 
+          className="btn btn-primary ms-3 me-4 rounded-pill hover-btn" 
+          type="button" 
+          onClick={handleLoginClick} // Navigate on button click
+        >
+          Anmelden
+        </button>
       </div>
     </nav>
   );
