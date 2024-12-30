@@ -13,7 +13,6 @@ import imagePath from './assets/logotu.png';
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
-  // Only render Navbar and Footer for non-login routes
   const showNavbarFooter = location.pathname !== '/login';
 
   return (

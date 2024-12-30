@@ -1,6 +1,7 @@
 import React from 'react';
 import './NavBar.css';
 import { useNavigate } from 'react-router-dom';
+import imagePath from './assets/logotu.png';
 
 interface NavBarProps {
   brandName: string;
@@ -8,11 +9,10 @@ interface NavBarProps {
 }
 
 function Navbar({ brandName, imageScrPath }: NavBarProps) {
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
-  // Handle button click to navigate to login page
   const handleLoginClick = () => {
-    navigate('/login'); // Redirect to the login page
+    navigate('/login');
   };
 
   return (
@@ -53,7 +53,7 @@ function Navbar({ brandName, imageScrPath }: NavBarProps) {
         <button 
           className="btn btn-primary ms-3 me-4 rounded-pill hover-btn" 
           type="button" 
-          onClick={handleLoginClick} // Navigate on button click
+          onClick={handleLoginClick} 
         >
           Anmelden
         </button>
