@@ -1,46 +1,72 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './Content.css';
 
 const Content = () => {
+  // Create refs for each section
+  const heroRef = useRef<HTMLDivElement>(null);
+  const infoRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
+  // Function to scroll to the section
+  const scrollToSection = (sectionRef: React.RefObject<HTMLDivElement>) => {
+    sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <div className="container" id="hero">
-      <section  className="hero-section text-center mb-5">
+    <div className="container">
+
+      {/* Hero Section */}
+      <section
+        id="hero"
+        ref={heroRef}
+        className="hero-section text-center mb-5"
+      >
         <h1>Willkommen bei Hochschulwahl</h1>
-        <p className="lead">
-          Dein Portal für die Hochschulwahlen. Hier findest du alle Informationen, die du für deine Wahl benötigst.
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-           dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-           It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
-           It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
-          and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        <p className="lead text-justify">
+          Sag Tschüss zu Papierchaos – die digitale Einreichung von Kandidatenlisten für Hochschulwahlen ist da! Schnell und sicher.
+          Diese Plattform ersetzt den alten, papierbasierten Prozess und macht den gesamten Ablauf effizienter. Wahlamt, Vertrauenspersonen und
+          Kandidaten profitieren von einer benutzerfreundlichen Lösung, die die Einreichung, Überprüfung und den Druck von Dokumenten vereinfacht.
         </p>
       </section>
-    <div className="container" id="info">
-      <section id="info" className="info-section text-center mb-5">
-        <h2>Was ist Hochschulwahl?</h2>
-        <p>
-          Die Hochschulwahl ist die wichtigste Wahl für Studierende. Du kannst über die Vertretung deiner Interessen
-          in der Universität entscheiden.
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy 
-          text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has 
-          survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised
-           in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-           and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy 
-           text ever since the 1500s, 
-           when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five 
-           centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like 
-            Aldus PageMaker including versions of Lorem Ipsum.s
-        </p>
+
+      {/* Info Section */}
+      <section
+        id="info"
+        ref={infoRef}
+        className="info-section mb-5"
+      >
+        <h2 className="text-center">So funktioniert die digitale Einreichung von Kandidatenlisten</h2>
+        <div className="col-md-12">
+          <p className="lead text-justify">
+            Mit der Plattform wird die Einreichung von Kandidatenlisten schnell, einfach und digital. Die Vertrauensperson erstellt die Liste der
+            Kandidierenden online, sicher mit der TU-ID. Kurz darauf erhalten die Kandidierenden eine E-Mail, um ihre Einverständniserklärung direkt
+            auf der Webseite abzugeben. Alle Formulare werden sicher gespeichert und können jederzeit ausgedruckt werden, damit die Dokumente
+            unterschrieben werden können. Nach der Unterschrift sammelt die Vertrauensperson alle Unterlagen und sendet sie entweder per E-Mail als
+            PDF oder per Post an das Wahlamt. Dort wird alles überprüft, um sicherzustellen, dass die Wahlvorschlagslisten korrekt und nach den
+            Regeln der TU Darmstadt bearbeitet werden.
+          </p>
+        </div>
+        <div className="text-center mb-4">
+          <img
+            src="/src/assets/prozess.png"
+            alt="Beschreibung des Bildes"
+            className="img-fluid"
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        </div>
       </section>
-      </div>
-      <div className='container' id='cta'>
-      <section  className="cta-section text-center mb-5">
+
+      {/* Call-to-Action Section */}
+      <section
+        id="cta"
+        ref={ctaRef}
+        className="cta-section text-center mb-5"
+      >
         <h2>Mach mit bei der Hochschulwahl!</h2>
         <button className="btn btn-primary">Anmelden</button>
       </section>
-      </div>
+
+
     </div>
   );
 };

@@ -1,28 +1,82 @@
-/* Ensure full page scroll */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow-y: auto; /* Enable vertical scrolling */
+html {
+  scroll-behavior: smooth; /* Enable smooth scrolling */
 }
 
 body {
-  display: block; /* Default block layout */
-  background-color: white; /* Ensure a visible background */
-}
-section {
-  min-height: 100vh;  /* Ensure section takes up at least full viewport height */
-  padding: 60px 20px;  /* Add padding inside the sections */
-  box-sizing: border-box; /* Include padding in the section height */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;  /* Vertically center content in each section */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-y: auto;
 }
 
+body {
+  display: block;
+  background-color: white;
+}
+
+/* General Section Styling */
+section {
+  min-height: 100vh;  /* Each section takes at least the full viewport height */
+  padding: 60px 30px;  /* Add padding inside sections */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* Vertically center content */
+  margin-bottom: 40px;  /* Space between sections */
+}
+
+h1, h2 {
+  font-weight: bold;
+}
+
+/* Hero Section Styling */
+.hero-section {
+  background: #ffffff; /* White */
+  text-align: center;  /* Center the text */
+}
+
+.hero-section h1 {
+  font-size: 2.8rem;  /* Increase the title size */
+  margin-bottom: 25px;
+}
+
+.hero-section .lead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+/* Info Section Styling */
+.info-section {
+  background: #f5f5f5;  /* Very light grey */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* Add shadow for depth */
+  padding: 40px 20px;
+}
+
+.info-section p.lead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  text-align: justify;
+  margin-bottom: 2rem;
+}
+
+/* Call-to-Action Section Styling */
+.cta-section {
+  background: #e0e0e0;  /* Light grey */
+  padding: 30px 20px;
+}
 
 .cta-section button {
   font-size: 1.2rem;
-  padding: 10px 20px;
-  max-width: 200px;
-  margin-left: 455px;  
+  padding: 15px 30px;
+  max-width: 250px;
+  margin: 0 auto;
+  display: block;
+  transition: background-color 0.3s ease;
+}
+
+.cta-section button:hover {
+  background-color: #007bff;
+  color: white;
 }
