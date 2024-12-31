@@ -1,0 +1,357 @@
+/* General styles for the body */
+body {
+  font-family: 'Arial', sans-serif; /* Sets the font to Arial or sans-serif */
+  background-color: #f4f6f9; /* Light background color */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+}
+
+/* Proposal list container styling */
+.proposal-list-container {
+  position: relative; /* Allows positioning of child elements */
+  max-width: 1000px; /* Limits the width to 1000px */
+  margin: 2rem auto; /* Centers the container horizontally with margin */
+  background: #fff; /* Sets a white background */
+  padding: 2rem; /* Adds padding inside the container */
+  border-radius: 10px; /* Rounds the corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+  width: 100%; /* Sets width to 100% of its parent */
+  box-sizing: border-box; /* Includes padding in the width calculation */
+}
+
+/* Image in the top-right corner of the proposal list container */
+.top-right-image {
+  position: absolute; /* Positioned relative to the nearest positioned ancestor */
+  top: 10px; /* 10px from the top */
+  right: 10px; /* 10px from the right */
+  width: 200px; /* Fixed width */
+  height: auto; /* Maintains aspect ratio */
+  max-width: 200px; /* Maximum width is 200px */
+  object-fit: contain; /* Ensures the image fits within its container */
+}
+
+/* Label styling for form elements */
+label {
+  font-weight: bold; /* Makes the label text bold */
+  font-size: 0.9rem; /* Sets the font size */
+  text-align: left; /* Aligns text to the left */
+  margin-bottom: 0.8rem; /* Adds margin below the label */
+}
+
+/* Title of the proposal form */
+.title {
+  text-align: center; /* Centers the text */
+  color: #407ff4; /* Sets the color to a shade of blue */
+  font-size: 1.5rem; /* Sets font size */
+  margin-bottom: 1.5rem; /* Adds bottom margin */
+  margin-top: 5rem; /* Adds top margin */
+}
+
+/* Layout for the form */
+.proposal-form {
+  display: flex; /* Uses flexbox layout */
+  flex-direction: column; /* Stacks items vertically */
+  gap: 0.2rem; /* Adds a small gap between items */
+  width: 100%; /* Takes up the full width of the parent */
+}
+
+/* Styling for form sections */
+.form-section {
+  text-align: left; /* Aligns text to the left */
+  margin-bottom: 0.75rem; /* Adds bottom margin */
+  width: 100%; /* Takes up full width */
+}
+
+/* Layout for form rows */
+.form-row {
+  display: flex; /* Uses flexbox layout */
+  gap: 1rem; /* Adds a gap between elements */
+  margin-bottom: 0.05rem; /* Adds a small bottom margin */
+}
+
+/* Styling for input and textarea fields */
+input,
+textarea {
+  width: 100%; /* Takes up full width */
+  padding: 10px; /* Adds padding */
+  margin-bottom: 0.5rem; /* Adds bottom margin */
+  border-radius: 5px; /* Rounds the corners */
+  border: 1px solid #ccc; /* Adds a light border */
+  font-size: 0.9rem; /* Sets font size */
+}
+
+/* Textarea specific styling */
+textarea {
+  resize: vertical; /* Allows vertical resizing */
+  height: 100px; /* Fixed height */
+}
+
+/* Centered container for small sections */
+.centered-container {
+  display: flex; /* Uses flexbox layout */
+  flex-direction: column; /* Stacks items vertically */
+  align-items: center; /* Centers content horizontally */
+  margin: 0 auto; /* Centers the container horizontally */
+  width: fit-content; /* Adjusts the width to fit content */
+}
+
+/* Centered text input styling */
+.centered-container input[type="text"] {
+  width: auto; /* Auto width for text input */
+  margin-bottom: 0rem; /* Removes bottom margin */
+}
+
+/* Paragraph styling */
+.paragraph {
+  margin-top: 0; /* Removes top margin */
+  font-weight: normal; /* Normal font weight */
+  font-size: auto; /* Uses the default font size */
+}
+
+/* Horizontal alignment for elements */
+.horizontal-alignment {
+  display: flex; /* Uses flexbox layout */
+  align-items: center; /* Centers content vertically */
+  gap: 1rem; /* Adds a gap between elements */
+}
+
+/* Styling for semester choice field */
+.semester-choice {
+  flex-shrink: 1; /* Prevents shrinking */
+  width: 70%; /* Sets width to 70% */
+}
+
+/* Submit button styling */
+.submit-button {
+  background-color: #407ff4; /* Blue background */
+  color: white; /* White text color */
+  padding: 12px; /* Adds padding */
+  font-size: 1.1rem; /* Increases font size */
+  border: none; /* Removes border */
+  border-radius: 5px; /* Rounds the corners */
+  cursor: pointer; /* Changes the cursor to a pointer */
+  transition: background-color 0.3s ease; /* Adds transition effect */
+}
+
+/* Submit button hover effect */
+.submit-button:hover {
+  background-color: #29529c; /* Darker blue on hover */
+}
+
+/* Submit button focus effect */
+.submit-button:focus {
+  outline: none; /* Removes outline when focused */
+}
+
+/* Horizontal alignment for form rows */
+.horizontal-alignment {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Styling for horizontal alignment labels */
+.horizontal-alignment label {
+  font-size: 1rem; /* Increases font size */
+}
+
+/* Section styling for form fields */
+.form-section {
+  flex: 1; /* Allows the section to take available space */
+}
+
+/* Input field styling within form sections */
+.form-section input {
+  width: 100%; /* Full width */
+  padding: 8px; /* Padding */
+  font-size: 1rem; /* Font size */
+}
+
+/* Date form section with label styling */
+.date-form-section label {
+  margin-top: 40%; /* Adds top margin */
+  font-size: 1rem; /* Font size */
+}
+
+/* Date form section layout */
+.date-form-section {
+  display: flex; /* Flexbox layout */
+  gap: 2rem; /* Gap between elements */
+  align-items: flex-start; /* Aligns items at the start */
+  justify-content: flex-start; /* Justifies content at the start */
+}
+
+/* Styling for date input */
+#date {
+  width: auto; /* Auto width */
+  padding: 10px; /* Padding */
+  border-radius: 5px; /* Rounded corners */
+  border: 1px solid #ccc; /* Light border */
+  font-size: 1rem; /* Font size */
+  margin-top: 36%; /* Top margin */
+}
+
+/* Layout for form container */
+.form-container {
+  display: flex; /* Flexbox layout */
+  justify-content: space-between; /* Distributes space between items */
+  width: 100%; /* Full width */
+}
+
+/* Styling for signature container */
+.signature-container {
+  margin-top: 6%; /* Top margin */
+  display: flex; /* Flexbox layout */
+  flex-direction: column; /* Stacks elements vertically */
+  align-items: flex-start; /* Aligns items at the start */
+  width: 45%; /* Sets width to 45% */
+}
+
+/* Signature area styling */
+.signature-area {
+  width: 80%; /* 80% width */
+  height: 70px; /* Fixed height */
+  border: 1px solid #ccc; /* Border around signature area */
+  margin-bottom: 0.5rem; /* Adds bottom margin */
+}
+
+/* Date input container styling */
+.date-input-container {
+  margin-top: 5%; /* Top margin */
+  display: flex; /* Flexbox layout */
+  align-items: center; /* Centers content vertically */
+}
+
+/* Date input container label styling */
+.date-input-container label {
+  font-size: 1rem; /* Font size */
+  display: inline-flex; /* Inline-flex for labels */
+  gap: 0.5rem; /* Adds a gap between label and input */
+}
+
+/* Date input styling */
+.date-input-container input {
+  padding: 8px; /* Padding */
+  font-size: 1rem; /* Font size */
+  width: auto; /* Auto width */
+}
+
+/* Hinweis section styling */
+.Hinweis {
+  width: 95%; /* 95% width */
+  max-width: 1000px; /* Max width of 1000px */
+  margin: 2rem auto; /* Centers with margin */
+  padding: 1rem; /* Padding */
+  border: 2px solid #ccc; /* Border styling */
+  border-radius: 0px; /* No border radius */
+  font-size: 1rem; /* Font size */
+  line-height: 1.5; /* Line height */
+  background-color: #f9f9f9; /* Light background */
+  color: #333; /* Dark text color */
+  text-align: left; /* Align text to the left */
+}
+
+/* Hinweis label styling */
+.Hinweis label {
+  font-weight: bold; /* Bold text */
+  margin-bottom: 1rem; /* Bottom margin */
+  display: block; /* Display as block */
+}
+
+/* Error message styling */
+.error-message {
+  color: red; /* Red text color */
+  font-size: 0.9rem; /* Font size */
+  margin-top: 5px; /* Top margin */
+}
+
+/* Styling for disabled input fields */
+input[disabled] {
+  background-color: #f0f0f0; /* Light background color */
+  pointer-events: none; /* Disables interactions */
+}
+
+/* Select input container layout */
+.select-input-container {
+  display: flex; /* Flexbox layout */
+  gap: 0.75rem; /* Gap between items */
+  align-items: center; /* Centers content vertically */
+  width: 100%; /* Full width */
+  flex-wrap: wrap; /* Allows wrapping */
+}
+
+/* Styling for select fields */
+select {
+  width: auto; /* Auto width */
+  min-width: 200px; /* Minimum width of 200px */
+  padding: 10px; /* Padding */
+  border-radius: 5px; /* Rounded corners */
+  border: 1px solid #ccc; /* Border color */
+  font-size: 1rem; /* Font size */
+}
+
+/* Select focus effect */
+select:focus {
+  border-color: #0d6efd; /* Blue border on focus */
+}
+
+/* Semester year input field styling */
+#semesterYear {
+  width: 150px; /* Fixed width */
+  padding: 8px; /* Padding */
+  font-size: 0.9rem; /* Font size */
+}
+
+/* Additional field styling */
+#additionalField {
+  margin-top: 1rem; /* Top margin */
+}
+
+/* Consent form input field styling */
+#consentForms {
+  width: 60px; /* Fixed width */
+  padding: 12px; /* Padding */
+  border-radius: 5px; /* Rounded corners */
+  border: 1px solid #ccc; /* Border color */
+  font-size: 1rem; /* Font size */
+  text-align: center; /* Centers text */
+}
+
+/* Styling for number input spin buttons */
+#consentForms::-webkit-outer-spin-button,
+#consentForms::-webkit-inner-spin-button {
+  -webkit-appearance: none; /* Removes spinner appearance */
+  margin: 0; /* Removes margin */
+}
+
+/* Removes appearance for number input */
+#consentForms[type="number"] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
+/* Select input focus effect */
+#consentForms:focus {
+  border-color: #0d6efd; /* Blue border on focus */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .proposal-list-container {
+    padding: 1rem; /* Reduces padding */
+  }
+
+  .form-section {
+    margin-bottom: 1rem; /* Increases bottom margin */
+  }
+
+  .submit-button {
+    padding: 12px; /* Padding for submit button */
+  }
+
+  .title {
+    font-size: 1.5rem; /* Adjust font size */
+  }
+}
