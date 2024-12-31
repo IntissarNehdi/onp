@@ -18,10 +18,10 @@ const PersonalInfos: React.FC = () => {
     const handleMatriculationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         if (/^\d*$/.test(value)) {
-        // Check if input contains only numbers
+        
         setMatriculationNumber(value);
         if (value.length === 7) {
-            setMatriculationError(''); // Valid input
+            setMatriculationError(''); 
         } else {
             setMatriculationError('Die Matrikelnummer muss genau 7 Ziffern enthalten.');
         }
@@ -32,11 +32,11 @@ const PersonalInfos: React.FC = () => {
     const handleBirthYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
       
-        if (/^\d*$/.test(value)) { // Allow only numeric input
+        if (/^\d*$/.test(value)) { 
           setBirthYear(value);
       
           if (value.length === 4) {
-            setBirthYearError(''); // Valid input
+            setBirthYearError('');
           } else if (value.length > 4) {
             setBirthYearError('Das Geburtsjahr darf nicht mehr als 4 Ziffern enthalten.');
           } else {
@@ -54,7 +54,7 @@ const PersonalInfos: React.FC = () => {
         setAddress(value);
     
         if (addressPattern.test(value)) {
-            setAddressError(''); // Clear error if valid
+            setAddressError(''); 
         } else {
             setAddressError(
                 'Die Anschrift muss im Format "Straßenname Hausnummer, PLZ Wohnort, Zusatz(optional)" vorliegen.'
@@ -69,7 +69,7 @@ const PersonalInfos: React.FC = () => {
         setSemesterAddress(value);
       
         if (addressPattern.test(value)) {
-          setSemesterAddressError(''); // Clear error if valid
+          setSemesterAddressError(''); 
         } else {
           setSemesterAddressError(
             'Die Semesteranschrift muss im Format "Straßenname Hausnummer, PLZ Wohnort" vorliegen.'

@@ -46,7 +46,7 @@ const Fields: React.FC = () => {
                   <select
                     id="fbSb"
                     value={selectedFbSb}
-                    onChange={handleFbSbChange} // Changed to handleFbSbChange
+                    onChange={handleFbSbChange} 
                     required
                     style={{ width: '100%' }}
                   >

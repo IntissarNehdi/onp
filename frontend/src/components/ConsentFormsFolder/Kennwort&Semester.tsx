@@ -13,46 +13,45 @@ const KennwortSemester: React.FC = () => {
 
     const handleSemesterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSemester(event.target.value);
-        setSemesterYear(""); // Zurücksetzen des Jahres, wenn das Semester geändert wird
+        setSemesterYear(""); 
     };
     
     const handleSemesterYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
     
-        // Check the selected semester and apply the appropriate pattern
+        
         let semesterYearPattern: RegExp;
     
         if (semester === "winterSemester") {
-          // For Wintersemester: Allow "YYYY/YY" or "YYYY/YYYY" format
+          
           semesterYearPattern = /^\d{4}\/(\d{2}|\d{4})$/;
       } else if (semester === "sommerSemester") {
-          // For Sommersemester: Expecting "YYYY" format
+          
           semesterYearPattern = /^\d{4}$/;
       } else {
-          semesterYearPattern = /^\s*$/; // Allow empty value if no semester is selected
+          semesterYearPattern = /^\s*$/; 
       }
     
         setSemesterYear(value);
     
         if (semesterYearPattern.test(value)) {
             if (semester === "winterSemester") {
-                // Additional validation for Wintersemester: Check logical correctness
+                
                 const [startYear, endYear] = value.split("/").map(Number);
     
                 if (
-                    (String(endYear).length === 2 && endYear === startYear % 100 + 1) || // Case "YYYY/YY"
-                    (String(endYear).length === 4 && endYear === startYear + 1) // Case "YYYY/YYYY"
+                    (String(endYear).length === 2 && endYear === startYear % 100 + 1) || 
+                    (String(endYear).length === 4 && endYear === startYear + 1) 
                 ) {
-                    setSemesterYearError(""); // Clear error if both format and logic are correct
-                } else {
+                    setSemesterYearError(""); 
                     setSemesterYearError("Ungültige Semesterjahre für das Wintersemester.");
                 }
             } else {
-                // Sommersemester: Clear error if valid
+                
                 setSemesterYearError("");
             }
         } else {
-            // Set error for invalid format
+           
             setSemesterYearError(
                 semester === "winterSemester"
                     ? 'Das Semesterjahr muss im Format "YYYY/YY" oder "YYYY/YYYY" für Wintersemester vorliegen.'
@@ -60,15 +59,13 @@ const KennwortSemester: React.FC = () => {
             );
         }
     };
-     // Beispielwerte für die Selektionen
-       const selectedInput1:string = "der Universitätssammelung"; // Dies kann aus einem anderen Formular kommen
-       const selectedInput2: string= "CE-Computational Engineering"; // Dies kann aus einem anderen Formular kommen
      
-       // Lokale States für die Anzeige
+       const selectedInput1:string = "der Universitätssammelung"; 
+       const selectedInput2: string= "CE-Computational Engineering"; 
+     
        const [input1, setInput1] = useState<string>("");
        const [input2, setInput2] = useState<string>("");
      
-       // Effekt: Werte verarbeiten und lokale Zustände setzen
        useEffect(() => {
          setInput1(selectedInput1);
      
@@ -79,7 +76,7 @@ const KennwortSemester: React.FC = () => {
          ) {
            setInput2(selectedInput2);
          } else {
-           setInput2(""); // Kein zweiter Wert, wenn die Bedingung nicht erfüllt ist
+           setInput2(""); 
          }
        }, [selectedInput1, selectedInput2]);
 
