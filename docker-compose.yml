@@ -24,3 +24,7 @@ services:
 
 networks:
   internal_network:
+
+volumes:
+  pgdata_vol:
+  internal_network:

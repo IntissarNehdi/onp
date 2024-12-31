@@ -1,60 +1,82 @@
-/* Ensure sections are stacked vertically */
-.container {
-    padding-top: 250px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center the sections horizontally */
-  }
-  
-  /* General styling for sections */
-  section {
-    width: 100%; /* Make sections take full width */
-    padding: 60px 20px; /* Vertical space for each section */
-    margin-bottom: 40px; /* Add space between sections */
-    box-sizing: border-box; /* Ensure padding doesn't overflow the section */
-  }
-  
-  /* Hero Section */
-  .hero-section {
-    background-color: #f0f8ff; /* Light blue background */
-    color: #007bff; /* Blue text */
-  }
-  
-  .hero-section h1 {
-    font-size: 3rem; /* Large size for the title */
-    font-weight: bold;
-  }
-  
-  /* Info Section */
-  .info-section {
-    background-color: #fff; /* White background */
-    color: #333; /* Dark text */
-  }
-  
-  .info-section h2 {
-    font-size: 2rem;
-    color: #007bff; /* Blue color for subtitle */
-  }
-  
-  /* CTA Section */
-  .cta-section {
-    background-color: #f7f7f7; /* Light grey background */
-    color: #333; /* Dark text */
-  }
-  
-  .cta-section h2 {
-    font-size: 2rem;
-    color: #007bff; /* Blue color for subtitle */
-  }
-  
-  .cta-section button {
-    margin-top: 20px;
-    font-size: 1.2rem;
-  }
-  
-  /* Optional: Add margin for buttons */
-  button {
-    margin-top: 15px;
-    font-size: 1rem;
-  }
-  
+html {
+  scroll-behavior: smooth; /* Enable smooth scrolling */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+body {
+  display: block;
+  background-color: white;
+}
+
+/* General Section Styling */
+section {
+  min-height: 100vh;  /* Each section takes at least the full viewport height */
+  padding: 60px 30px;  /* Add padding inside sections */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* Vertically center content */
+  margin-bottom: 40px;  /* Space between sections */
+}
+
+h1, h2 {
+  font-weight: bold;
+}
+
+/* Hero Section Styling */
+.hero-section {
+  background: #ffffff; /* White */
+  text-align: center;  /* Center the text */
+}
+
+.hero-section h1 {
+  font-size: 2.8rem;  /* Increase the title size */
+  margin-bottom: 25px;
+}
+
+.hero-section .lead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+/* Info Section Styling */
+.info-section {
+  background: #f5f5f5;  /* Very light grey */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* Add shadow for depth */
+  padding: 40px 20px;
+}
+
+.info-section p.lead {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  text-align: justify;
+  margin-bottom: 2rem;
+}
+
+/* Call-to-Action Section Styling */
+.cta-section {
+  background: #e0e0e0;  /* Light grey */
+  padding: 30px 20px;
+}
+
+.cta-section button {
+  font-size: 1.2rem;
+  padding: 15px 30px;
+  max-width: 250px;
+  margin: 0 auto;
+  display: block;
+  transition: background-color 0.3s ease;
+}
+
+.cta-section button:hover {
+  background-color: #007bff;
+  color: white;
+}
