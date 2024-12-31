@@ -1,0 +1,18 @@
+services:
+
+  frontend:
+    container_name: frontend
+    image: frontend:latest
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - internal_network
+    volumes:
+      - ./frontend/src:/app/src
+
+networks:
+  internal_network:
+
+volumes:
+  pgdata_vol:
