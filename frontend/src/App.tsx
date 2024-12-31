@@ -1,23 +1,39 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import Navbar from './components/NavBar';
+import Footer from './components/Footer';
+import Content from './components/Content';
 import LoginPage from './pages/LoginPage';
-import SuccessPage from './pages/SuccessPage';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import imagePath from './assets/logotu.png';
 
-const theme = createTheme();
+// A component to conditionally render Navbar and Footer
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+
+  const showNavbarFooter = location.pathname !== '/login';
+
+  return (
+    <>
+      {showNavbarFooter && <Navbar brandName="Hochschulwahl" imageScrPath={imagePath} />}
+      {children}
+      {showNavbarFooter && <Footer />}
+    </>
+  );
+};
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
+    <Router>
+      <Layout>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/success" element={<SuccessPage />} />
+          <Route path="/" element={<Content />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
-      </Router>
-    </ThemeProvider>
+      </Layout>
+    </Router>
   );
 }
 
