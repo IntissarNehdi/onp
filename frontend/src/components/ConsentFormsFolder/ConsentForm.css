@@ -1,0 +1,333 @@
+/* Allgemeine Stile */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Container für das Formular */
+  .proposal-list-container {
+    position: relative; /* Ermöglicht die absolute Positionierung des Logos */
+    max-width: 1000px; /* Maximale Breite */
+    margin: 2rem auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box; /* Stellt sicher, dass Padding und Border nicht die Gesamtbreite beeinflussen */
+  }
+  
+  /* Bild oben rechts */
+  .top-right-image {
+    position: absolute; /* Absolute Positionierung relativ zum Container */
+    top: 10px; /* Abstand vom oberen Rand */
+    right: 10px; /* Abstand vom rechten Rand */
+    width: 200px; /* Vergrößerte Breite des Bildes */
+    height: auto; /* Höhe wird proportional zur Breite angepasst */
+    max-width: 200px; /* Maximale Breite des Bildes */
+    object-fit: contain; /* Verhindert Verzerrung des Bildes */
+  }
+  label {
+    font-weight: bold; /* Make the label text bold */
+    font-size: 0.9rem; /* Keep the label text size smaller */
+    text-align: left; /* Ensure labels are aligned to the left */
+    margin-bottom: 0.8rem; /* Reduced space between label and input */
+  }
+  
+  /* Title of the Form */
+  .title {
+    text-align: center;
+    color: #407ff4;
+    font-size: 1.5rem; /* Adjusted font size for smaller heading */
+    margin-bottom: 1.5rem;
+    margin-top: 5rem;
+  }
+  
+  /* Formular-Layout */
+  .proposal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem; /* Reduced gap to bring components closer */
+    width: 100%;
+  }
+  
+  /* General form section */
+  .form-section {
+    text-align: left;
+    margin-bottom: 0.75rem; /* Reduced margin to bring form elements closer */
+    width: 100%;
+  }
+  
+  /* Form row layout (for horizontal alignment) */
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.05rem;
+  }
+  
+  
+  /* Stile für die Eingabefelder */
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px; /* Adjust padding for compact look */
+    margin-bottom: 0.5rem; /* Reduced space between inputs */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem; /* Smaller font size for input fields */
+  }
+  
+  /* Adjust textarea to be smaller */
+  textarea {
+    resize: vertical;
+    height: 100px; /* Reduced height for textarea */
+  }
+  .centered-container {
+    display: flex; /* Enable flexbox for alignment */
+    flex-direction: column; /* Stack the elements vertically */
+    align-items: center; /* Horizontally center the child elements */
+    margin: 0 auto; /* Center the entire container horizontally */
+    width: fit-content; /* Ensure the container's width is based on its content */
+  }
+  
+  .centered-container input[type="text"] {
+    width: auto;
+    margin-bottom: 0rem; /* Reduce the space below the input field */
+  }
+  
+  .paragraph {
+    margin-top: 0; /* Remove any space above the label */
+    font-weight: normal; /* Ensure the label text is not bold */
+    font-size: auto; /* Optional: Adjust font size */
+  }
+  
+  .horizontal-alignment {
+    display: flex; /* Enable flexbox layout */
+    align-items: center; /* Vertically align items */
+    gap: 1rem; /* Add space between the label and the FormControl */
+  }
+  
+  
+  .semester-choice {
+    flex-shrink: 1; /* Allow it to shrink when needed */
+    width: 70%; /* Reduce the width of the FormControl */
+  }
+  
+  /* Buttons */
+  .submit-button {
+    background-color: #407ff4;
+    color: white;
+    padding: 12px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #29529c;
+  }
+  
+  .submit-button:focus {
+    outline: none;
+  }
+  .horizontal-alignment {
+    display: flex; /* Enables horizontal layout */
+    align-items: center; /* Aligns components vertically at their center */
+    gap: 1rem; /* Adds space between the label and input field */
+  }
+  
+  .horizontal-alignment label {
+    font-size: 1rem; /* Adjust label font size if needed */
+  }
+  
+  .form-section {
+    flex: 1; /* Allows the input field to adjust size based on available space */
+  }
+  
+  .form-section input {
+    width: 100%; /* Ensures input field takes the full width of its container */
+    padding: 8px; /* Adds padding inside the input */
+    font-size: 1rem; /* Adjusts font size for consistency */
+  }
+  
+  
+  
+  .date-form-section label {
+    margin-top: 40%;
+    font-size: 1rem; /* Optional: Adjust font size if needed */
+  }
+  
+  .date-form-section {
+    display: flex; /* Use flexbox to align the date input and signature area horizontally */
+    gap: 2rem; /* Add space between the date input and signature area */
+    align-items: flex-start; /* Align the elements to the top */
+    justify-content: flex-start; /* Align the section to the left */
+  }
+  #date {
+    width: auto;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    margin-top: 36%;
+  }
+  
+  .form-container {
+    display: flex; /* Use flexbox to align the two components horizontally */
+    justify-content: space-between; /* Ensures that the components are on opposite sides */
+    width: 100%; /* Make sure the container takes the full width of the page */
+  }
+  .signature-container {
+    margin-top: 6%;
+    display: flex;
+    flex-direction: column; /* Stack the label and signature area vertically */
+    align-items: flex-start; /* Align the label and signature to the left */
+    width: 45%; /* Adjust the width of the signature area container */
+  }
+  
+  .signature-area {
+    width: 80%; /* Make the signature box take the full width of its container */
+    height: 70px; /* Set height for the signature area */
+    border: 1px solid #ccc; /* Light border around the signature area */
+    margin-bottom: 0.5rem; /* Space between the signature box and the label */
+  
+  }
+  .date-input-container {
+    margin-top: 5%;
+    display: flex; /* Use flexbox to align the label and input horizontally */
+    align-items: center; /* Vertically center the label and input */
+  }
+  
+  .date-input-container label {
+    font-size: 1rem; /* Optional: Adjust font size for the label */
+    display: inline-flex; /* Keep the label inline while using flexbox */
+    gap: 0.5rem; /* Optional: Adds space between the label and the input */
+  }
+  
+  .date-input-container input {
+    padding: 8px;
+    font-size: 1rem;
+    width: auto; /* Ensure the input is not stretched */
+  }
+  .Hinweis {
+    width: 95%; /* Set width to 100% of the page */
+    max-width: 1000px; /* Optionally set a max width */
+    margin: 2rem auto; /* Horizontally center the component by setting auto left and right margins */
+    padding: 1rem; /* Add padding inside the box */
+    border: 2px solid #ccc; /* Light border around the component */
+    border-radius: 0px; /* No rounded corners for the border */
+    font-size: 1rem; /* Adjust font size */
+    line-height: 1.5; /* Adjust line height for better readability */
+    background-color: #f9f9f9; /* Optional: Light background color */
+    color: #333; /* Text color */
+    text-align: left; /* Align the text to the left */
+  }
+  
+  .Hinweis label {
+    font-weight: bold; /* Make the label bold */
+    margin-bottom: 1rem; /* Add space between the label and the text */
+    display: block; /* Ensure label appears above the text */
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* Styling for disabled inputs */
+  input[disabled] {
+    background-color: #f0f0f0;
+    pointer-events: none;
+  }
+  
+  /* Container for the label and select field */
+  .select-input-container {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  
+  /* Styling for select field */
+  select {
+    width: auto;
+    min-width: 200px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  
+  /* Styling for the select field when focused */
+  select:focus {
+    border-color: #0d6efd;
+  }
+  
+  
+  #semesterYear {
+    width: 150px; /* Set the desired width for the input field */
+    padding: 8px; /* Optional: Adjust padding for a smaller appearance */
+    font-size: 0.9rem; /* Optional: Adjust font size */
+  }
+  
+  
+  /* Adjust additional input field */
+  #additionalField {
+    margin-top: 1rem;
+  }
+  
+  /* Adjust the width and appearance of consent form field */
+  #consentForms {
+    width: 60px;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  /* Remove number spinner arrows */
+  #consentForms::-webkit-outer-spin-button,
+  #consentForms::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  #consentForms[type="number"] {
+    -moz-appearance: textfield;
+    appearance: none;
+  }
+  
+  /* Focus state for input */
+  #consentForms:focus {
+    border-color: #0d6efd;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .proposal-list-container {
+      padding: 1rem;
+    }
+  
+    .form-section {
+      margin-bottom: 1rem;
+    }
+  
+    .submit-button {
+      padding: 12px;
+    }
+  
+    .title {
+      font-size: 1.5rem;
+    }
+  }
