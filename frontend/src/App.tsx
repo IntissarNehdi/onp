@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
-import Navbar from './components/NavBar';
-import Footer from './components/Footer';
-import Content from './components/Content';
+import Navbar from './components/website/navbar/NavBar';
+import Footer from './components/website/footer/Footer';
+import Content from './components/website/content/Content';
 import LoginPage from './pages/LoginPage';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
