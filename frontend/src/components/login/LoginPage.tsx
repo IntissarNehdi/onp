@@ -1,7 +1,8 @@
 import React, { useState, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { useUser } from '../../contexts/UserContext';
 import './LoginPage.css';
-import tudaLogo from '../../assets/tuda_logo.jpg'
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -9,12 +10,44 @@ const LoginPage: React.FC = () => {
   const [doNotCache, setDoNotCache] = useState(false);
   const [revokeConsent, setRevokeConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const { setUser } = useUser();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Here you would typically handle the login logic
-    console.log('Login submitted', { username, password, doNotCache, revokeConsent });
+    setErrorMessage(null);
+
+    try {
+      const response = await simulateBackendRequest();
+      setUser(response.data);
+      navigate('/dashboard');
+    } catch (error) {
+      setErrorMessage("Verbindung zum Server fehlgeschlagen. Bitte versuchen Sie es später erneut.");
+    }
+
+    setIsSubmitting(false);
+  };
+
+  const simulateBackendRequest = () => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (Math.random() > 0.3) {  // 70% chance of success
+          resolve({
+            data: {
+              firstName: 'Max',
+              lastName: 'Mustermann',
+              matrikelNumber: '0123456789',
+              department: 'Informatik'
+            }
+          });
+        } else {
+          reject(new Error('Connection failed'));
+        }
+      }, 1000);  // Simulate network delay
+    });
   };
 
   return (
@@ -22,7 +55,7 @@ const LoginPage: React.FC = () => {
       <div className="row">
         <main className="col-md-9">
           <header className="login-header">
-            <img className="main-logo" src={tudaLogo} alt="Technische Universität Darmstadt" />
+            <img className="main-logo" src="/idp/images/logo.png" alt="Technische Universität Darmstadt" />
             <h1 className="h3 login-title">Identity Provider der Technischen Universität Darmstadt</h1>
           </header>
           
@@ -90,6 +123,11 @@ const LoginPage: React.FC = () => {
                 </button>
               </div>
             </form>
+            {errorMessage && (
+              <div className="alert alert-danger mt-3" role="alert">
+                {errorMessage}
+              </div>
+            )}
           </section>
         </main>
         <Sidebar />
@@ -99,3 +137,4 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
+
