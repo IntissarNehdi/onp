@@ -62,6 +62,7 @@ const CandidatesTable = () => {
         setCandidates(candidates.slice(0, numberValue));
       } else {
         // Otherwise, add empty candidate objects to match the new number
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const newCandidates = Array.from({ length: numberValue - candidates.length }, (_) => ({
           lastName: '',
           firstName: '',

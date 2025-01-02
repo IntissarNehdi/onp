@@ -1,5 +1,7 @@
 import React from 'react';
 import './NavBar.css';
+import { useNavigate } from 'react-router-dom';
+import imagePath from './assets/logotu.png';
 
 interface NavBarProps {
   brandName: string;
@@ -7,6 +9,12 @@ interface NavBarProps {
 }
 
 function Navbar({ brandName, imageScrPath }: NavBarProps) {
+  const navigate = useNavigate(); 
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-gradient fixed-top shadow-lg">
       <a className="navbar-brand d-flex align-items-center" href="#">
@@ -39,10 +47,16 @@ function Navbar({ brandName, imageScrPath }: NavBarProps) {
             <a className="nav-link text-light hover-link" href="#info">Mehr erfahren</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-light hover-link" href="#cta">Kontakt</a>
+            <a className="nav-link text-light hover-link" href="#footer">Kontakt</a>
           </li>
         </ul>
-        <button className="btn btn-primary ms-3 me-4 rounded-pill hover-btn" type="button">Anmelden</button>
+        <button 
+          className="btn btn-primary ms-3 me-4 rounded-pill hover-btn" 
+          type="button" 
+          onClick={handleLoginClick} 
+        >
+          Anmelden
+        </button>
       </div>
     </nav>
   );
