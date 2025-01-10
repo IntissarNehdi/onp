@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="42ff3350-e9c7-4c2a-bd11-7d6d503c3462" name="Changes" comment="new Comment">
+      <change beforePath="$PROJECT_DIR$/backend/venv/bin/python" beforeDir="false" afterPath="$PROJECT_DIR$/backend/venv/bin/python" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/venv/bin/python3" beforeDir="false" afterPath="$PROJECT_DIR$/backend/venv/bin/python3" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
+  <component name="ProjectId" id="2pUcRuMEEzUoncSApSSPgqbkkDT" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.1321004&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;,
+      &quot;sqlite&quot;
+    ],
+    &quot;RunConfigurationTargetLRU&quot;: [
+      &quot;b6b905ff-cb11-41e0-9003-61d54fb03bed&quot;,
+      &quot;b6b905ff-cb11-41e0-9003-61d54fb03bed/schema/\&quot;onp_db\&quot;&quot;,
+      &quot;3b89a439-f377-4e73-9105-50bd157b3f76&quot;
+    ],
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;PLAIN_TEXT&quot;
+    ]
+  }
+}</component>
+  <component name="RunManager" selected="Database Script.console.sql">
+    <configuration name="console_1.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
+      <script-file value="$APPLICATION_CONFIG_DIR$/consoles/db/3b89a439-f377-4e73-9105-50bd157b3f76/console_1.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="3b89a439-f377-4e73-9105-50bd157b3f76" />
+      <method v="2" />
+    </configuration>
+    <configuration name="console.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
+      <script-file value="$APPLICATION_CONFIG_DIR$/consoles/db/b6b905ff-cb11-41e0-9003-61d54fb03bed/console.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="b6b905ff-cb11-41e0-9003-61d54fb03bed" namespace="schema/&quot;onp_db&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="onp_console.sql" type="DatabaseScript" editBeforeRun="true">
+      <script-file value="$APPLICATION_CONFIG_DIR$/consoles/db/b6b905ff-cb11-41e0-9003-61d54fb03bed/console_1.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="b6b905ff-cb11-41e0-9003-61d54fb03bed" namespace="schema/&quot;onp_db&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="onp_console.sql" type="DatabaseScript" editBeforeRun="true">
+      <script-file value="$APPLICATION_CONFIG_DIR$/consoles/db/b6b905ff-cb11-41e0-9003-61d54fb03bed/console_1.sql" />
+      <script-mode>FILE</script-mode>
+      <data-source id="b6b905ff-cb11-41e0-9003-61d54fb03bed" namespace="schema/&quot;onp_db&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Database Script.console.sql" />
+      <item itemvalue="Database Script.console_1.sql" />
+      <item itemvalue="Database Script.onp_console.sql" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="42ff3350-e9c7-4c2a-bd11-7d6d503c3462" name="Changes" comment="" />
+      <created>1732824090483</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1732824090483</updated>
+      <workItem from="1732824095199" duration="2839000" />
+      <workItem from="1733176335018" duration="5000" />
+      <workItem from="1733176435901" duration="7859000" />
+      <workItem from="1733934025091" duration="1603000" />
+      <workItem from="1733935648897" duration="292000" />
+      <workItem from="1733935947282" duration="31108000" />
+      <workItem from="1735576482693" duration="363000" />
+      <workItem from="1736026905930" duration="2613000" />
+    </task>
+    <task id="LOCAL-00001" summary="new Comment">
+      <created>1734565813884</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1734565813884</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="feature/database-models" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="feature/database-models" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="new Comment" />
+    <option name="LAST_COMMIT_MESSAGE" value="new Comment" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
