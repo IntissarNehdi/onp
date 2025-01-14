@@ -64,7 +64,7 @@ const LoginPage: React.FC = () => {
               <input type="hidden" name="csrf_token" value="_6400de90d158455e83703d984f59ce2d98d3a340" />
               
               <legend className="h5 mb-4">
-                Anmelden bei https://moodle.informatik.tu-darmstadt.de
+                Anmelden bei Hochschulwahlwebseite
               </legend>
 
               <div className="mb-3">
