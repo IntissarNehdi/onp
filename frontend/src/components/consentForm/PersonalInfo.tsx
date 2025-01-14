@@ -101,7 +101,7 @@ const PersonalInfo: React.FC = () => {
     <div className="PersonalInfosContainer">
       
       {/* Label for personal info */}
-      <label>Ich,</label>
+      <label className='ich'>Ich,</label>
       
       <div className="form-row">
         {/* Section for last name input */}

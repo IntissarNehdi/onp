@@ -4,7 +4,7 @@ import PersonalInfo from './PersonalInfo';  // Importing component for personal 
 import Field from './Field';  // Importing component for form fields section
 import PasswordAndSemester from './PasswordAndSemester';  // Importing component for password and semester section
 
-import logo from '../tuda_logo.jpg';  // Importing logo image
+import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 
 // Functional component for the Einverstaendniserklaerung (Consent Form)
 const ConsentForms: React.FC = () => { 

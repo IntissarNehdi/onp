@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
     try {
       const response = await simulateBackendRequest();
       setUser(response.data);
-      navigate('/dashboard');
+      navigate('/consent');
     } catch (error) {
       setErrorMessage("Verbindung zum Server fehlgeschlagen. Bitte versuchen Sie es später erneut.");
     }
