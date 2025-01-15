@@ -3,6 +3,7 @@ import './ConsentForms.css';  // Importing custom styles
 import PersonalInfo from './PersonalInfo';  // Importing component for personal information section
 import Field from './Field';  // Importing component for form fields section
 import PasswordAndSemester from './PasswordAndSemester';  // Importing component for password and semester section
+import { saveFormAsPDF } from '../Utility/Utility';
 
 import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 
@@ -14,9 +15,13 @@ const ConsentForms: React.FC = () => {
     const today = new Date();  // Getting today's date
     return today.toISOString().split('T')[0];  // Formatting date to 'YYYY-MM-DD'
   });
+  const handleSaveAsPDF = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+    saveFormAsPDF("myFormId", "SavedForm"); // Replace 'myFormId' with your form's actual ID
+  };
 
   return (
-    <div className="proposal-list-container">
+    <form className="proposal-list-container" id="myFormId">
     
       {/* TU Darmstadt logo */}
       <img src={logo} alt="TU_DA Logo" className="top-right-image" />
@@ -63,12 +68,12 @@ const ConsentForms: React.FC = () => {
         </div>
         
         {/* Submit button */}
-        <button type="submit" className="submit-button">
+        <button type="submit" className="submit-button" onClick={handleSaveAsPDF}>
           Abschicken  {/* Button text */}
         </button>
       
       </form>
-    </div>
+    </form>
   );
 };
 
