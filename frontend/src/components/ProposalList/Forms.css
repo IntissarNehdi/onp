@@ -1,52 +1,56 @@
-/* Allgemeine Stile */
+/* General body styling */
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f4f6f9;
   margin: 0;
   padding: 0;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Container für das Formular */
-
+/* Container for the proposal list */
 .proposal-list-container {
-  position: relative; /* Ermöglicht die absolute Positionierung des Logos */
-  max-width: 1000px; /* Maximale Breite */
+  position: relative; 
+  max-width: 1000px; 
   margin: 2rem auto;
   background: #fff;
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  box-sizing: border-box; /* Stellt sicher, dass Padding und Border nicht die Gesamtbreite beeinflussen */
+  box-sizing: border-box; 
 }
 
-/* Bild oben rechts */
+/* Image positioned at the top right of the container */
 .top-right-image {
-  position: absolute; /* Absolute Positionierung relativ zum Container */
-  top: 10px; /* Abstand vom oberen Rand */
-  right: 10px; /* Abstand vom rechten Rand */
-  width: 200px; /* Vergrößerte Breite des Bildes */
-  height: auto; /* Höhe wird proportional zur Breite angepasst */
-  max-width: 200px; /* Maximale Breite des Bildes */
-  object-fit: contain; /* Verhindert Verzerrung des Bildes */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 200px;
+  height: auto;
+  max-width: 200px;
+  object-fit: contain;
 }
 
+/* Header styling */
 h2 {
   text-align: center;
   text-decoration: underline;
 }
 
+/* Styling for label within sentence class */
 .sentence label{
   font-weight: lighter;
 }
 
+/* Default label styling */
 label {
-  font-weight: bold; /* Macht alle Label-Texte fett */
+  font-weight: bold;
   font-size: 1.2rem;
-  flex-shrink: 0; /* Verhindert, dass das Label schrumpft */
+  flex-shrink: 0;
 }
 
-/* Titel des Formulars */
+/* Title styling */
 .title {
   text-align: center;
   color: #407ff4;
@@ -54,41 +58,43 @@ label {
   margin-bottom: 1.5rem;
 }
 
+/* Styling for the nomination semester section */
 .nomination-semester {
   text-align: left;
   margin-top: 5rem;
 }
 
-/* Formular-Layout */
+/* Layout for the proposal form */
 .proposal-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: 100%; /* Verhindert, dass das Formular sich über die Seite hinaus ausdehnt */
+  width: 100%;
 }
 
+/* Styling for form sections */
 .form-section {
   text-align: left;
   margin-bottom: 1.5rem;
   width: 100%;
 }
 
-
+/* Header inside form sections */
 .form-section h3 {
   font-weight: lighter;
   border: 2px solid #ccc;
-  padding: 10px; /* Fügt Abstand zwischen Text und Rand hinzu */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Weicher Schatten um den Bereich */
-  border-radius: 0px; /* Abgerundete Ecken */
-  line-height: 1.6; /* Für eine bessere Lesbarkeit */
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 0px;
+  line-height: 1.6;
   background-color: #f9f9f9;
   color: #333;
   text-align: left;
 }
 
-/* Stile für die Eingabefelder */
+/* Styling for input and textarea elements */
 input, textarea {
-  width: 100%; /* Volle Breite für die Felder */
+  width: 100%;
   padding: 12px;
   margin-bottom: 1rem;
   border-radius: 5px;
@@ -96,26 +102,27 @@ input, textarea {
   font-size: 1rem;
 }
 
+/* Specific styling for textareas */
 textarea {
   resize: vertical;
   height: 120px;
 }
 
+/* Grid layout for candidate rows */
 .candidate-row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
   margin-bottom: 1rem;
-  width: 100%; /* Sicherstellen, dass es nicht breiter wird */
+  width: 100%;
 }
 
+/* Styling for inputs inside candidate rows */
 .candidate-row input {
   font-size: 0.9rem;
 }
 
-
-
-
+/* Styling for remove candidate button */
 .remove-candidate-button {
   color: white;
   background-color: #dc3545;
@@ -127,9 +134,7 @@ textarea {
   margin-top: 10px;
 }
 
-
-
-/* Absende-Button */
+/* Styling for submit button */
 .submit-button {
   background-color: #407ff4;
   color: white;
@@ -141,34 +146,35 @@ textarea {
   transition: background-color 0.3s ease;
 }
 
+/* Hover state for submit button */
 .submit-button:hover {
   background-color: #29529c;
 }
 
+/* Focus state for submit button */
 .submit-button:focus {
   outline: none;
 }
 
-/* ifdNr */
+/* Styling for IFD input fields (readonly) */
 .ifd-input {
-  width: 50px; /* Breite des Feldes verringern */
-  background-color: #f0f0f0; /* Gleiche Hintergrundfarbe wie deaktivierte Felder */
-  border: 1px solid #ccc; /* Gleicher Rahmen wie andere Felder */
-  text-align: center; /* Text zentrieren */
-  pointer-events: none; /* Keine Interaktion möglich */
+  width: 50px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  text-align: center;
+  pointer-events: none;
 }
 
-/* consentForm */
+/* Styling for disabled input fields */
 input[disabled] {
   background-color: #f0f0f0;
   pointer-events: none;
 }
 
-/* Responsives Design: */
+/* Responsive design for smaller screens */
 @media (max-width: 768px) {
-  /* Kandidatenfelder auf mobilen Geräten */
   .candidate-row {
-      grid-template-columns: 1fr; /* Eine Spalte auf mobilen Geräten */
+      grid-template-columns: 1fr;
   }
 
   .proposal-list-container {
@@ -184,26 +190,25 @@ input[disabled] {
   }
 
   .select-input-container {
-      flex-direction: column; /* Stapelt Checkbox und Text untereinander auf kleineren Geräten */
+      flex-direction: column;
       gap: 0.5rem;
   }
 }
 
-/****************************************************/
-/* Container für das Label und das Select-Feld */
+/* Container for select inputs with labels */
 .select-input-container {
-  display: flex; /* Flexbox für horizontale Ausrichtung */
-  gap: 1rem; /* Abstand zwischen der Checkbox und dem Text */
-  align-items: center; /* Vertikale Ausrichtung der Felder */
-  width: 100%; /* Sicherstellen, dass der Container die volle Breite nutzt */
-  flex-wrap: wrap; /* Ermöglicht den Umbruch in die nächste Zeile */
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
-/* Styling für das Select-Feld */
+/* Styling for select fields */
 select {
-  width: auto; /* Automatische Breite basierend auf dem Inhalt */
+  width: auto;
   height: auto;
-  min-width: 200px; /* Mindestbreite für das Select-Feld */
+  min-width: 200px;
   padding: 12px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -211,64 +216,67 @@ select {
   background-color: #fff;
 }
 
-/* Styling für die Checkbox */
+/* Styling for checkboxes */
 input[type="checkbox"] {
-  margin-right: 10px; /* Abstand nach rechts von der Checkbox */
-  width: 20px; /* Größe der Checkbox */
-  height: 20px; /* Größe der Checkbox */
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
 }
 
-/* Styling für den Text */
+/* Styling for the text inside select input containers */
 .select-input-container p {
   margin: 0;
   font-size: 1rem;
   line-height: 1.5;
 }
 
-/* Textfeld (input) Styling - in einer neuen Zeile */
+/* Additional field styling */
 #additionalField {
-  margin-top: 1rem; /* Abstand nach oben, um es von dem Select-Feld zu trennen */
+  margin-top: 1rem;
 }
 
+/* Focus state for additional field */
 #additionalField:focus {
   border-color: 0 4px 10px rgba(0, 0, 0, 0.1); 
 }
 
-/* Styling für das Eingabefeld der Anzahl der Einverständniserklärungen */
+/* Styling for consent forms input */
 #consentForms {
-  width: 60px; /* Kleinere Breite für das Feld */
+  width: 60px;
   padding: 12px;
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  text-align: center; /* Zentriert den Text im Eingabefeld */
-  transition: border-color 0.3s ease; /* Weicher Übergang beim Fokussieren */
+  text-align: center;
+  transition: border-color 0.3s ease;
 }
 
-/* Entfernen der Pfeile in Zahleneingabefeldern */
+/* Removing arrows from number inputs */
 #consentForms::-webkit-outer-spin-button,
 #consentForms::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
+/* Removing arrows from number inputs in Firefox */
 #consentForms[type="number"] {
-  -moz-appearance: textfield; /* Entfernt die Pfeile in Firefox */
-  appearance: none; /* Entfernt die Pfeile in anderen Browsern */
+  -moz-appearance: textfield;
+  appearance: none;
 }
 
-/* Fokussierter Zustand des Eingabefelds */
+/* Focus state for consent forms input */
 #consentForms:focus {
   border-color: 0 4px 10px rgba(0, 0, 0, 0.1); 
 }
 
-/* Styling für die Unterschrift */
+/* Signature section layout */
 .signature-section {
   display: flex;
-  align-items: center; /* Alle Elemente in einer Zeile ausrichten */
-  gap: 10px; /* Abstand zwischen den Feldern */
+  align-items: center;
+  gap: 10px;
 }
 
+/* Styling for the date input field */
 #date {
   width: auto;
   padding: 10px;
@@ -277,9 +285,7 @@ input[type="checkbox"] {
   font-size: 1rem;
 }
 
-
-
-/* Unterschriftsfeld */
+/* Styling for signature field */
 #signature {
   width: 200px;
   height: 50px;
@@ -287,34 +293,35 @@ input[type="checkbox"] {
   border-radius: 0px;
   border: 1px solid #ccc;
   font-size: 1rem;
-  background-color: white; /* Weißer Hintergrund für das deaktivierte Feld */
+  background-color: white;
 }
 
+/* Focus state for signature field */
 #signature:focus {
-  border-color: #ccc; /* Kein Fokus-Rand für deaktivierte Felder */
-  background-color: white; /* Hintergrund bleibt weiß */
+  border-color: #ccc;
+  background-color: white;
 }
 
-/* Container für mehrzeiligen Text */
+/* Multi-line text container styling */
 .multi-line-text {
-  white-space: pre-line; /* Automatischer Umbruch */
-  word-wrap: break-word; /* Wörter werden bei Bedarf umgebrochen */
+  white-space: pre-line;
+  word-wrap: break-word;
 }
 
-
+/* Error message styling */
 .error-message {
   color: red;
   font-size: 0.9rem;
   margin-top: 5px;
 }
 
-
-
+/* Table styling for candidates */
 .candidates-table td {
   vertical-align: middle;
   text-align: left;
 }
 
+/* General styling for input and select fields */
 input,
 select {
   margin: 0;
@@ -324,9 +331,15 @@ select {
   box-sizing: border-box;
 }
 
+/* Styling for remove candidate button (alternative) */
 .remove-candidate-button {
   padding: 8px 12px;
   margin: 0;
   height: 40px;
   width: auto;
+}
+
+/* Styling for add another candidate button */
+.add-another-candidate{
+  width: 100%;
 }

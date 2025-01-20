@@ -1,0 +1,30 @@
+.sidebar {
+    background-color: #f1f3f5;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .sidebar-list {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .sidebar-list-item {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar-link {
+    color: #dc3545;
+    text-decoration: none;
+  }
+  
+  .sidebar-link:hover {
+    text-decoration: underline;
+  }
+  
+  .sidebar-notice {
+    margin-top: 1rem;
+    color: #dc3545;
+  }
+  
+  
