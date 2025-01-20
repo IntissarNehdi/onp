@@ -16,6 +16,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import imagePath from "./assets/logotu.png";
 import Dashboard from "./components/login/Dashboard";
 import ConsentForms from "./components/consentForm/ConsentForms";
+import ProposalList from "./components/ProposalList/ProposalList";
 
 // A component to conditionally render Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -44,6 +45,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/consent" element={<ConsentForms />} />
+            <Route path="/proposal" element={<ProposalList/>} />
+
 
           </Routes>
         </Layout>

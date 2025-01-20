@@ -15,12 +15,13 @@
     "@mui/icons-material": "^6.2.0",
     "@mui/material": "^6.1.9",
     "antd": "^5.22.5",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "html2pdf.js": "^0.10.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
-    "routes": "^2.1.0",
-    "bootstrap": "^5.3.3",
-    "bootstrap-icons": "^1.11.3"
+    "routes": "^2.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

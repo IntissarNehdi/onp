@@ -6,15 +6,18 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import './ConsentForms.css';
 
+interface PasswordAndSemesterField {
+  updatePasswordAndSemester: (field: 'Kennwort'| 'für die Wahl im' | 'Semesterjahr', value: string) => void;
+}
 // Define the functional component 'KennwortSemester'
-const PasswordAndSemester: React.FC = () => {
+const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswordAndSemester }) => {
   
   // State variable to store the password entered by the user
   const [listPassword, setListPassword] = useState('');
   
   // State variable to store the selected semester type (Winter or Summer)
-  const [semester, setSemester] = useState("winterSemester");
-  
+  const [semester, setSemester] = useState('');
+
   // State variable to store the semester year entered by the user
   const [semesterYear, setSemesterYear] = useState<string>('');
   
@@ -23,8 +26,15 @@ const PasswordAndSemester: React.FC = () => {
 
   // Event handler to update the semester state when the user selects a new semester type
   const handleSemesterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSemester(event.target.value); // Set the selected semester
+    const value = event.target.value;
+    setSemester(value); // Set the selected semester
     setSemesterYear(""); // Reset the semester year when semester changes
+    updatePasswordAndSemester('für die Wahl im', value);
+  };
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setListPassword(value); // Set the selected semester
+    updatePasswordAndSemester('Kennwort', value);
   };
   
   // Event handler to validate and update the semester year input
@@ -35,9 +45,9 @@ const PasswordAndSemester: React.FC = () => {
     let semesterYearPattern: RegExp;
     
     // If the selected semester is "winterSemester"
-    if (semester === "winterSemester") {
+    if (semester === "Wintersemester") {
       semesterYearPattern = /^\d{4}\/(\d{2}|\d{4})$/; // Allow year formats like "2024/25" or "2024/2025"
-    } else if (semester === "sommerSemester") {
+    } else if (semester === "Sommersemester") {
       semesterYearPattern = /^\d{4}$/; // Allow only a 4-digit year for summer semester
     } else {
       semesterYearPattern = /^\s*$/; // No pattern for empty semester selection
@@ -48,7 +58,7 @@ const PasswordAndSemester: React.FC = () => {
     // Validate the semester year input against the pattern
     if (semesterYearPattern.test(value)) {
       // Additional validation for winter semester (check if end year is valid)
-      if (semester === "winterSemester") {
+      if (semester === "Wintersemester") {
         const [startYear, endYear] = value.split("/").map(Number);
         if (
           (String(endYear).length === 2 && endYear === startYear % 100 + 1) || 
@@ -64,11 +74,12 @@ const PasswordAndSemester: React.FC = () => {
     } else {
       // Set an error message if the input doesn't match the expected format
       setSemesterYearError(
-        semester === "winterSemester"
+        semester === "Wintersemester"
           ? 'Das Semesterjahr muss im Format "YYYY/YY" oder "YYYY/YYYY" für Wintersemester vorliegen.'
           : 'Das Semesterjahr muss im Format "YYYY" für Sommersemester vorliegen.'
       );
     }
+    updatePasswordAndSemester('Semesterjahr',value);
   };
   
   // Static values for conditional input text
@@ -109,7 +120,7 @@ const PasswordAndSemester: React.FC = () => {
             required
             type="text"
             value={listPassword} // Bind the value to the listPassword state
-            onChange={(e) => setListPassword(e.target.value)} // Update state on change
+            onChange={handlePasswordChange} // Update state on change
             placeholder="Kennwort eintragen" // Placeholder text
           />
         </div>
@@ -126,8 +137,8 @@ const PasswordAndSemester: React.FC = () => {
             value={semester} // Bind the value to the semester state
             onChange={handleSemesterChange} // Update the state when the semester changes
           >
-            <FormControlLabel value="winterSemester" control={<Radio />} label="Wintersemester" />
-            <FormControlLabel value="sommerSemester" control={<Radio />} label="Sommersemester" />
+            <FormControlLabel value="Wintersemester" control={<Radio />} label="Wintersemester" />
+            <FormControlLabel value="Sommersemester" control={<Radio />} label="Sommersemester" />
           </RadioGroup>
         </FormControl>
       </div>
@@ -142,7 +153,7 @@ const PasswordAndSemester: React.FC = () => {
             id="semesterYear"
             value={semesterYear} // Bind the value to the semesterYear state
             onChange={handleSemesterYearChange} // Handle changes to the semester year input
-            placeholder={semester === "winterSemester" ? "z. B. 2024/25" : "z. B. 2024"} // Placeholder based on semester type
+            placeholder={semester === "Wintersemester" ? "z. B. 2024/25" : "z. B. 2024"} // Placeholder based on semester type
           />
           {/* Display error message if there is any error */}
           {semesterYearError && (

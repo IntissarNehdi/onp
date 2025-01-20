@@ -22,11 +22,35 @@ const FB_SB_CANDIDATE = [
   { value: "20", label: "20" }
 ];
 
+interface CandidatesTableProps {
+  onUpdateCandidates: (candidates: any[]) => void; // Prop to notify the parent component
+}
 // Main component to display and manage the candidates table
-const CandidatesTable = () => {
+const CandidatesTable: React.FC<CandidatesTableProps> = ({ onUpdateCandidates }) => {
   // State to manage the list of candidates (each candidate is an object with specific fields)
   const [candidates, setCandidates] = useState<any[]>([]);
 
+  const handleCandidateChange = (index: number, field: string, value: string) => {
+    // Create a copy of the candidates list to modify
+    const newCandidates = [...candidates];
+    newCandidates[index][field] = value; // Update the specific field for the candidate
+  
+    // Validate the birth year to ensure it's in YYYY format (4 digits)
+    if (field === 'birthYear') {
+      const isValid = /^\d{4}$/.test(value);
+      const newValidBirthYears = [...validBirthYears];
+      newValidBirthYears[index] = isValid; // Update the validity state for this candidate
+      setValidBirthYears(newValidBirthYears); // Update validity state
+    }
+  
+    setCandidates(newCandidates); // Update candidates state
+  
+    // Notify the parent component about the updated candidates list
+    if (onUpdateCandidates) {
+      onUpdateCandidates(newCandidates);
+    }
+  };
+  
   // State to manage the number of candidates to be added
   const [numCandidates, setNumCandidates] = useState<number>(0);
 
@@ -80,20 +104,6 @@ const CandidatesTable = () => {
   // State to track which input field is focused (for styling/validation feedback)
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
-  // Function to handle changes in any of the candidate's fields (last name, first name, etc.)
-  const handleCandidateChange = (index: number, field: string, value: string) => {
-    // Create a copy of the candidates list to modify
-    const newCandidates = [...candidates];
-    newCandidates[index][field] = value; // Update the specific field for the candidate
-
-    // Validate the birth year to ensure it's in YYYY format (4 digits)
-    const isValid = /^\d{4}$/.test(value);
-    const newValidBirthYears = [...validBirthYears];
-    newValidBirthYears[index] = isValid; // Update the validity state for this candidate
-
-    setCandidates(newCandidates); // Update candidates state
-    setValidBirthYears(newValidBirthYears); // Update validity state
-  };
 
   // Function to set the focused index when an input field is focused
   const handleFocus = (index: number) => {

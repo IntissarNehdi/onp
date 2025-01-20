@@ -1,7 +1,6 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import './Forms.css'; 
-import logo from '../tuda_logo.jpg'; 
+import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 import SemesterSelection from './SemesterSelection'; 
 import CommitteesSelection from './CommitteesSelection'; 
 import TrusteePerson from './TrusteePerson'; 
@@ -13,14 +12,44 @@ import { useNavigate } from 'react-router-dom';
 const ProposalList: React.FC = () => {  
   // Initialize the navigate function to allow navigation between pages
   const navigate = useNavigate(); 
+  const [, setCandidates] = useState<any[]>([]);
 
+  const updateCandidates = (updatedCandidates: any[]) => {
+    setCandidates(updatedCandidates); // Keep the parent's candidates state in sync
+  };
   // Handle form submission and navigate to the next page
-  const nextPage = (event: React.FormEvent) => {
+  const nextPage = async (event: React.FormEvent) => {
     event.preventDefault(); // Prevent default form submission behavior
     
-    // Navigate to the 'attachement' page
-    navigate('/attachement');
+    try {
+      // Gather candidates data from the CandidatesTable state
+      const candidatesTableComponent = document.querySelector('CandidatesTable') as any;
+      const candidates = candidatesTableComponent?.state?.candidates || [];
+      
+      if (candidates.length === 0) {
+        alert('No candidates to send emails to!');
+        return;
+      }
+  
+      // Send candidates data to the backend
+      const response = await fetch('/api/send-emails/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ candidates }),
+      });
+  
+      if (response.ok) {
+        alert('Emails sent successfully!');
+        navigate('/attachement'); // Proceed to the next page
+      } else {
+        throw new Error('Failed to send emails');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error occurred while sending emails');
+    }
   };
+  
 
   return (
     <div className="proposal-list-container"> {/* Container for the proposal list */}
@@ -51,7 +80,7 @@ const ProposalList: React.FC = () => {
         <TrusteePerson/>
         
         {/* Include CandidatesTable component to display and manage candidates */}
-        <CandidatesTable/>
+        <CandidatesTable onUpdateCandidates={updateCandidates} />
         
         {/* Include DateAndSig component for handling date and signature */}
         <DateAndSig/>
@@ -66,4 +95,4 @@ const ProposalList: React.FC = () => {
 };
  
 // Export the ProposalList component for use in other parts of the app
-export default ProposalList; 
+export default ProposalList;

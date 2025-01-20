@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import './ConsentForms.css';
 
+interface PersonalInfoProps {
+  updatePersonalInfo: (field: 'Zuname' | 'Vorname' | 'Geburtsjahr' | 'E-Mail'|'Anschrift'|'Semesteranschrift'|'Matrikelnummer', value: string) => void;
+}
 // Define the functional component 'PersonalInfos'
-const PersonalInfo: React.FC = () => {
-  
+const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo }) => {
   // State variables to manage user inputs for personal information
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -17,6 +19,24 @@ const PersonalInfo: React.FC = () => {
   const [addressError, setAddressError] = useState('');
   const [semesterAddress, setSemesterAddress] = useState('');
   const [semesterAddressError, setSemesterAddressError] = useState('');
+
+  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFirstName(value);
+    updatePersonalInfo('Vorname', value); // Pass value to parent component
+  };
+
+  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLastName(value);
+    updatePersonalInfo('Zuname', value); // Pass value to parent component
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    updatePersonalInfo('E-Mail', value); // Pass value to parent component
+  };
 
   // Event handler for updating and validating the matriculation number
   const handleMatriculationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +55,7 @@ const PersonalInfo: React.FC = () => {
     } else {
       setMatriculationError('Die Matrikelnummer darf nur Ziffern enthalten.'); // Error if input contains non-digit characters
     }
+    updatePersonalInfo('Matrikelnummer',value);
   };
 
   // Event handler for updating and validating the birth year input
@@ -56,6 +77,7 @@ const PersonalInfo: React.FC = () => {
     } else {
       setBirthYearError('Das Geburtsjahr darf nur Ziffern enthalten.'); // Error for non-digit input
     }
+    updatePersonalInfo('Geburtsjahr', value); // Pass value to parent component
   };
 
   // Event handler for updating and validating the address input
@@ -75,6 +97,7 @@ const PersonalInfo: React.FC = () => {
         'Die Anschrift muss im Format "Straßenname Hausnummer, PLZ Wohnort, Zusatz(optional)" vorliegen.'
       ); // Error for invalid format
     }
+    updatePersonalInfo('Anschrift', value); // Pass value to parent component
   };
 
   // Event handler for updating and validating the semester address input
@@ -94,6 +117,8 @@ const PersonalInfo: React.FC = () => {
         'Die Semesteranschrift muss im Format "Straßenname Hausnummer, PLZ Wohnort" vorliegen.'
       ); // Error for invalid format
     }
+    updatePersonalInfo('Semesteranschrift', value); // Pass value to parent component
+
   };
 
   // JSX for rendering the form and handling user inputs
@@ -111,7 +136,7 @@ const PersonalInfo: React.FC = () => {
             required
             type="text"
             value={lastName} // Bind the value to lastName state
-            onChange={(e) => setLastName(e.target.value)} // Update last name on input change
+            onChange={handleLastNameChange} // Update last name on input change
             placeholder="Name eintragen" 
           />
         </div>
@@ -123,7 +148,7 @@ const PersonalInfo: React.FC = () => {
             required
             type="text"
             value={firstName} // Bind the value to firstName state
-            onChange={(e) => setFirstName(e.target.value)} // Update first name on input change
+            onChange={handleFirstNameChange} // Update first name on input change
             placeholder="Vorname eintragen" 
           />
         </div>
@@ -153,7 +178,7 @@ const PersonalInfo: React.FC = () => {
             required
             type="email"
             value={email} // Bind the value to email state
-            onChange={(e) => setEmail(e.target.value)} // Update email on input change
+            onChange={handleEmailChange} // Update email on input change
             placeholder="E-Mail eintragen"
           />
         </div>
