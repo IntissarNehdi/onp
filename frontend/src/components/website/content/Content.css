@@ -1,65 +1,74 @@
-html {
-  scroll-behavior: smooth; 
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow-y: auto;
-}
-
-body {
-  display: block;
+/* Ensure html and body take full height and prevent any margin/padding issues */
+html, body {
+  height: 100%;  /* Full height for the body */
+  margin: 0;     /* Remove any default margin */
+  padding: 0;    /* Remove any default padding */
   background-color: white;
+
 }
 
-
-
-
-h1, h2 {
-  font-weight: bold;
+/* The body background and basic settings */
+body {
+  background-color: white;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;  /* Ensure the body takes up the full height of the viewport */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  display: block;
 }
 
-
+/* Hero Section Styling */
 .hero-section {
-  background: #ffffff; 
-  text-align: center;  
+  
+  background: #ffffff;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 80px;  /* This will push the hero section lower */
 }
 
 .hero-section h1 {
-  font-size: 2.8rem;  
+  
+  font-size: 2.8rem;
   margin-bottom: 25px;
 }
 
 .hero-section .lead {
+  
   font-size: 1.25rem;
   line-height: 1.6;
   margin-bottom: 1.5rem;
   text-align: justify;
 }
 
-
+/* Info Section Styling */
 .info-section {
-  background: #f5f5f5;  
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  
+  
+  background: #f5f5f5;
   padding: 40px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.info-section h2 {
+  
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .info-section p.lead {
+  
   font-size: 1.25rem;
   line-height: 1.6;
   text-align: justify;
-  margin-bottom: 2rem;
 }
 
-
+/* Call-to-Action (CTA) Section Styling */
 .cta-section {
-  background: #e0e0e0;  
+  
+  background: #e0e0e0;
   padding: 30px 20px;
 }
 
 .cta-section button {
+  
   font-size: 1.2rem;
   padding: 15px 30px;
   max-width: 250px;

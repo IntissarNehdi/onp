@@ -24,7 +24,7 @@ import AttachementForm from "./components/ProposalList/AttachementForm";
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
-  const showNavbarFooter = location.pathname !== "/login";
+  const showNavbarFooter = location.pathname !== "/login" && location.pathname !== "/consent" && location.pathname !== "/attachement" && location.pathname !== "/proposal";
 
   return (
     <>
@@ -38,7 +38,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
-  // Create a function to check if the user is logged in
+
 
   return (
     <UserProvider>
@@ -48,12 +48,7 @@ function App() {
             <Route path="/" element={<Content />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            
-            {/* Conditional rendering of ConsentForms with isLoggedIn check */}
-            <Route
-              path="/consent"
-              element={(getFromLocalStorage('user')) ? <ConsentForms /> : <LoginPage />}
-            />
+            <Route path="/consent" element={<ConsentForms/>}/>
             <Route path="/attachement" element={<AttachementForm />} />
             <Route path="/proposal" element={<ProposalList />} />
 
