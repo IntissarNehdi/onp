@@ -1,5 +1,5 @@
 // Importing necessary modules from React and the CSS file
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./ConsentForms.css";
 import { User } from "../../types/User";
 import { getFromLocalStorage } from "../../utils/storageUtils";

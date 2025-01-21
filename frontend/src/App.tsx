@@ -16,6 +16,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import imagePath from "./assets/logotu.png";
 import Dashboard from "./components/login/Dashboard";
 import ConsentForms from "./components/consentForm/ConsentForms";
+import ProposalList from "./components/ProposalList/ProposalList";
 import { getFromLocalStorage } from "./utils/storageUtils";
 import AttachementForm from "./components/ProposalList/AttachementForm";
 
@@ -54,6 +55,8 @@ function App() {
               element={(getFromLocalStorage('user')) ? <ConsentForms /> : <LoginPage />}
             />
             <Route path="/attachement" element={<AttachementForm />} />
+            <Route path="/proposal" element={<ProposalList />} />
+
           </Routes>
         </Layout>
       </Router>
