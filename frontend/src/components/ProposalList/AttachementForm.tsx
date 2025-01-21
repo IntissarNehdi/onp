@@ -1,7 +1,7 @@
 // Import React modules and resources
 import React, { useState } from 'react';
 import './Forms.css'; 
-import logo from '../tuda_logo.jpg';
+import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 
 // Main component definition for "Attachement"
 const Attachement = () => {

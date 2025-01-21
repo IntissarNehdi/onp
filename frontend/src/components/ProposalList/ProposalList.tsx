@@ -1,13 +1,13 @@
 
 import React from 'react';
 import './Forms.css'; 
-import logo from '../tuda_logo.jpg'; 
 import SemesterSelection from './SemesterSelection'; 
 import CommitteesSelection from './CommitteesSelection'; 
 import TrusteePerson from './TrusteePerson'; 
 import CandidatesTable from './CandidatesTable'; 
 import DateAndSig from './DateAndSig'; 
 import { useNavigate } from 'react-router-dom'; 
+import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 
 // Define the ProposalList functional component
 const ProposalList: React.FC = () => {  
