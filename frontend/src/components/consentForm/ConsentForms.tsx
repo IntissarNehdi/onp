@@ -7,7 +7,9 @@ import PasswordAndSemester from './PasswordAndSemester';  // Importing component
 import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 
 // Functional component for the Einverstaendniserklaerung (Consent Form)
+
 const ConsentForms: React.FC = () => { 
+
 
   // useState hook to manage date state, initializing it to current date
   const [date, setDate] = useState(() => {

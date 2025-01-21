@@ -1,7 +1,6 @@
 // Import React modules and resources
 import React, { useState } from 'react';
 import './Forms.css'; 
-import logo from '../tuda_logo.jpg';
 
 // Main component definition for "Attachement"
 const Attachement = () => {
@@ -72,7 +71,7 @@ const Attachement = () => {
   return (
     <div className="proposal-list-container">
       {/* TU Darmstadt logo */}
-      <img src={logo} alt="TU_DA Logo" className="top-right-image" />
+      <img src="" alt="TU_DA Logo" className="top-right-image" />
       <h1 className="title">Anlage zur Vorschlagsliste</h1>
 
       {/* Form for user input */}

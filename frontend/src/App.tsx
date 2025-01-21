@@ -16,6 +16,8 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import imagePath from "./assets/logotu.png";
 import Dashboard from "./components/login/Dashboard";
 import ConsentForms from "./components/consentForm/ConsentForms";
+import { getFromLocalStorage } from "./utils/storageUtils";
+import AttachementForm from "./components/ProposalList/AttachementForm";
 
 // A component to conditionally render Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -35,6 +37,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 function App() {
+  // Create a function to check if the user is logged in
+
   return (
     <UserProvider>
       <Router>
@@ -43,13 +47,20 @@ function App() {
             <Route path="/" element={<Content />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/consent" element={<ConsentForms />} />
-
+            
+            {/* Conditional rendering of ConsentForms with isLoggedIn check */}
+            <Route
+              path="/consent"
+              element={(getFromLocalStorage('user')) ? <ConsentForms /> : <LoginPage />}
+            />
+            <Route path="/attachement" element={<AttachementForm />} />
           </Routes>
         </Layout>
       </Router>
     </UserProvider>
   );
 }
+
+
 
 export default App;

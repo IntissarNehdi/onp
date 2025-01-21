@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { useUser } from '../../contexts/UserContext';
 import './LoginPage.css';
+import { saveToLocalStorage } from '../../utils/storageUtils';
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -12,7 +13,6 @@ const LoginPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { setUser } = useUser();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -22,8 +22,8 @@ const LoginPage: React.FC = () => {
 
     try {
       const response = await simulateBackendRequest();
-      setUser(response.data);
-      navigate('/consent');
+      saveToLocalStorage('user', JSON.stringify(response.data))
+      window.location.href = '/consent'; // Redirect to dashboard
     } catch (error) {
       setErrorMessage("Verbindung zum Server fehlgeschlagen. Bitte versuchen Sie es später erneut.");
     }
@@ -39,9 +39,9 @@ const LoginPage: React.FC = () => {
             data: {
               firstName: 'Max',
               lastName: 'Mustermann',
-              matrikelNumber: '0123456789',
+              matriculationNumber: '0123456789',
               department: 'Informatik'
-            }
+            } 
           });
         } else {
           reject(new Error('Connection failed'));
