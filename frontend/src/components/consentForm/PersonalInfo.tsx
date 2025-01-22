@@ -9,7 +9,6 @@ import { getTUMailFromName } from "../../utils/userUtils";
 const PersonalInfo: React.FC = () => {
   const [birthYear, setBirthYear] = useState("");
   const [birthYearError, setBirthYearError] = useState("");
-  const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
   const [semesterAddress, setSemesterAddress] = useState("");

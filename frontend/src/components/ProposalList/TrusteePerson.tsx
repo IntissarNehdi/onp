@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './Forms.css' 
+import { getFromLocalStorage } from '../../utils/storageUtils';
+import { User } from '../../types/User';
+import { getTUMailFromName } from '../../utils/userUtils';
 
 const TrusteePerson = () => {
   const [selectedFbSb, setSelectedFbSb] = useState<string>(''); // State for selected Fachbereich (FB) or Studienbereich (SB)
@@ -93,6 +96,7 @@ const TrusteePerson = () => {
       setPhoneError('Eine Telefonnummer muss mindestens 7 Zeichen lang sein.'); 
     }
   };
+  const user = JSON.parse(getFromLocalStorage('user') as string) as User;
 
   return (
     <div>
@@ -105,9 +109,13 @@ const TrusteePerson = () => {
       <section className="form-section">
         {/* Trustee Name input field */}
         <label htmlFor="trusteeName" style={{ textAlign: 'left' }}>
-          Name, Vorname {/* Label for trustee name */}
+          Vorname {/* Label for trustee name */}
         </label>
-        <input type="text" id="trusteeName" placeholder="Name, Vorname" required /> {/* Input for name */}
+        <input type="text" value={user?.firstName} id="trusteeName" required disabled/> {/* Input for name */}
+        <label htmlFor="trusteeName" style={{ textAlign: 'left' }}>
+          Nachname{/* Label for trustee name */}
+        </label>
+        <input type="text" value={user?.lastName} id="trusteeName" required disabled/> {/* Input for name */}
 
         {/* Fachbereich/Studienbereich selection dropdown */}
         <label htmlFor="fbSb" style={{ textAlign: 'left' }}>
@@ -144,10 +152,10 @@ const TrusteePerson = () => {
         {addressError && <p className="error-message">{addressError}</p>}
 
         {/* Email input field */}
-        <label htmlFor="email" style={{ textAlign: 'left' }}>
+        <label htmlFor="email" style={{ textAlign: 'left' }} >
           E-mail Adresse
         </label>
-        <input type="email" id="email" placeholder="E-Mail" required /> {/* Input for email */}
+        <input type="email" id="email" placeholder="E-Mail" required value={getTUMailFromName(user.firstName, user.lastName)} disabled /> {/* Input for email */}
 
         {/* Phone number input field */}
         <label htmlFor="tel" style={{ textAlign: 'left' }}>
