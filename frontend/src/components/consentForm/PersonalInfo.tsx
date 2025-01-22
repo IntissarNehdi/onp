@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./ConsentForms.css";
 import { User } from "../../types/User";
 import { getFromLocalStorage } from "../../utils/storageUtils";
+import { getTUMailFromName } from "../../utils/userUtils";
 
 // Define the functional component 'PersonalInfos'
 const PersonalInfo: React.FC = () => {
@@ -135,9 +136,9 @@ const PersonalInfo: React.FC = () => {
             <label>E-Mail:</label>
             <input
               required
+              disabled
               type="email"
-              value={email} // Bind the value to email state
-              onChange={(e) => setEmail(e.target.value)} // Update email on input change
+              value={user?getTUMailFromName(user.firstName, user.lastName):'Please Login'} // Bind the value to email state
               placeholder="E-Mail eintragen"
             />
           </div>
