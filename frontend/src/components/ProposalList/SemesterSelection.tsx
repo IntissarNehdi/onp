@@ -78,7 +78,7 @@ const SemesterSelection: React.FC = () => {
       </FormControl>
 
       {/* Input field for entering the semester year */}
-      <section className="form-section horizontal-alignment">
+      <section className="form-section-horizontal-alignment">
         <label htmlFor="semesterYear">Semesterjahr:</label>
         <input
           type="text"

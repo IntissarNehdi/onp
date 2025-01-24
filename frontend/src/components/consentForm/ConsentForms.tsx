@@ -3,9 +3,8 @@ import './ConsentForms.css';  // Importing custom styles
 import PersonalInfo from './PersonalInfo';  // Importing component for personal information section
 import Field from './Field';  // Importing component for form fields section
 import PasswordAndSemester from './PasswordAndSemester';  // Importing component for password and semester section
-/*port { saveAsPdf } from '../PdfFunction/Utility';*/
 import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
-import { generatePDF } from '../PdfFunction/Utility';
+import { generatePDF } from '../PdfFunctions/ConsentFormPDF';
 import DateAndSig from '../ProposalList/DateAndSig';
 
 export interface ConsentFormInterface {
@@ -42,30 +41,13 @@ const ConsentForms: React.FC = () => {
   });
 
   // Function to update the form data when PersonalInfo component changes the input fields
-  const updatePersonalInfo = (field: keyof ConsentFormInterface, value: string) => {
+  const updateData = (field: keyof ConsentFormInterface, value: string) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
   };
-  const updateFbSbField = (field: keyof ConsentFormInterface, value: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: value,
-    }));
-  };
-  const updatePasswordAndSemester = (field: keyof ConsentFormInterface, value: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: value,
-    }));
-  };
-  const updateDate = (field: keyof ConsentFormInterface, value: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: value,
-    }));
-  };
+  
   const handleSaveAsPDF = (e: React.FormEvent) => {
     e.preventDefault();
     const obj = formData;
@@ -80,10 +62,10 @@ const ConsentForms: React.FC = () => {
       
       {/* Main form container */}
       <form className="proposal-form">
-        <PersonalInfo updatePersonalInfo={updatePersonalInfo} /> {/* Section for personal information */}
-        <Field updateFbSbField={updateFbSbField}/>  {/* Section for additional fields */}
-        <PasswordAndSemester updatePasswordAndSemester={updatePasswordAndSemester}/>  {/* Section for password and semester info */}
-        <DateAndSig updateDate={updateDate}/>
+        <PersonalInfo updatePersonalInfo={updateData} /> {/* Section for personal information */}
+        <Field updateFbSbField={updateData}/>  {/* Section for additional fields */}
+        <PasswordAndSemester updatePasswordAndSemester={updateData}/>  {/* Section for password and semester info */}
+        <DateAndSig updateDate={updateData}/>
         
         {/* Legal information section */}
         <div className="Hinweis">

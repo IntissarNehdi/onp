@@ -1,7 +1,7 @@
 // Import React modules and resources
 import React, { useState } from 'react';
 import './Forms.css'; 
-import logo from '../tuda_logo.jpg';
+import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 
 // Main component definition for "Attachement"
 const Attachement = () => {
@@ -70,7 +70,7 @@ const Attachement = () => {
 
   // Render the user interface
   return (
-    <div className="proposal-list-container">
+    <div>
       {/* TU Darmstadt logo */}
       <img src={logo} alt="TU_DA Logo" className="top-right-image" />
       <h1 className="title">Anlage zur Vorschlagsliste</h1>
@@ -150,7 +150,7 @@ const Attachement = () => {
             required
           />
         </section>
-        <section className="signature-section">
+        <section className="signature-section-attachement">
           <label htmlFor="signature">Unterschrift der Vertrauensperson: </label>
           <input
             type="text"
@@ -158,11 +158,6 @@ const Attachement = () => {
             disabled
           />
         </section>
-
-        {/* Submit button */}
-        <button type="submit" className="submit-button">
-          Abschicken
-        </button>
       </form>
     </div>
   );
