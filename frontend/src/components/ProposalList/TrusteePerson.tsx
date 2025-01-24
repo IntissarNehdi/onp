@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import './Forms.css' 
-
-const TrusteePerson = () => {
+interface TrusteePersonInfo {
+  updateTrustee: (field: 'Name, Vorname' | 'FB Nr./SB' | 'Anschrift' | 'E-mail Adresse' | 'Telefonnummer' , value: string) => void;
+}
+const TrusteePerson: React.FC<TrusteePersonInfo> = ({ updateTrustee }) =>  {
+  const [,setName]=useState<string>('');
+  const [,setEmail]=useState<string>('');
   const [selectedFbSb, setSelectedFbSb] = useState<string>(''); // State for selected Fachbereich (FB) or Studienbereich (SB)
   const [address, setAddress] = useState(''); // State for address input
   const [addressError, setAddressError] = useState(''); // State for error message related to address validation
@@ -48,13 +52,15 @@ const TrusteePerson = () => {
 
   // Function to handle the change in Fachbereich/Studienbereich selection
   const handleFbSbChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedFbSb(e.target.value); 
+    const value = e.target.value;
+    setSelectedFbSb(value); 
+    updateTrustee("FB Nr./SB",value);
   };
 
   // Function to handle the change in address input and validate the format
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
+    updateTrustee("Anschrift",value);
     // Regular expression pattern for validating the address
     const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}, \d{4,10} [A-Za-zÄäÖöÜüß]+(?:, [A-Za-zÄäÖöÜüß0-9\s]+)?$/;
 
@@ -69,16 +75,25 @@ const TrusteePerson = () => {
         );
     }
 };
-
+const handleNameChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
+  const value = e.target.value;
+  setName(value);
+  updateTrustee("Name, Vorname", value)
+}
+const handleEmailAddressChange= (e:React.ChangeEvent<HTMLInputElement>)=>{
+  const value = e.target.value;
+  setEmail(value);
+  updateTrustee("E-mail Adresse", value)
+}
   // Function to handle the change in phone number input and validate the format
   const handlePhoneNumberChange = (e: { target: { value: any } }) => {
     let input = e.target.value;
-
+    
     // Allow only numbers, spaces, and specific characters like +, -, and ()
     input = input.replace(/[^0-9+\-\s()]/g, '');
 
     setPhoneNumber(input); 
-
+    updateTrustee("Telefonnummer", input);
     // Validate phone number length and format
     if (input.length < 7 || !/^\+?[0-9\s\-()]+$/.test(input)) {
       setPhoneError('Bitte geben Sie eine gültige Telefonnummer ein.'); 
@@ -107,7 +122,11 @@ const TrusteePerson = () => {
         <label htmlFor="trusteeName" style={{ textAlign: 'left' }}>
           Name, Vorname {/* Label for trustee name */}
         </label>
-        <input type="text" id="trusteeName" placeholder="Name, Vorname" required /> {/* Input for name */}
+        <input type="text" 
+        id="trusteeName" 
+        placeholder="Name, Vorname" 
+        onChange={handleNameChange}
+        required /> {/* Input for name */}
 
         {/* Fachbereich/Studienbereich selection dropdown */}
         <label htmlFor="fbSb" style={{ textAlign: 'left' }}>
@@ -147,7 +166,11 @@ const TrusteePerson = () => {
         <label htmlFor="email" style={{ textAlign: 'left' }}>
           E-mail Adresse
         </label>
-        <input type="email" id="email" placeholder="E-Mail" required /> {/* Input for email */}
+        <input type="email" 
+        id="email" 
+        placeholder="E-Mail" 
+        onChange={handleEmailAddressChange}
+        required /> {/* Input for email */}
 
         {/* Phone number input field */}
         <label htmlFor="tel" style={{ textAlign: 'left' }}>

@@ -1,8 +1,11 @@
 import React, { useState } from 'react'; // Import React and the useState hook from React
 import './Forms.css' // Import the associated CSS file for styling
 
+interface CommitteesSelectionProps {
+  onSelectionChange?: (input1: string, input2: string, label:string) => void;
+}
 // Main component to handle the selection of committees and related fields
-const CommitteesSelection: React.FC = () => {
+const CommitteesSelection: React.FC<CommitteesSelectionProps> = ({ onSelectionChange }) => {
   // State to store the selected value from the first dropdown
   const [selectedInput1, setSelectedInput1] = useState<string>('');
   // State to store the selected value from the second dropdown (which depends on the first selection)
@@ -46,23 +49,35 @@ const CommitteesSelection: React.FC = () => {
   // Function to handle changes in the first select dropdown (e.g., Fachbereichsrat, Gemeinsame Kommission)
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    setSelectedInput1(value); // Set the selected value for the first dropdown
-
-    setSelectedInput2(''); // Reset the second dropdown value whenever the first changes
+    setSelectedInput1(value);
+    setSelectedInput2('');
+    const label = getLabel(value);
+    onSelectionChange?.(value, '', label); // Pass label along with other values
   };
 
   // Function to handle changes in the second select dropdown (depends on the first dropdown selection)
   const handleAdditionalSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedInput2(e.target.value); // Set the selected value for the second dropdown
+    const value = e.target.value;
+    setSelectedInput2(value); // Set the selected value for the second dropdown
+    onSelectionChange?.(selectedInput1, value, getLabel(selectedInput1));
+
+  };
+  const getLabel = (input: string) => {
+    switch (input) {
+      case "dem Fachbereichsrat":
+        return "des Fachbereichs";
+      case "der GemeinsameKommission":
+        return "des Studienbereichs";
+      case "dem Fachschaftsrat":
+        return "des Fachbereichs/Studienbereichs";
+      default:
+        return "";
+    }
   };
 
   return (
     <section className="form-section">
-      {/* Section for entering the password of the list */}
-      <section className="form-section">
-        <label htmlFor="listPassword">Kennwort der Liste:</label>
-        <input type="text" id="listPassword" placeholder="Kennwort eintragen" required/>
-      </section>
+      
 
       {/* Container for the first dropdown selection (which committee to vote for) */}
       <div className="select-input-container">
@@ -75,24 +90,24 @@ const CommitteesSelection: React.FC = () => {
           value={selectedInput1} // Value is controlled based on state
         >
           <option value="" disabled>Bitte wählen</option>
-          <option value="Fachbereichsrat">dem Fachbereichsrat</option>
-          <option value="GemeinsameKommission">der Gemeinsamen Kommission</option>
-          <option value="Fachschaftsrat">dem Fachschaftsrat</option>
-          <option value="Studierendenparlament">dem Studierendenparlament</option>
-          <option value="Universitätsversammlung">der Universitätsversammlung</option>
+          <option value="dem Fachbereichsrat">dem Fachbereichsrat</option>
+          <option value="der GemeinsameKommission">der Gemeinsamen Kommission</option>
+          <option value="dem Fachschaftsrat">dem Fachschaftsrat</option>
+          <option value="dem Studierendenparlament">dem Studierendenparlament</option>
+          <option value="der Universitätsversammlung">der Universitätsversammlung</option>
         </select>
       </div>
 
       {/* Conditionally render the second dropdown depending on the first dropdown selection */}
-      {(selectedInput1 === "Fachbereichsrat" || selectedInput1 === "Fachschaftsrat" || selectedInput1 === "GemeinsameKommission") && (
+      {(selectedInput1 === "dem Fachbereichsrat" || selectedInput1 === "dem Fachschaftsrat" || selectedInput1 === "der GemeinsameKommission") && (
         <div className="select-input-container">
           {/* Dynamic label for the second dropdown, changes based on the first dropdown value */}
           <label htmlFor="additionalDropdown">
-            {selectedInput1 === "Fachbereichsrat"
+            {selectedInput1 === "dem Fachbereichsrat"
               ? "des Fachbereichs:"
-              : selectedInput1 === "GemeinsameKommission"
+              : selectedInput1 === "der GemeinsameKommission"
               ? "des Studienbereichs:"
-              : selectedInput1 === "Fachschaftsrat"
+              : selectedInput1 === "dem Fachschaftsrat"
               ? "des Fachbereichs/Studienbereichs:"
               : ""}
           </label>
@@ -108,15 +123,15 @@ const CommitteesSelection: React.FC = () => {
             <option value="" disabled>Bitte wählen</option>
             
             {/* Render options dynamically based on the first dropdown value */}
-            {selectedInput1 === "Fachbereichsrat" ? (
+            {selectedInput1 === "dem Fachbereichsrat" ? (
               FACHSCHAFT_OPTIONS.map(option => (
                 <option key={option.value} value={option.value}>{option.label}</option>
               ))
-            ) : selectedInput1 === "GemeinsameKommission" ? (
+            ) : selectedInput1 === "der GemeinsameKommission" ? (
               STUDIENBEREICH_OPTIONS.map(option => (
                 <option key={option.value} value={option.value}>{option.label}</option>
               ))
-            ) : selectedInput1 === "Fachschaftsrat" ? (
+            ) : selectedInput1 === "dem Fachschaftsrat" ? (
               // If "Fachschaftsrat" is selected, show a combination of all three option sets
               [...FACHSCHAFT_OPTIONS, ...WAHLFACHSCHAFT_OPTION, ...STUDIENBEREICH_OPTIONS].map(option => (
                 <option key={option.value} value={option.value}>{option.label}</option>

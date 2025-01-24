@@ -16,8 +16,7 @@ body {
 
 /* General Section Styling */
 section {
-  min-height: 100vh;  /* Each section takes at least the full viewport height */
-  padding: 60px 30px;  /* Add padding inside sections */
+
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

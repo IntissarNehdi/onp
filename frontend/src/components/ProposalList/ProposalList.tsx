@@ -11,42 +11,52 @@ import Attachement from './AttachementForm';
 
 
 export interface ProposalListInterface {
-  "Zuname": string;
-  "Vorname": string;
-  "Geburtsjahr": number;
-  "E-Mail": string;
+  "Hochschulwahlen im": string;
+  "Semesterjahr": string;
+  "Kennwort der Liste" : string;
+  "VORSCHLAGSLISTE für die Wahl zu":string;
+  "" :string;
+  ":":string;
+  "Name, Vorname":string;
+  "FB Nr./SB":string;
   "Anschrift": string;
-  "Semesteranschrift":string;
-  "Matrikelnummer": number;
-  "Studienbereichsbezeichnung:FB Nr./SB": string;
-  "Kennwort":string;
-  "für die Wahl im": string;
-  "Semesterjahr":number;
+  "E-mail Adresse":string;
+  "Telefonnummer" : string;
+  "Anzahl der Kandidierenden":number;
+  "Kandidierenden" : any[];
   "Darmstadt, den":string;
-  "Hinweis": string;
+
 }
 // Define the ProposalList functional component
 const ProposalList: React.FC = () => {  
   // Initialize the navigate function to allow navigation between pages
   const [, setCandidates] = useState<any[]>([]);
   const [formData, setFormData] = useState<ProposalListInterface>({
-      "Zuname": "",
-      "Vorname": "",
-      "Geburtsjahr": 0,
-      "E-Mail": "",
-      "Anschrift": "",
-      "Semesteranschrift":"",
-      "Matrikelnummer": 0,
-      "Studienbereichsbezeichnung:FB Nr./SB": "",
-      "Kennwort": "",
-      "für die Wahl im": "",
-      "Semesterjahr":0,
-      "Darmstadt, den": "",
-      "Hinweis": "Rechtsgrundlage für die Erhebung der voran genannten personenbezogenen Daten ist § 16 der Wahlordnung der TU Darmstadt. Die Verarbeitung der Daten durch das Wahlamt sowie den Wahlvorstand erfolgt nach den Vorschriften der Datenschutz-Grundverordnung (DSGVO) und des Hessischen Datenschutz- und Informationsfreiheitsgesetzes (HDSIG). Gemäß § 18 Abs. 10 der Wahlordnung werden die Wahlvorschläge nur mit Name, Vorname und Fach- und Studienbereich bzw. Einrichtung der Bewerber:innen veröffentlicht. Eine Rücknahme der Erklärung ist gemäß § 16 Abs. 6 Satz 3 der Wahlordnung bis zur abschließenden Zulassungsprüfung durch schriftliche Erklärung gegenüber dem Wahlvorstand möglich."
-    });
+      "Hochschulwahlen im": "",
+      "Semesterjahr": "",
+      "Kennwort der Liste" : "",
+      "VORSCHLAGSLISTE für die Wahl zu":"",
+      "" : "",
+      ":":"",
+      "Name, Vorname":"",
+      "FB Nr./SB":"",
+      "Anschrift":"",
+      "E-mail Adresse":"",
+      "Telefonnummer":"",
+      "Anzahl der Kandidierenden":0,
+      "Kandidierenden":[],
+      "Darmstadt, den":"",
 
-  const updateCandidates = (updatedCandidates: any[]) => {
-    setCandidates(updatedCandidates); // Keep the parent's candidates state in sync
+  })
+
+  const updateCandidates = (numCandidates:number,candidates: any[]) => {
+  
+    setCandidates(candidates); // Keep the parent's candidates state in sync
+    setFormData((prevData) => ({
+      ...prevData,
+      "Anzahl der Kandidierenden":numCandidates,
+      "Kandidierenden": candidates,
+    }));
   };
   const updateData = (field: keyof ProposalListInterface, value: string) => {
       setFormData((prevData) => ({
@@ -59,7 +69,16 @@ const ProposalList: React.FC = () => {
         const obj = formData;
         generatePDF(obj);
       };
-  
+      const handleSelectionChange = (input1: string, input2: string ,label:string) => {
+        // Update formData state with selected committee and additional selection
+        setFormData((prevData) => ({
+          ...prevData,
+          "VORSCHLAGSLISTE für die Wahl zu": input1, // Update the first dropdown selection
+          ":": input2,             // Update the second dropdown selection 
+          "":label,
+
+        }));
+      };
 
   return (
     <div className="proposal-list-container"> {/* Container for the proposal list */}
@@ -78,16 +97,15 @@ const ProposalList: React.FC = () => {
       <form className='nomination-semester'>
         <label>Hochschulwahlen im</label>
         {/* Include SemesterSelection component for selecting the semester */}
-        <SemesterSelection/>
+        <SemesterSelection updateSemester={updateData}/>
       </form>
       
       {/* Main form for submitting the proposal list */}
       <form className="proposal-form">
         {/* Include CommitteesSelection component for selecting committees */}
-        <CommitteesSelection/>
-        
+        <CommitteesSelection onSelectionChange={handleSelectionChange} />        
         {/* Include TrusteePerson component for selecting trustee person */}
-        <TrusteePerson/>
+        <TrusteePerson updateTrustee={updateData}/>
         
         {/* Include CandidatesTable component to display and manage candidates */}
         <CandidatesTable onUpdateCandidates={updateCandidates} />

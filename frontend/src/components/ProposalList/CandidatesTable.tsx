@@ -23,7 +23,7 @@ const FB_SB_CANDIDATE = [
 ];
 
 interface CandidatesTableProps {
-  onUpdateCandidates: (candidates: any[]) => void; // Prop to notify the parent component
+  onUpdateCandidates: (numCandidates: number, candidates: any[]) => void; // Prop to notify the parent component
 }
 // Main component to display and manage the candidates table
 const CandidatesTable: React.FC<CandidatesTableProps> = ({ onUpdateCandidates }) => {
@@ -47,7 +47,7 @@ const CandidatesTable: React.FC<CandidatesTableProps> = ({ onUpdateCandidates })
   
     // Notify the parent component about the updated candidates list
     if (onUpdateCandidates) {
-      onUpdateCandidates(newCandidates);
+      onUpdateCandidates(numCandidates,newCandidates);
     }
   };
   
@@ -60,6 +60,8 @@ const CandidatesTable: React.FC<CandidatesTableProps> = ({ onUpdateCandidates })
     setCandidates([...candidates, { lastName: '', firstName: '', birthYear: '', fbSb: '' }]);
     // Increments the number of candidates
     setNumCandidates(numCandidates + 1);
+    onUpdateCandidates(numCandidates,candidates);
+
   };
 
   // Function to handle the removal of a candidate at a specific index
@@ -70,6 +72,8 @@ const CandidatesTable: React.FC<CandidatesTableProps> = ({ onUpdateCandidates })
     setCandidates(updatedCandidates);
     // Updates the number of candidates state after removal
     setNumCandidates(updatedCandidates.length);
+    onUpdateCandidates(numCandidates,candidates);
+
   };
 
   // Function to handle changes to the number of candidates
@@ -96,6 +100,7 @@ const CandidatesTable: React.FC<CandidatesTableProps> = ({ onUpdateCandidates })
         setCandidates([...candidates, ...newCandidates]);
       }
     }
+    onUpdateCandidates(numCandidates,candidates);
   };
 
   // State to track the validity of birth year input for each candidate
