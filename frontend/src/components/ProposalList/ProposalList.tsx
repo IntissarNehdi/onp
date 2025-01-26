@@ -86,6 +86,28 @@ const ProposalList: React.FC = () => {
           "VORSCHLAGSLISTE für die Wahl zu": input, // Update the first dropdown selection
         }));
       };
+      const sendEmails = async () => {
+        try {
+          const response = await fetch('/api/send-emails/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ candidates: formData["Kandidierenden"] }), // Include candidate data
+          });
+      
+          if (response.ok) {
+            alert('Emails sent successfully!');
+          } else {
+            const errorData = await response.json();
+            alert(`Failed to send emails: ${errorData.error}`);
+          }
+        } catch (error) {
+          console.error('Error sending emails:', error);
+          alert('An error occurred while sending emails.');
+        }
+      };
+      
 
   return (
     <div className="proposal-list-container"> {/* Container for the proposal list */}
@@ -121,7 +143,7 @@ const ProposalList: React.FC = () => {
         <DateAndSig updateDate={updateData}/>
         <Attachement updateAttachement={updateAttachementData}/>
         {/* Submit button to go to the next page */}
-        <button type="submit" className="submit-button" onClick={handleSaveAsPDF}>
+        <button type="submit" className="submit-button" onClick={sendEmails}>
           Abschicken {/* Button text */}
         </button>
       </form>
