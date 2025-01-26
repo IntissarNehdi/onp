@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import './ConsentForms.css';
 
 interface PasswordAndSemesterField {
-  updatePasswordAndSemester: (field: 'Kennwort'| 'für die Wahl im' | 'Semesterjahr', value: string) => void;
+  updatePasswordAndSemester: (field: 'Kennwort'| 'für die Wahl im' | 'Semesterjahr' | 'zu', value: string) => void;
 }
 // Define the functional component 'KennwortSemester'
 const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswordAndSemester }) => {
@@ -83,13 +83,24 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
   };
   
   // Static values for conditional input text
-  const selectedInput1: string = "der Universitätssammelung"; 
+  const selectedInput1: string = "dem Fachbereichsrat"; 
   const selectedInput2: string = "CE-Computational Engineering"; 
 
   // State variables for dynamic text inputs
   const [input1, setInput1] = useState<string>("");
   const [input2, setInput2] = useState<string>("");
-  
+  const getLabel = (input: string) => {
+    switch (input) {
+      case "dem Fachbereichsrat":
+        return "des Fachbereichs";
+      case "der GemeinsameKommission":
+        return "des Studienbereichs";
+      case "dem Fachschaftsrat":
+        return "des Fachbereichs/Studienbereichs";
+      default:
+        return "";
+    }
+  };
   // useEffect hook to update input fields based on the selected input
   useEffect(() => {
     setInput1(selectedInput1); // Set input1 to the predefined value
@@ -104,6 +115,7 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
     } else {
       setInput2(""); // Reset input2 if conditions don't match
     }
+    updatePasswordAndSemester("zu",selectedInput1 +" "+ getLabel(selectedInput1) +": "+ selectedInput2);
   }, [selectedInput1, selectedInput2]); // Effect runs when selectedInput1 or selectedInput2 changes
 
   // JSX return statement to render the component UI
@@ -166,7 +178,7 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
       <div className="horizontal-alignment">
         {input2 ? (
           <label>
-            zu {input1} Studienbereich: {input2} einverstanden.
+            zu {input1} {getLabel(input1)} {input2} einverstanden.
           </label>
         ) : (
           <label>zu {input1} einverstanden.</label>

@@ -55,6 +55,7 @@ label {
   flex-direction: column; /* Stacks items vertically */
   gap: 0.2rem; /* Adds a small gap between items */
   width: 100%; /* Takes up the full width of the parent */
+  text-align: left;
 }
 
 /* Styling for form sections */

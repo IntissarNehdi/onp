@@ -45,10 +45,7 @@ export function generatePDF(obj: any): void {
       doc.text('bin mit meiner Benennung als Bewerber:in der Vorschlagsliste:', margin,yPosition);
       yPosition+=lineHeight;
     }
-    if(key==='für die Wahl im'){
-      doc.text('zu der Universitätssammelung einverstanden.',margin,yPosition)/* to be adjusted later */
-      yPosition+=lineHeight;
-    }
+    
   });
   const signatureWidth = 80;
   const signatureHeight = 20;
@@ -58,5 +55,5 @@ export function generatePDF(obj: any): void {
   doc.text('Eigenhändige Unterschrift', margin, signatureY + signatureHeight + 5);
  
  // Save the generated PDF
-  doc.save('my-object.pdf');
+  doc.save('Einverständniserklärung.pdf');
 }
