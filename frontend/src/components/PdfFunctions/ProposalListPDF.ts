@@ -1,20 +1,18 @@
 import jsPDF from "jspdf";
 
-export function generatePDF(obj: any): void {
+export function generatePDF(form1: any, form2: any): void {
   const doc = new jsPDF();
   const margin = 10; // Margin for text placement
   const pageHeight = doc.internal.pageSize.height; // Height of the page
   const lineHeight = 10; // Space between lines
   let yPosition = 20; // Starting Y position
-
   // Title for the document
   doc.text('Vorschlagsliste: Statusgruppe der Studierenden', margin, yPosition);
   yPosition += 10;
-
   // Iterate over the object fields and print them
-  Object.entries(obj).forEach(([key, value]) => {
+  Object.entries(form1).forEach(([key, value]) => {
     if (key === "Kandidierenden") return;
-    const text = `${key}: ${value}`;
+    const text = `${key}: ${value}`; // to adjust !!!!!!!!!!!!!!!!!!!!!
     
     // Check if the text fits on the current line
     if (doc.getTextWidth(text) + margin * 2 > doc.internal.pageSize.width) {
@@ -41,7 +39,7 @@ export function generatePDF(obj: any): void {
     }
     if(key==="Anzahl der Kandidierenden"){
       // Now add the candidates table right after "Anzahl der Kandidierenden"
-      const candidates = obj["Kandidierenden"];
+      const candidates = form1["Kandidierenden"];
 
       if (candidates.length > 0) {
         const tableX = margin; // X position of the table (left margin)
@@ -102,6 +100,42 @@ export function generatePDF(obj: any): void {
   const signatureY = yPosition; // Adjust position slightly below the "Eigenhändige Unterschrift" text
   doc.rect(signatureX, signatureY, signatureWidth, signatureHeight);
   doc.text('Eigenhändige Unterschrift', margin, signatureY + signatureHeight + 5);
+  yPosition += (2*lineHeight+signatureHeight);
+
+  //Attachement form
+  doc.addPage(); //add new page
+  yPosition=20; // rest y Position
+  doc.text('Anlage zur Vorschlagsliste',margin,yPosition);
+  yPosition+=lineHeight;
+  Object.entries(form2).forEach(([key, value]) => {
+    const text = `${key}: ${value}`;
+    // Check if the text fits on the current line
+    if (doc.getTextWidth(text) + margin * 2 > doc.internal.pageSize.width) {
+      // If text overflows, break it into multiple lines (if necessary)
+      const lines = doc.splitTextToSize(text, doc.internal.pageSize.width - margin * 2);
+      lines.forEach((line: string | string[]) => {
+        if (yPosition + lineHeight > pageHeight - margin) {
+          // If there's no space left on the page, create a new page
+          doc.addPage();
+          yPosition = 20; // Reset Y position on the new page
+        }
+        doc.text(line, margin, yPosition);
+        yPosition += lineHeight;
+      });
+    } else {
+      // If the text fits within the line
+      if (yPosition + lineHeight > pageHeight - margin) {
+        // If there's no space left on the page, create a new page
+        doc.addPage();
+        yPosition = 20; // Reset Y position on the new page
+      }
+      doc.text(text, margin, yPosition);
+      yPosition += lineHeight;
+    }
+  })
+
+  doc.rect(margin, yPosition, signatureWidth, signatureHeight);
+  doc.text('Unterschrift der Vertrauensperson', margin, yPosition + signatureHeight + 5);
   // Save the generated PDF
-  doc.save('my-object.pdf');
+  doc.save('Vorschlagsliste.pdf');
 }

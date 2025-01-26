@@ -54,7 +54,7 @@ const TrusteePerson: React.FC<TrusteePersonInfo> = ({ updateTrustee }) =>  {
   const handleFbSbChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setSelectedFbSb(value); 
-    updateTrustee("FB Nr./SB",value);
+    updateTrustee("FB Nr./SB",e.target.options[e.target.selectedIndex].text);
   };
 
   // Function to handle the change in address input and validate the format

@@ -2,7 +2,7 @@ import React, { useState } from 'react'; // Import React and the useState hook f
 import './Forms.css' // Import the associated CSS file for styling
 
 interface CommitteesSelectionProps {
-  onSelectionChange?: (input1: string, input2: string, label:string) => void;
+  onSelectionChange?: (input1: string) => void;
 }
 // Main component to handle the selection of committees and related fields
 const CommitteesSelection: React.FC<CommitteesSelectionProps> = ({ onSelectionChange }) => {
@@ -52,15 +52,14 @@ const CommitteesSelection: React.FC<CommitteesSelectionProps> = ({ onSelectionCh
     setSelectedInput1(value);
     setSelectedInput2('');
     const label = getLabel(value);
-    onSelectionChange?.(value, '', label); // Pass label along with other values
+    onSelectionChange?.(value + " " + label); // Pass label along with other values
   };
 
   // Function to handle changes in the second select dropdown (depends on the first dropdown selection)
   const handleAdditionalSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setSelectedInput2(value); // Set the selected value for the second dropdown
-    onSelectionChange?.(selectedInput1, value, getLabel(selectedInput1));
-
+    onSelectionChange?.(selectedInput1+" "+getLabel(selectedInput1)+": "+ e.target.options[e.target.selectedIndex].text );
   };
   const getLabel = (input: string) => {
     switch (input) {

@@ -1,63 +1,55 @@
 // Import React modules and resources
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Forms.css'; 
 import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 
+
+
+interface AttachementProps {
+  updateAttachement: (field: "Kennwort" | "Hinweis" |"Erklärung gemäß § 16 Abs. 2 WahlO" | "Darmstadt, den" , value: string) => void;
+}
 // Main component definition for "Attachement"
-const Attachement = () => {
+const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
   // State to manage the selected checkbox (either "genderBalance", "employmentStatus", or "none")
   const [selectedCheckbox, setSelectedCheckbox] = useState<'none' | 'genderBalance' | 'employmentStatus'>('none');
 
   // State to store the date, initialized to today's date
   const [date, setDate] = useState(() => {
     const today = new Date();
-    return today.toISOString().split('T')[0]; // ISO-formatted date as YYYY-MM-DD
+    const value = today.toISOString().split('T')[0];
+    updateAttachement("Darmstadt, den",value);
+    return value; // ISO-formatted date as YYYY-MM-DD
   });
- 
-  // State to store the explanation for the selected checkbox
-  const [explanation, setExplanation] = useState({
-    genderBalance: '',
-    employmentStatus: ''
-  });
+
+
   
   // State to store the "Kennwort"
   const [kennwort, setKennwort] = useState('');
-  
+  const [explanation, setExplanation] = useState({
+    genderBalance: "",
+    employmentStatus: "",
+  });
+  useEffect(() => {
+    if (selectedCheckbox !== 'none') {
+      updateAttachement("Erklärung gemäß § 16 Abs. 2 WahlO", getSelectedPhrase(selectedCheckbox));
+    }
+  }, [selectedCheckbox, explanation]);
   // Handler to update the explanation based on textarea input
   const handleExplanationChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setExplanation({
-      ...explanation,
-      [event.target.name]: event.target.value
-    });
+    const { name, value } = event.target;
+    setExplanation((prev) => ({
+      ...prev,
+      [name]: value, // Dynamically update the correct key
+    }));
   };
+  
   
   // Handler to toggle checkbox selection
   const handleCheckboxChange = (checkbox: 'genderBalance' | 'employmentStatus') => {
     setSelectedCheckbox(selectedCheckbox === checkbox ? 'none' : checkbox);
-  };
+    updateAttachement("Erklärung gemäß § 16 Abs. 2 WahlO", getSelectedPhrase(checkbox));
+    };
   
-  // Handler to validate and process the form submission
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent default form behavior
-
-    // Validation before submission
-    if (!kennwort) {
-      alert('Bitte geben Sie das Kennwort ein!');
-      return;
-    }
-    if (selectedCheckbox === 'none') {
-      alert('Bitte wählen Sie eine der Checkboxen aus!');
-      return;
-    }
-    if (!date) {
-      alert('Bitte wählen Sie ein Datum aus!');
-      return;
-    }
-
-    // Log form values to the console
-    console.log('Formular abgesendet', { kennwort, explanation, date });
-  };
-
   // Handler to update the date
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value;
@@ -66,8 +58,25 @@ const Attachement = () => {
     } else {
       alert('Das Datum darf nicht leer sein!');
     }
+    updateAttachement("Darmstadt, den", date);
   };
-
+  const getSelectedPhrase = (input: string)=>{
+    switch (input) {
+      case 'genderBalance':
+        return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.";
+        case 'employmentStatus':
+          const explanationText = explanation[input] || "Keine Erklärung angegeben.";
+          return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer nicht entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt. Begründung: " + explanationText;
+        
+      default:
+        return "";
+    }
+  }
+  const handlePasswordChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const value = e.target.value;
+    setKennwort(value);
+    updateAttachement("Kennwort",value);
+  }
   // Render the user interface
   return (
     <div>
@@ -76,7 +85,7 @@ const Attachement = () => {
       <h1 className="title">Anlage zur Vorschlagsliste</h1>
 
       {/* Form for user input */}
-      <form onSubmit={handleSubmit} className="proposal-form">
+      <form className="proposal-form">
         {/* Input field for "Kennwort" */}
         <div className="form-section">
           <label>Kennwort:</label>
@@ -84,7 +93,7 @@ const Attachement = () => {
             type="text"
             name="kennwort"
             value={kennwort}
-            onChange={(e) => setKennwort(e.target.value)}
+            onChange={handlePasswordChange}
           />
         </div>
 
@@ -127,8 +136,8 @@ const Attachement = () => {
             </label>    
             {selectedCheckbox === 'employmentStatus' && (
               <textarea
-                name="genderBalance"
-                value={explanation.genderBalance}
+                name="employmentStatus"
+                value={explanation.employmentStatus}
                 onChange={handleExplanationChange}
                 placeholder="Bitte geben Sie Ihre Begründung ein..."
                 rows={4}

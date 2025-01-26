@@ -9,14 +9,11 @@ import DateAndSig from './DateAndSig';
 import { generatePDF } from '../PdfFunctions/ProposalListPDF';
 import Attachement from './AttachementForm';
 
-
 export interface ProposalListInterface {
   "Hochschulwahlen im": string;
   "Semesterjahr": string;
   "Kennwort der Liste" : string;
   "VORSCHLAGSLISTE für die Wahl zu":string;
-  "" :string;
-  ":":string;
   "Name, Vorname":string;
   "FB Nr./SB":string;
   "Anschrift": string;
@@ -25,7 +22,12 @@ export interface ProposalListInterface {
   "Anzahl der Kandidierenden":number;
   "Kandidierenden" : any[];
   "Darmstadt, den":string;
-
+}
+export interface AttachementInterface{
+  "Kennwort":string;
+  "Hinweis":string;
+  "Erklärung gemäß § 16 Abs. 2 WahlO":string;
+  "Darmstadt, den":string;
 }
 // Define the ProposalList functional component
 const ProposalList: React.FC = () => {  
@@ -36,8 +38,6 @@ const ProposalList: React.FC = () => {
       "Semesterjahr": "",
       "Kennwort der Liste" : "",
       "VORSCHLAGSLISTE für die Wahl zu":"",
-      "" : "",
-      ":":"",
       "Name, Vorname":"",
       "FB Nr./SB":"",
       "Anschrift":"",
@@ -46,11 +46,15 @@ const ProposalList: React.FC = () => {
       "Anzahl der Kandidierenden":0,
       "Kandidierenden":[],
       "Darmstadt, den":"",
-
+  })
+  const [attachementFormData, setAttachementFormData] = useState<AttachementInterface>({
+    "Kennwort":"",
+    "Hinweis":"Bei der Aufstellung von Wahlvorschlägen sollen Frauen und Männer entsprechend ihrem jeweiligen Anteil in der jeweiligen Statusgruppe angemessen berücksichtigt werden. Für die Gruppe der wissenschaftlichen Mitglieder sollen zusätzlich unbefristet und befristet Beschäftigte entsprechend ihrem Anteil in der Gruppe angemessen berücksichtigt werden. Eine entsprechende Erklärung, dass diese Anforderungen erfüllt sind oder eine Begründung für die Abweichung ist schriftlich dem Wahlvorschlag beizufügen (§ 16 Abs. 2 WahlO). Die Erklärung wird bei Zulassung des Wahlvorschlages mit der Bekanntmachung der Zulassung veröffentlicht (§ 18 Abs. 10 WahlO).",
+    "Erklärung gemäß § 16 Abs. 2 WahlO":"",
+    "Darmstadt, den":"",
   })
 
   const updateCandidates = (numCandidates:number,candidates: any[]) => {
-  
     setCandidates(candidates); // Keep the parent's candidates state in sync
     setFormData((prevData) => ({
       ...prevData,
@@ -64,19 +68,22 @@ const ProposalList: React.FC = () => {
         [field]: value,
       }));
     };
+    const updateAttachementData = (field: keyof AttachementInterface, value: string) => {
+      setAttachementFormData((prevData) => ({
+        ...prevData,
+        [field]: value,
+      }));
+    };
     const handleSaveAsPDF = (e: React.FormEvent) => {
         e.preventDefault();
-        const obj = formData;
-        generatePDF(obj);
+        generatePDF(formData,attachementFormData);
+        
       };
-      const handleSelectionChange = (input1: string, input2: string ,label:string) => {
+      const handleSelectionChange = (input: string) => {
         // Update formData state with selected committee and additional selection
         setFormData((prevData) => ({
           ...prevData,
-          "VORSCHLAGSLISTE für die Wahl zu": input1, // Update the first dropdown selection
-          ":": input2,             // Update the second dropdown selection 
-          "":label,
-
+          "VORSCHLAGSLISTE für die Wahl zu": input, // Update the first dropdown selection
         }));
       };
 
@@ -112,7 +119,7 @@ const ProposalList: React.FC = () => {
         
         {/* Include DateAndSig component for handling date and signature */}
         <DateAndSig updateDate={updateData}/>
-        <Attachement/>
+        <Attachement updateAttachement={updateAttachementData}/>
         {/* Submit button to go to the next page */}
         <button type="submit" className="submit-button" onClick={handleSaveAsPDF}>
           Abschicken {/* Button text */}
