@@ -18,10 +18,9 @@ export interface ConsentFormInterface {
   "Studienbereichsbezeichnung:FB Nr./SB": string;
   "Kennwort":string;
   "für die Wahl im": string;
-  "Semesterjahr":number;
   "zu":string;
-  "Darmstadt, den":string;
   "Hinweis": string;
+  "Darmstadt, den":string;
 }
 // Functional component for the Einverstaendniserklaerung (Consent Form)
 const ConsentForms: React.FC = () => { 
@@ -36,10 +35,10 @@ const ConsentForms: React.FC = () => {
     "Studienbereichsbezeichnung:FB Nr./SB": "",
     "Kennwort": "",
     "für die Wahl im": "",
-    "Semesterjahr":0,
     "zu":"",
-    "Darmstadt, den": "",
-    "Hinweis": "Rechtsgrundlage für die Erhebung der voran genannten personenbezogenen Daten ist § 16 der Wahlordnung der TU Darmstadt. Die Verarbeitung der Daten durch das Wahlamt sowie den Wahlvorstand erfolgt nach den Vorschriften der Datenschutz-Grundverordnung (DSGVO) und des Hessischen Datenschutz- und Informationsfreiheitsgesetzes (HDSIG). Gemäß § 18 Abs. 10 der Wahlordnung werden die Wahlvorschläge nur mit Name, Vorname und Fach- und Studienbereich bzw. Einrichtung der Bewerber:innen veröffentlicht. Eine Rücknahme der Erklärung ist gemäß § 16 Abs. 6 Satz 3 der Wahlordnung bis zur abschließenden Zulassungsprüfung durch schriftliche Erklärung gegenüber dem Wahlvorstand möglich."
+    "Hinweis": "Rechtsgrundlage für die Erhebung der voran genannten personenbezogenen Daten ist § 16 der Wahlordnung der TU Darmstadt. Die Verarbeitung der Daten durch das Wahlamt sowie den Wahlvorstand erfolgt nach den Vorschriften der Datenschutz-Grundverordnung (DSGVO) und des Hessischen Datenschutz- und Informationsfreiheitsgesetzes (HDSIG). Gemäß § 18 Abs. 10 der Wahlordnung werden die Wahlvorschläge nur mit Name, Vorname und Fach- und Studienbereich bzw. Einrichtung der Bewerber:innen veröffentlicht. Eine Rücknahme der Erklärung ist gemäß § 16 Abs. 6 Satz 3 der Wahlordnung bis zur abschließenden Zulassungsprüfung durch schriftliche Erklärung gegenüber dem Wahlvorstand möglich.",
+    "Darmstadt, den": ""
+
   });
 
   // Function to update the form data when PersonalInfo component changes the input fields

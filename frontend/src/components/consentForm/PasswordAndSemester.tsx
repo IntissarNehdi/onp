@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import './ConsentForms.css';
 
 interface PasswordAndSemesterField {
-  updatePasswordAndSemester: (field: 'Kennwort'| 'für die Wahl im' | 'Semesterjahr' | 'zu', value: string) => void;
+  updatePasswordAndSemester: (field: 'Kennwort'| 'für die Wahl im'  | 'zu', value: string) => void;
 }
 // Define the functional component 'KennwortSemester'
 const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswordAndSemester }) => {
@@ -29,7 +29,6 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
     const value = event.target.value;
     setSemester(value); // Set the selected semester
     setSemesterYear(""); // Reset the semester year when semester changes
-    updatePasswordAndSemester('für die Wahl im', value);
   };
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -79,7 +78,8 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
           : 'Das Semesterjahr muss im Format "YYYY" für Sommersemester vorliegen.'
       );
     }
-    updatePasswordAndSemester('Semesterjahr',value);
+    updatePasswordAndSemester('für die Wahl im', semester+' '+ value);
+
   };
   
   // Static values for conditional input text
