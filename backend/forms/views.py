@@ -22,7 +22,7 @@ def send_emails(request):
                     send_mail(
                         subject='Notification',
                         message=f'Hello {first_name} {last_name},\n\nYou have been listed in the proposal.',
-                        from_email='tudawahlamt@gmail.com', 
+                        from_email='tudarmstadtwahlamt@yahoo.com', 
                         recipient_list=[email],
                     )
 

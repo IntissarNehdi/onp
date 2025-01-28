@@ -143,7 +143,7 @@ const ProposalList: React.FC = () => {
         <DateAndSig updateDate={updateData}/>
         <Attachement updateAttachement={updateAttachementData}/>
         {/* Submit button to go to the next page */}
-        <button type="submit" className="submit-button" onClick={sendEmails}>
+        <button type="submit" className="submit-button" onClick={handleSaveAsPDF}>
           Abschicken {/* Button text */}
         </button>
       </form>
