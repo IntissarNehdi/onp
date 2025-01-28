@@ -10,9 +10,6 @@ from .models import Consent, NominationList, Candidate, TrustedPerson, ElectionO
 class TrustedPersonSerializer(serializers.ModelSerializer):
     """
     Serializer for the TrustedPerson model.
-
-    This serializer handles the conversion of TrustedPerson model data
-    to and from JSON or Python objects for API interactions.
     """
     class Meta:
         model = TrustedPerson
@@ -22,12 +19,6 @@ class TrustedPersonSerializer(serializers.ModelSerializer):
 class CandidateSerializer(serializers.ModelSerializer):
     """
     Serializer for the Candidate model.
-
-    Handles the representation of candidates and their relationships,
-    including validation and serialization logic.
-
-    Fields:
-        - `nomination_list`: A read-only field linked to the nomination list.
     """
     # Wird nur vom Code gesetzt, nicht erwartet bei der Validierung
     nomination_list = serializers.PrimaryKeyRelatedField(read_only=True)  
@@ -39,9 +30,6 @@ class CandidateSerializer(serializers.ModelSerializer):
 class ConsentSerializer(serializers.ModelSerializer):
     """
     Serializer for the Consent model.
-
-    Ensures that a candidate cannot submit consent multiple times for the same
-    committee, semester, and semester year.
     """
     class Meta:
         model = Consent
@@ -50,9 +38,6 @@ class ConsentSerializer(serializers.ModelSerializer):
     def validate(self, data):
         """
         Custom validation method to ensure uniqueness of consent submissions.
-
-        Checks if a candidate with the same `matr_number` has already submitted
-        consent for the specified committee, semester, and semester year.
         """
         if Consent.objects.filter(
             matr_number=data['matr_number'],
@@ -80,24 +65,10 @@ class NominationListSerializer(serializers.ModelSerializer):
     This serializer handles the nested representation and processing of related models:
     - `TrustedPerson`: Serialized and created or retrieved as part of the nomination list.
     - `Candidates`: Serialized as a list and linked to the nomination list.
-
-    Fields:
-        - `trusted_person`: Uses a nested serializer (TrustedPersonSerializer) to represent the trusted person.
-        - `candidates`: Uses a nested serializer (CandidateSerializer) to represent multiple candidates.
-
-    Methods:
-        - `create`: Handles the creation of a `NominationList` along with related `TrustedPerson` and `Candidates`.
-
-    Usage:
-        This serializer is designed to handle complex data structures for the creation of a 
-        `NominationList`, including associated nested objects. It ensures data integrity 
-        through validations and relationships.
     """
-    # TrustedPerson as a nested serializer
-    trusted_person = TrustedPersonSerializer()
+    trusted_person = TrustedPersonSerializer() # TrustedPerson as a nested serializer
 
-    # Candidates as a nested serializer
-    candidates = CandidateSerializer(many=True, required=False)   # Allows multiple candidates (optional)
+    candidates = CandidateSerializer(many=True, required=False) # Candidates as a nested serializer
 
     class Meta:
         model = NominationList
@@ -116,12 +87,6 @@ class NominationListSerializer(serializers.ModelSerializer):
            newly created `TrustedPerson`.
         4. Iterate over the candidates, link them to the created `NominationList`, and 
            save them to the database.
-
-        Args:
-            validated_data (dict): Validated data from the request, including nested fields.
-
-        Returns:
-            NominationList: The created NominationList instance, along with its related objects.
         """        
         # Extract and handle TrustedPerson data
         trusted_person_data = validated_data.pop('trusted_person')
