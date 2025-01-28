@@ -6,6 +6,21 @@ class ElectionOffice(models.Model):
     """
     tu_id = models.CharField(max_length=10, primary_key=True) 
 
+    @staticmethod
+    def get_default_election_office():
+        """
+        Returns the default election office instance.
+        Raises an exception if the default ElectionOffice does not exist.
+        """
+        default_tu_id = "12345678"  # Replace with your default TU ID
+        try:
+            return ElectionOffice.objects.get(tu_id=default_tu_id)
+        except ElectionOffice.DoesNotExist:
+            raise Exception(f"Default ElectionOffice with TU ID '{default_tu_id}' does not exist.")
+
+    def __str__(self):
+	    return self.tu_id
+
 
 class TrustedPerson(models.Model):
     """
@@ -52,7 +67,12 @@ class NominationList(models.Model):
     justification = models.TextField(blank=True, null=True) # Begründung falls nicht berücksichtigt
     
     trusted_person = models.ForeignKey(TrustedPerson, on_delete=models.CASCADE)
-    election_office = models.ForeignKey(ElectionOffice, on_delete=models.CASCADE)
+
+    election_office = models.ForeignKey(
+            ElectionOffice,
+            on_delete=models.CASCADE,
+            default=ElectionOffice.get_default_election_office  # Standardwert dynamisch über die Methode gesetzt
+        )    
     
     def __str__(self):
 	    return self.list_password
@@ -68,7 +88,7 @@ class Candidate(models.Model):
     fb_sb = models.CharField(max_length=255) # Fachbereich Nummer oder Studienbereich
     matr_number = models.IntegerField() # Matrikelnummer
     
-    nomination_list = models.ForeignKey(NominationList, on_delete=models.CASCADE)
+    nomination_list = models.ForeignKey(NominationList, on_delete=models.CASCADE)  
 
     def __str__(self):
 	    return self.first_name + ' ' + self.last_name
@@ -108,12 +128,11 @@ class Consent(models.Model):
     semester_year = models.CharField(max_length=10)
     committee = models.CharField(max_length=255) # Gremium
     date = models.DateField()
-    
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
 
+    # Meta-Einschränkungen
     class Meta:
-        unique_together = ('candidate', 'committee', 'semester_year')
+        unique_together = ('matr_number', 'committee', 'semester_year')
 
     def __str__(self):
-	    return self.first_name + ' ' + self.last_name
+	    return self.first_name + ' ' + self.last_name + ' ' + self.committee + ' ' + self.semester_year
 	    
