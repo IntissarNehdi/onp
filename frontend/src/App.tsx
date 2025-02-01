@@ -20,26 +20,29 @@ import ProposalList from "./components/ProposalList/ProposalList";
 import { getFromLocalStorage } from "./utils/storageUtils";
 import AttachementForm from "./components/ProposalList/AttachementForm";
 
-// A component to conditionally render Navbar and Footer
+// Layout component to handle Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
-  const showNavbarFooter = location.pathname !== "/login" && location.pathname !== "/consent" && location.pathname !== "/attachement" && location.pathname !== "/proposal";
+  // Conditionally display the Navbar, but always show the Footer
+  const showNavbar =
+    location.pathname !== "/login" &&
+    location.pathname !== "/consent" &&
+    location.pathname !== "/attachement" &&
+    location.pathname !== "/proposal";
 
   return (
     <>
-      {showNavbarFooter && (
+      {showNavbar && (
         <Navbar brandName="Hochschulwahl" imageScrPath={imagePath} />
       )}
       {children}
-      {showNavbarFooter && <Footer />}
+      <Footer /> {/* Footer is always displayed */}
     </>
   );
 };
 
 function App() {
-
-
   return (
     <UserProvider>
       <Router>
@@ -48,17 +51,14 @@ function App() {
             <Route path="/" element={<Content />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/consent" element={<ConsentForms/>}/>
+            <Route path="/consent" element={<ConsentForms />} />
             <Route path="/attachement" element={<AttachementForm />} />
             <Route path="/proposal" element={<ProposalList />} />
-
           </Routes>
         </Layout>
       </Router>
     </UserProvider>
   );
 }
-
-
 
 export default App;
