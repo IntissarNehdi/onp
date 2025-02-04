@@ -7,17 +7,29 @@ interface DateField {
 const DateAndSig: React.FC<DateField> = ({ updateDate }) => {
   // State variable to store the selected date, initialized to today's date in ISO format (YYYY-MM-DD)
   const [date, setDate] = useState(() => {
-    const today = new Date(); // Get the current date
-    const value = today.toISOString().split('T')[0];
-    updateDate('Darmstadt, den', value);
-    return value; // Format the date as YYYY-MM-DD (ISO format)
+  const today = new Date(); // Get the current date
+  const value = today.toISOString().split('T')[0];
+  // Extract the day, month, and year
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // getMonth() is zero-based
+  const year = today.getFullYear();
+
+  // Format the date as DD/MM/YYYY
+  const formattedDate = `${day}/${month}/${year}`;
+
+  // Update the date with the new format
+  updateDate('Darmstadt, den', formattedDate);   
+  return value; 
   });
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setDate(value);
-      updateDate('Darmstadt, den', value);
-    };
+      // Convert YYYY-MM-DD to DD-MM-YYYY
+      const [year, month, day] = value.split('-');
+      const formattedDate = `${day}/${month}/${year}`;
+      updateDate('Darmstadt, den', formattedDate);
+  };
     
   return (
     <div className="form-container">

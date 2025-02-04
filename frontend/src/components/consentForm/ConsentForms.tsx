@@ -43,6 +43,10 @@ const ConsentForms: React.FC = () => {
 
   // Function to update the form data when PersonalInfo component changes the input fields
   const updateData = (field: keyof ConsentFormInterface, value: string) => {
+    if (value.trim() === "") {
+      alert(`Das Feld "${field}" darf nicht leer sein.`);
+      return;
+    }
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
@@ -51,6 +55,19 @@ const ConsentForms: React.FC = () => {
   
   const handleSaveAsPDF = (e: React.FormEvent) => {
     e.preventDefault();
+
+  // Collect required fields
+  const requiredFields: (keyof ConsentFormInterface)[] = [
+    "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Anschrift", "Matrikelnummer"
+  ];
+
+  // Check if any required field is empty
+  const emptyFields = requiredFields.filter(field => !formData[field]);
+
+  if (emptyFields.length > 0) {
+    alert(`Bitte füllen Sie die folgenden Felder aus: ${emptyFields.join(", ")}`);
+    return;
+  }
     const obj = formData;
     generatePDF(obj);
   };

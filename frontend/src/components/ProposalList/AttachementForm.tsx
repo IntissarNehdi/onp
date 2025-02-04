@@ -15,10 +15,19 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
 
   // State to store the date, initialized to today's date
   const [date, setDate] = useState(() => {
-    const today = new Date();
-    const value = today.toISOString().split('T')[0];
-    updateAttachement("Darmstadt, den",value);
-    return value; // ISO-formatted date as YYYY-MM-DD
+  const today = new Date();
+  const value = today.toISOString().split('T')[0];
+  // Extract the day, month, and year
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // getMonth() is zero-based
+  const year = today.getFullYear();
+
+  // Format the date as DD/MM/YYYY
+  const formattedDate = `${day}/${month}/${year}`;
+
+  // Update the date with the new format
+  updateAttachement('Darmstadt, den', formattedDate);   
+  return value; // ISO-formatted date as YYYY-MM-DD
   });
 
 
@@ -58,7 +67,10 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
     } else {
       alert('Das Datum darf nicht leer sein!');
     }
-    updateAttachement("Darmstadt, den", date);
+    // Convert YYYY-MM-DD to DD-MM-YYYY
+    const [year, month, day] = newDate.split('-');
+    const formattedDate = `${day}/${month}/${year}`;
+    updateAttachement("Darmstadt, den", formattedDate);
   };
   const getSelectedPhrase = (input: string)=>{
     switch (input) {
@@ -66,7 +78,7 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
         return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.";
         case 'employmentStatus':
           const explanationText = explanation[input] || "Keine Erklärung angegeben.";
-          return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer nicht entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt. Begründung: " + explanationText;
+          return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer nicht entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.\nBegründung: " + explanationText;
         
       default:
         return "";
@@ -85,7 +97,7 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
       <h1 className="title">Anlage zur Vorschlagsliste</h1>
 
       {/* Form for user input */}
-      <form className="proposal-form">
+      <div className="proposal-form">
         {/* Input field for "Kennwort" */}
         <div className="form-section">
           <label>Kennwort:</label>
@@ -167,7 +179,7 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
             disabled
           />
         </section>
-      </form>
+      </div>
     </div>
   );
 };

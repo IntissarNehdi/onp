@@ -88,7 +88,7 @@ const ProposalList: React.FC = () => {
       };
       const sendEmails = async () => {
         try {
-          const response = await fetch('/api/send-emails/', {
+          const response = await fetch('http://127.0.0.1:8000/send-emails/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
