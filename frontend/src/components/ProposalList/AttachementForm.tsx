@@ -29,9 +29,6 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
   updateAttachement('Darmstadt, den', formattedDate);   
   return value; // ISO-formatted date as YYYY-MM-DD
   });
-
-
-  
   // State to store the "Kennwort"
   const [kennwort, setKennwort] = useState('');
   const [explanation, setExplanation] = useState({

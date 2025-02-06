@@ -7,7 +7,9 @@ const TrusteePerson: React.FC<TrusteePersonInfo> = ({ updateTrustee }) =>  {
   const [,setName]=useState<string>('');
   const [,setEmail]=useState<string>('');
   const [selectedFbSb, setSelectedFbSb] = useState<string>(''); // State for selected Fachbereich (FB) or Studienbereich (SB)
-  const [address, setAddress] = useState(''); // State for address input
+  const [street, setStreet] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [city, setCity] = useState('');
   const [addressError, setAddressError] = useState(''); // State for error message related to address validation
   const [phoneNumber, setPhoneNumber] = useState(''); // State for phone number input
   const [errorPhone, setPhoneError] = useState(''); // State for error message related to phone number validation
@@ -56,25 +58,43 @@ const TrusteePerson: React.FC<TrusteePersonInfo> = ({ updateTrustee }) =>  {
     setSelectedFbSb(value); 
     updateTrustee("FB Nr./SB",e.target.options[e.target.selectedIndex].text);
   };
-
-  // Function to handle the change in address input and validate the format
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    updateTrustee("Anschrift",value);
-    // Regular expression pattern for validating the address
-    const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}, \d{4,10} [A-Za-zÄäÖöÜüß]+(?:, [A-Za-zÄäÖöÜüß0-9\s]+)?$/;
-
-    setAddress(value); 
-
-    // If the address matches the pattern, clear error; otherwise, show error message
-    if (addressPattern.test(value)) {
-        setAddressError(''); 
-    } else {
-        setAddressError(
-            'Die Anschrift muss im Format "Straßenname Hausnummer, PLZ Wohnort, Zusatz(optional)" vorliegen.'
-        );
+    setStreet(value);
+    validateAddress(value, postalCode, city);
+  };
+  
+  const handlePostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPostalCode(value);
+    validateAddress(street, value, city);
+  };
+  
+  const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCity(value);
+    validateAddress(street, postalCode, value);
+  }
+  const validateAddress = (street: string, postalCode: string, city: string) => {
+    const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/;
+    const postalPattern = /^\d{4,10}$/;
+    const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
+  
+    if (!addressPattern.test(street)&&street!='') {
+      setAddressError('Ungültiges Straßenformat. Beispiel: "Musterstraße 123".');
+      return;
     }
-};
+    if (!postalPattern.test(postalCode)&&postalCode!='') {
+      setAddressError('Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).');
+      return;
+    }
+    if (!cityPattern.test(city)&&city!='') {
+      setAddressError('Ungültiges Ortsformat. Nur Buchstaben erlaubt.');
+      return;
+    }
+    setAddressError('');
+    updateTrustee('Anschrift', `${street}, ${postalCode} ${city}`);
+  };
 const handleNameChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
   const value = e.target.value;
   setName(value);
@@ -153,12 +173,26 @@ const handleEmailAddressChange= (e:React.ChangeEvent<HTMLInputElement>)=>{
           Anschrift
         </label>
         <input
-          required
-          type="text"
-          value={address}
-          onChange={handleAddressChange} 
-          placeholder="Straßenname Hausnummer, PLZ Wohnort" 
-        />
+            required
+            type="text"
+            value={street} // Bind the value to semesterAddress state
+            onChange={handleStreetChange} // Update semester address on input change
+            placeholder="Straßenname Hausnummer" 
+          />
+          <input
+            required
+            type="text"
+            value={postalCode} // Bind the value to semesterAddress state
+            onChange={handlePostalCodeChange} // Update semester address on input change
+            placeholder="PLZ" 
+          />
+          <input
+            required
+            type="text"
+            value={city} // Bind the value to semesterAddress state
+            onChange={handleCityChange} // Update semester address on input change
+            placeholder="Wohnort" 
+          />
         {/* Displaying error message if the address format is invalid */}
         {addressError && <p className="error-message">{addressError}</p>}
 

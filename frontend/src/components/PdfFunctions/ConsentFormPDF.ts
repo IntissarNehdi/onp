@@ -85,7 +85,7 @@ export function generatePDF(obj: any): void {
       doc.setFontSize(12);
     }else if (key === 'Vorname' || key === 'E-Mail') {
       // For "Vorname" or "Email", print on the same line
-      const xPosition = 105; // Set the xPosition for these keys
+      const xPosition = pageWidth/2; // Set the xPosition for these keys
     
       yPosition-=lineHeight;
       
@@ -103,14 +103,12 @@ export function generatePDF(obj: any): void {
     } 
     else if(key==='Kennwort'){
       checkAndAddPage(); // Ensure space before writing the key-value pair
-
       // Write the key in bold at the default margin
       doc.setFont('helvetica', 'bold');
-      doc.text(keyText, pageWidth/2 - doc.getTextWidth(valueText), yPosition,{ align: 'center' });
+      doc.text(keyText, pageWidth/2 - doc.getTextWidth(keyText)/2 - doc.getTextWidth(valueText)/2, yPosition);
 
-      // Write the value at xPosition 105
       doc.setFont('helvetica', 'normal');
-      doc.text(valueText, pageWidth/2 + spaceBetweenKeyAndValue, yPosition,{ align: 'center' });
+      doc.text(valueText, pageWidth/2 + doc.getTextWidth(keyText)/2 - doc.getTextWidth(valueText)/2 + spaceBetweenKeyAndValue , yPosition);
       yPosition+=lineHeight;
     }
     else{

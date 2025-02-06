@@ -15,9 +15,13 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo }) => {
   const [email, setEmail] = useState('');
   const [matriculationNumber, setMatriculationNumber] = useState('');
   const [matriculationError, setMatriculationError] = useState('');
-  const [address, setAddress] = useState('');
   const [addressError, setAddressError] = useState('');
-  const [semesterAddress, setSemesterAddress] = useState('');
+  const [semesterStreet, setSemesterStreet] = useState('');
+  const [semesterPostalCode, setSemesterPostalCode] = useState('');
+  const [semesterCity, setSemesterCity] = useState('');
+  const [street, setStreet] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [city, setCity] = useState('');
   const [semesterAddressError, setSemesterAddressError] = useState('');
 
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,46 +84,84 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo }) => {
     updatePersonalInfo('Geburtsjahr', value); // Pass value to parent component
   };
 
-  // Event handler for updating and validating the address input
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  
+  const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    
-    // Regular expression to validate address format
-    const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}, \d{4,10} [A-Za-zÄäÖöÜüß]+(?:, [A-Za-zÄäÖöÜüß0-9\s]+)?$/;
-    
-    setAddress(value); // Update address state
-    
-    // Validate the address input against the pattern
-    if (addressPattern.test(value)) {
-      setAddressError(''); // Clear error if valid
-    } else {
-      setAddressError(
-        'Die Anschrift muss im Format "Straßenname Hausnummer, PLZ Wohnort, Zusatz(optional)" vorliegen.'
-      ); // Error for invalid format
-    }
-    updatePersonalInfo('Anschrift', value); // Pass value to parent component
+    setStreet(value);
+    validateAddress(value, postalCode, city);
+  };
+  
+  const handlePostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPostalCode(value);
+    validateAddress(street, value, city);
+  };
+  
+  const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCity(value);
+    validateAddress(street, postalCode, value);
+  };
+  const handleSemesterStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSemesterStreet(value);
+    validateSemesterAddress(value, semesterPostalCode, semesterCity);
+  };
+  
+  const handleSemesterPostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSemesterPostalCode(value);
+    validateSemesterAddress(semesterStreet, value, semesterCity);
+  };
+  
+  const handleSemesterCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSemesterCity(value);
+    validateSemesterAddress(semesterStreet, semesterPostalCode, value);
   };
 
-  // Event handler for updating and validating the semester address input
-  const handleSemesterAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+ const validateSemesterAddress = (street: string, postalCode: string, city: string) => {
+  const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/;
+  const postalPattern = /^\d{4,10}$/;
+  const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
 
-    // Regular expression to validate semester address format
-    const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}, \d{4,10} [A-Za-zÄäÖöÜüß\s]+$/;
-    
-    setSemesterAddress(value); // Update semester address state
-    
-    // Validate the semester address input against the pattern
-    if (addressPattern.test(value)) {
-      setSemesterAddressError(''); // Clear error if valid
-    } else {
-      setSemesterAddressError(
-        'Die Semesteranschrift muss im Format "Straßenname Hausnummer, PLZ Wohnort" vorliegen.'
-      ); // Error for invalid format
-    }
-    updatePersonalInfo('Semesteranschrift', value); // Pass value to parent component
+  if (!addressPattern.test(street)&&street!='') {
+    setSemesterAddressError('Ungültiges Straßenformat. Beispiel: "Musterstraße 123".');
+    return;
+  }
+  if (!postalPattern.test(postalCode)&&postalCode!='') {
+    setSemesterAddressError('Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).');
+    return;
+  }
+  if (!cityPattern.test(city)&&city!='') {
+    setSemesterAddressError('Ungültiges Ortsformat. Nur Buchstaben erlaubt.');
+    return;
+  }
+  setSemesterAddressError('');
+  updatePersonalInfo('Semesteranschrift', `${street}, ${postalCode} ${city}`);
+};
 
-  };
+const validateAddress = (street: string, postalCode: string, city: string) => {
+  const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/;
+  const postalPattern = /^\d{4,10}$/;
+  const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
+
+  if (!addressPattern.test(street)&&street!='') {
+    setAddressError('Ungültiges Straßenformat. Beispiel: "Musterstraße 123".');
+    return;
+  }
+  if (!postalPattern.test(postalCode)&&postalCode!='') {
+    setAddressError('Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).');
+    return;
+  }
+  if (!cityPattern.test(city)&&city!='') {
+    setAddressError('Ungültiges Ortsformat. Nur Buchstaben erlaubt.');
+    return;
+  }
+  setAddressError('');
+  updatePersonalInfo('Anschrift', `${street}, ${postalCode} ${city}`);
+};
+
 
   // JSX for rendering the form and handling user inputs
   return (
@@ -191,9 +233,23 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo }) => {
           <input
             required
             type="text"
-            value={address} // Bind the value to address state
-            onChange={handleAddressChange} // Update address on input change
-            placeholder="Straßenname Hausnummer, PLZ Wohnort" 
+            value={street} // Bind the value to semesterAddress state
+            onChange={handleStreetChange} // Update semester address on input change
+            placeholder="Straßenname Hausnummer" 
+          />
+          <input
+            required
+            type="text"
+            value={postalCode} // Bind the value to semesterAddress state
+            onChange={handlePostalCodeChange} // Update semester address on input change
+            placeholder="PLZ" 
+          />
+          <input
+            required
+            type="text"
+            value={city} // Bind the value to semesterAddress state
+            onChange={handleCityChange} // Update semester address on input change
+            placeholder="Wohnort" 
           />
           {/* Display error message if addressError exists */}
           {addressError && (
@@ -207,9 +263,23 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo }) => {
           <input
             required
             type="text"
-            value={semesterAddress} // Bind the value to semesterAddress state
-            onChange={handleSemesterAddressChange} // Update semester address on input change
-            placeholder="Straßenname Hausnummer, PLZ Wohnort" 
+            value={semesterStreet} // Bind the value to semesterAddress state
+            onChange={handleSemesterStreetChange} // Update semester address on input change
+            placeholder="Straßenname Hausnummer" 
+          />
+          <input
+            required
+            type="text"
+            value={semesterPostalCode} // Bind the value to semesterAddress state
+            onChange={handleSemesterPostalCodeChange} // Update semester address on input change
+            placeholder="PLZ" 
+          />
+          <input
+            required
+            type="text"
+            value={semesterCity} // Bind the value to semesterAddress state
+            onChange={handleSemesterCityChange} // Update semester address on input change
+            placeholder="Wohnort" 
           />
           {/* Display error message if semesterAddressError exists */}
           {semesterAddressError && (

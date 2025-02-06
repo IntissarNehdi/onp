@@ -58,12 +58,10 @@ const ConsentForms: React.FC = () => {
 
   // Collect required fields
   const requiredFields: (keyof ConsentFormInterface)[] = [
-    "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Anschrift", "Matrikelnummer"
+    "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Anschrift", "Matrikelnummer","Studienbereichsbezeichnung:FB Nr./SB", "Kennwort"
   ];
-
   // Check if any required field is empty
   const emptyFields = requiredFields.filter(field => !formData[field]);
-
   if (emptyFields.length > 0) {
     alert(`Bitte füllen Sie die folgenden Felder aus: ${emptyFields.join(", ")}`);
     return;
