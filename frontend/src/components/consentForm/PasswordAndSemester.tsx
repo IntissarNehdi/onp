@@ -7,16 +7,18 @@ import FormControl from '@mui/material/FormControl';
 import './ConsentForms.css';
 
 interface PasswordAndSemesterField {
-  updatePasswordAndSemester: (field: 'Kennwort'| 'für die Wahl im'  | 'zu', value: string) => void;
+  updatePasswordAndSemester: (field: 'Kennwort'| 'für die Wahl im'  |'Semesterjahr'| 'zu', value: string) => void;
+  updateErrors: (field: string, error: string) => void;
+
 }
 // Define the functional component 'KennwortSemester'
-const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswordAndSemester }) => {
+const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswordAndSemester,updateErrors }) => {
   
   // State variable to store the password entered by the user
   const [listPassword, setListPassword] = useState('');
   
   // State variable to store the selected semester type (Winter or Summer)
-  const [semester, setSemester] = useState('');
+  const [semester, setSemester] = useState('Sommersemester');
 
   // State variable to store the semester year entered by the user
   const [semesterYear, setSemesterYear] = useState<string>('');
@@ -38,49 +40,47 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
   
   // Event handler to validate and update the semester year input
   const handleSemesterYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    
-    // Define regular expressions for validating the semester year based on the selected semester
+    const value = e.target.value.trim();
+    let errorMessage = "";
+  
     let semesterYearPattern: RegExp;
     
-    // If the selected semester is "winterSemester"
     if (semester === "Wintersemester") {
-      semesterYearPattern = /^\d{4}\/(\d{2}|\d{4})$/; // Allow year formats like "2024/25" or "2024/2025"
+      semesterYearPattern = /^\d{4}\/(\d{2}|\d{4})$/;
     } else if (semester === "Sommersemester") {
-      semesterYearPattern = /^\d{4}$/; // Allow only a 4-digit year for summer semester
+      semesterYearPattern = /^\d{4}$/;
     } else {
-      semesterYearPattern = /^\s*$/; // No pattern for empty semester selection
+      semesterYearPattern = /^\s*$/;
     }
-    
-    setSemesterYear(value); // Update the semester year value
-    
-    // Validate the semester year input against the pattern
+  
+    setSemesterYear(value);
+  
     if (semesterYearPattern.test(value)) {
-      // Additional validation for winter semester (check if end year is valid)
       if (semester === "Wintersemester") {
         const [startYear, endYear] = value.split("/").map(Number);
         if (
-          (String(endYear).length === 2 && endYear === startYear % 100 + 1) || 
-          (String(endYear).length === 4 && endYear === startYear + 1) 
+          (String(endYear).length === 2 && endYear === startYear % 100 + 1) ||
+          (String(endYear).length === 4 && endYear === startYear + 1)
         ) {
-          setSemesterYearError(""); // Clear error if valid
+          errorMessage = "";
         } else {
-          setSemesterYearError("Ungültige Semesterjahre für das Wintersemester."); // Show error for invalid year range
+          errorMessage = "Ungültige Semesterjahre für das Wintersemester.";
         }
-      } else {
-        setSemesterYearError(""); // Clear error for summer semester
       }
     } else {
-      // Set an error message if the input doesn't match the expected format
-      setSemesterYearError(
+      errorMessage =
         semester === "Wintersemester"
           ? 'Das Semesterjahr muss im Format "YYYY/YY" oder "YYYY/YYYY" für Wintersemester vorliegen.'
-          : 'Das Semesterjahr muss im Format "YYYY" für Sommersemester vorliegen.'
-      );
+          : 'Das Semesterjahr muss im Format "YYYY" für Sommersemester vorliegen.';
     }
-    updatePasswordAndSemester('für die Wahl im', semester+' '+ value);
-
+  
+    setSemesterYearError(errorMessage);
+    updatePasswordAndSemester("für die Wahl im",semester);
+    updatePasswordAndSemester("Semesterjahr", value);
+    updateErrors("Semesterjahr",errorMessage);
   };
+  
+  
   
   // Static values for conditional input text
   const selectedInput1: string = "dem Fachbereichsrat"; 

@@ -18,6 +18,7 @@ export interface ConsentFormInterface {
   "Studienbereichsbezeichnung:FB Nr./SB": string;
   "Kennwort":string;
   "für die Wahl im": string;
+  "Semesterjahr":string;
   "zu":string;
   "Hinweis": string;
   "Darmstadt, den":string;
@@ -35,37 +36,46 @@ const ConsentForms: React.FC = () => {
     "Studienbereichsbezeichnung:FB Nr./SB": "",
     "Kennwort": "",
     "für die Wahl im": "",
+    "Semesterjahr":"",
     "zu":"",
     "Hinweis": "Rechtsgrundlage für die Erhebung der voran genannten personenbezogenen Daten ist § 16 der Wahlordnung der TU Darmstadt. Die Verarbeitung der Daten durch das Wahlamt sowie den Wahlvorstand erfolgt nach den Vorschriften der Datenschutz-Grundverordnung (DSGVO) und des Hessischen Datenschutz- und Informationsfreiheitsgesetzes (HDSIG). Gemäß § 18 Abs. 10 der Wahlordnung werden die Wahlvorschläge nur mit Name, Vorname und Fach- und Studienbereich bzw. Einrichtung der Bewerber:innen veröffentlicht. Eine Rücknahme der Erklärung ist gemäß § 16 Abs. 6 Satz 3 der Wahlordnung bis zur abschließenden Zulassungsprüfung durch schriftliche Erklärung gegenüber dem Wahlvorstand möglich.",
     "Darmstadt, den": ""
 
   });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   // Function to update the form data when PersonalInfo component changes the input fields
   const updateData = (field: keyof ConsentFormInterface, value: string) => {
-    if (value.trim() === "") {
-      alert(`Das Feld "${field}" darf nicht leer sein.`);
-      return;
-    }
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
   };
+  const updateErrors = (field: string, error: string) => {
+    setErrors((prevErrors: any) => ({
+      ...prevErrors,
+      [field]: error
+    }));
+  };
   
   const handleSaveAsPDF = (e: React.FormEvent) => {
     e.preventDefault();
+  
+    // Collect required fields
+    const requiredFields: (keyof ConsentFormInterface)[] = [
+      "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Semesteranschrift","Anschrift", "Matrikelnummer",
+      "Studienbereichsbezeichnung:FB Nr./SB", "Kennwort","Semesterjahr",
+    ];
+    // Ensure errors are up-to-date before checking
+    const currentErrors = Object.entries(errors).filter(([, message]) => message.trim() !== "");
+    const falseFields = currentErrors.map(([field]) => field);
 
-  // Collect required fields
-  const requiredFields: (keyof ConsentFormInterface)[] = [
-    "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Anschrift", "Matrikelnummer","Studienbereichsbezeichnung:FB Nr./SB", "Kennwort"
-  ];
-  // Check if any required field is empty
-  const emptyFields = requiredFields.filter(field => !formData[field]);
-  if (emptyFields.length > 0) {
-    alert(`Bitte füllen Sie die folgenden Felder aus: ${emptyFields.join(", ")}`);
-    return;
-  }
+    // Check if any required field is empty
+    const emptyFields = requiredFields.filter(field => !formData[field]);
+    if (emptyFields.length > 0 || currentErrors.length > 0) {
+      alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:${emptyFields.join(", ")} ${falseFields.join(", ")}`);
+      return;
+    }
     const obj = formData;
     generatePDF(obj);
   };
@@ -78,9 +88,9 @@ const ConsentForms: React.FC = () => {
       
       {/* Main form container */}
       <form className="proposal-form">
-        <PersonalInfo updatePersonalInfo={updateData} /> {/* Section for personal information */}
+        <PersonalInfo updatePersonalInfo={updateData} updateErrors={updateErrors} /> {/* Section for personal information */}
         <Field updateFbSbField={updateData}/>  {/* Section for additional fields */}
-        <PasswordAndSemester updatePasswordAndSemester={updateData}/>  {/* Section for password and semester info */}
+        <PasswordAndSemester updatePasswordAndSemester={updateData} updateErrors={updateErrors}/>  {/* Section for password and semester info */}
         <DateAndSig updateDate={updateData}/>
         
         {/* Legal information section */}

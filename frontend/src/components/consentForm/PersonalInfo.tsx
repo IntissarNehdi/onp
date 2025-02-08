@@ -4,9 +4,10 @@ import './ConsentForms.css';
 
 interface PersonalInfoProps {
   updatePersonalInfo: (field: 'Zuname' | 'Vorname' | 'Geburtsjahr' | 'E-Mail'|'Anschrift'|'Semesteranschrift'|'Matrikelnummer', value: string) => void;
+  updateErrors: (field: string, error: string) => void;
 }
 // Define the functional component 'PersonalInfos'
-const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo }) => {
+const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateErrors }) => {
   // State variables to manage user inputs for personal information
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -45,44 +46,45 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo }) => {
   // Event handler for updating and validating the matriculation number
   const handleMatriculationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    
-    // Check if the input consists only of digits
-    if (/^\d*$/.test(value)) {
-      setMatriculationNumber(value); // Update matriculation number state
-      
-      // Check if the length of matriculation number is exactly 7 digits
-      if (value.length === 7) {
-        setMatriculationError(''); // Clear error if valid
-      } else {
-        setMatriculationError('Die Matrikelnummer muss genau 7 Ziffern enthalten.'); // Error for invalid length
+    let error = "";
+  
+    if (value === "") {
+      setMatriculationNumber(value);
+    } else if (/^\d*$/.test(value)) {
+      setMatriculationNumber(value);
+      if (value.length !== 7) {
+        error = "Die Matrikelnummer muss genau 7 Ziffern enthalten.";
       }
     } else {
-      setMatriculationError('Die Matrikelnummer darf nur Ziffern enthalten.'); // Error if input contains non-digit characters
+      error = "Die Matrikelnummer darf nur Ziffern enthalten.";
     }
-    updatePersonalInfo('Matrikelnummer',value);
+  
+    setMatriculationError(error);
+    updateErrors("Matrikelnummer", error);
+    updatePersonalInfo("Matrikelnummer", value);
   };
+  
 
   // Event handler for updating and validating the birth year input
   const handleBirthYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    
-    // Check if the input consists only of digits
-    if (/^\d*$/.test(value)) {
-      setBirthYear(value); // Update birth year state
-
-      // Validate the length of the birth year input
-      if (value.length === 4) {
-        setBirthYearError(''); // Clear error if valid
-      } else if (value.length > 4) {
-        setBirthYearError('Das Geburtsjahr darf nicht mehr als 4 Ziffern enthalten.'); // Error for more than 4 digits
-      } else {
-        setBirthYearError('Das Geburtsjahr muss genau 4 Ziffern enthalten.'); // Error for less than 4 digits
-      }
-    } else {
-      setBirthYearError('Das Geburtsjahr darf nur Ziffern enthalten.'); // Error for non-digit input
+    const value = e.target.value.trim();
+    let errorMessage = "";
+  
+    if (!/^\d*$/.test(value)) {
+      errorMessage = "Das Geburtsjahr darf nur Ziffern enthalten.";
+    } else if (value.length !== 4) {
+      errorMessage = "Das Geburtsjahr muss genau 4 Ziffern enthalten.";
     }
-    updatePersonalInfo('Geburtsjahr', value); // Pass value to parent component
+  
+    setBirthYear(value);
+    setBirthYearError(errorMessage);
+    updateErrors("Geburtsjahr", errorMessage);
+  
+    if (!errorMessage) {
+      updatePersonalInfo("Geburtsjahr", value);
+    }
   };
+  
 
   
   const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,47 +122,52 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo }) => {
     validateSemesterAddress(semesterStreet, semesterPostalCode, value);
   };
 
- const validateSemesterAddress = (street: string, postalCode: string, city: string) => {
-  const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/;
-  const postalPattern = /^\d{4,10}$/;
-  const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
-
-  if (!addressPattern.test(street)&&street!='') {
-    setSemesterAddressError('Ungültiges Straßenformat. Beispiel: "Musterstraße 123".');
-    return;
-  }
-  if (!postalPattern.test(postalCode)&&postalCode!='') {
-    setSemesterAddressError('Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).');
-    return;
-  }
-  if (!cityPattern.test(city)&&city!='') {
-    setSemesterAddressError('Ungültiges Ortsformat. Nur Buchstaben erlaubt.');
-    return;
-  }
-  setSemesterAddressError('');
-  updatePersonalInfo('Semesteranschrift', `${street}, ${postalCode} ${city}`);
-};
+  const validateSemesterAddress = (street: string, postalCode: string, city: string) => {
+    let errorMessage = "";
+  
+    const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+\s\d{1,6}$/;
+    const postalPattern = /^\d{4,10}$/;
+    const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
+  
+    if (street && !addressPattern.test(street)) {
+      errorMessage = 'Ungültiges Straßenformat. Beispiel: "Musterstraße 123".';
+    } else if (postalCode && !postalPattern.test(postalCode)) {
+      errorMessage = 'Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).';
+    } else if (city && !cityPattern.test(city)) {
+      errorMessage = 'Ungültiges Ortsformat. Nur Buchstaben erlaubt.';
+    }
+  
+    setSemesterAddressError(errorMessage);
+    updateErrors("Semesteranschrift", errorMessage);
+  
+    if (!errorMessage) {
+      updatePersonalInfo("Semesteranschrift", `${street}, ${postalCode} ${city}`);
+    }
+  };
+  
 
 const validateAddress = (street: string, postalCode: string, city: string) => {
   const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/;
   const postalPattern = /^\d{4,10}$/;
   const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
 
-  if (!addressPattern.test(street)&&street!='') {
-    setAddressError('Ungültiges Straßenformat. Beispiel: "Musterstraße 123".');
-    return;
+  let error = "";
+  if (!addressPattern.test(street) && street !== '') {
+    error = "Ungültiges Straßenformat. Beispiel: 'Musterstraße 123'.";
+  } else if (!postalPattern.test(postalCode) && postalCode !== '') {
+    error = "Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).";
+  } else if (!cityPattern.test(city) && city !== '') {
+    error = "Ungültiges Ortsformat. Nur Buchstaben erlaubt.";
   }
-  if (!postalPattern.test(postalCode)&&postalCode!='') {
-    setAddressError('Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).');
-    return;
+
+  setAddressError(error);
+  updateErrors("Anschrift", error);
+
+  if (!error) {
+    updatePersonalInfo("Anschrift", `${street}, ${postalCode} ${city}`);
   }
-  if (!cityPattern.test(city)&&city!='') {
-    setAddressError('Ungültiges Ortsformat. Nur Buchstaben erlaubt.');
-    return;
-  }
-  setAddressError('');
-  updatePersonalInfo('Anschrift', `${street}, ${postalCode} ${city}`);
 };
+
 
 
   // JSX for rendering the form and handling user inputs
