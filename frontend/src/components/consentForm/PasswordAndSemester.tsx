@@ -31,6 +31,7 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
     const value = event.target.value;
     setSemester(value); // Set the selected semester
     setSemesterYear(""); // Reset the semester year when semester changes
+    setSemesterYearError("");
   };
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

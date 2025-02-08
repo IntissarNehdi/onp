@@ -73,8 +73,12 @@ const ConsentForms: React.FC = () => {
     // Check if any required field is empty
     const emptyFields = requiredFields.filter(field => !formData[field]);
     if (emptyFields.length > 0 || currentErrors.length > 0) {
-      alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:${emptyFields.join(", ")} ${falseFields.join(", ")}`);
-      return;
+      const missingFieldsMessage = emptyFields.length > 0 ? `Fehlende Felder: ${emptyFields.join(", ")}` : "";
+      const invalidFieldsMessage = falseFields.length > 0 ? `Fehlerhafte Felder: ${falseFields.join(", ")}` : "";
+      const combinedMessage = [missingFieldsMessage, invalidFieldsMessage].filter(msg => msg).join("\n");
+      
+      alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:\n${combinedMessage}`);
+            return;
     }
     const obj = formData;
     generatePDF(obj);

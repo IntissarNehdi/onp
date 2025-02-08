@@ -65,12 +65,14 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
   };
   
 
-  // Event handler for updating and validating the birth year input
   const handleBirthYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
     let errorMessage = "";
   
-    if (!/^\d*$/.test(value)) {
+    if (value === "") {
+      // If input is empty, do not show an error
+      setBirthYear(value);
+    } else if (!/^\d*$/.test(value)) {
       errorMessage = "Das Geburtsjahr darf nur Ziffern enthalten.";
     } else if (value.length !== 4) {
       errorMessage = "Das Geburtsjahr muss genau 4 Ziffern enthalten.";
@@ -79,14 +81,9 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
     setBirthYear(value);
     setBirthYearError(errorMessage);
     updateErrors("Geburtsjahr", errorMessage);
-  
-    if (!errorMessage) {
-      updatePersonalInfo("Geburtsjahr", value);
-    }
+    updatePersonalInfo("Geburtsjahr", value);
   };
-  
 
-  
   const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setStreet(value);
@@ -122,29 +119,26 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
     validateSemesterAddress(semesterStreet, semesterPostalCode, value);
   };
 
-  const validateSemesterAddress = (street: string, postalCode: string, city: string) => {
-    let errorMessage = "";
-  
-    const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+\s\d{1,6}$/;
-    const postalPattern = /^\d{4,10}$/;
-    const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
-  
-    if (street && !addressPattern.test(street)) {
-      errorMessage = 'Ungültiges Straßenformat. Beispiel: "Musterstraße 123".';
-    } else if (postalCode && !postalPattern.test(postalCode)) {
-      errorMessage = 'Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).';
-    } else if (city && !cityPattern.test(city)) {
-      errorMessage = 'Ungültiges Ortsformat. Nur Buchstaben erlaubt.';
-    }
-  
-    setSemesterAddressError(errorMessage);
-    updateErrors("Semesteranschrift", errorMessage);
-  
-    if (!errorMessage) {
-      updatePersonalInfo("Semesteranschrift", `${street}, ${postalCode} ${city}`);
-    }
-  };
-  
+const validateSemesterAddress = (street: string, postalCode: string, city: string) => {
+  let errorMessage = "";
+
+  const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+\s\d{1,6}$/;
+  const postalPattern = /^\d{4,10}$/;
+  const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
+
+  if (!addressPattern.test(street)) {
+    errorMessage = 'Ungültiges Straßenformat. Beispiel: "Musterstraße 123".';
+  } else if (!postalPattern.test(postalCode)) {
+    errorMessage = "Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).";
+  } else if (!cityPattern.test(city)) {
+    errorMessage = "Ungültiges Ortsformat. Nur Buchstaben erlaubt.";
+  }
+
+  setSemesterAddressError(errorMessage);
+  updateErrors("Semesteranschrift", errorMessage);
+  updatePersonalInfo("Semesteranschrift", `${street}, ${postalCode} ${city}`);
+};
+
 
 const validateAddress = (street: string, postalCode: string, city: string) => {
   const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/;
@@ -152,23 +146,19 @@ const validateAddress = (street: string, postalCode: string, city: string) => {
   const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
 
   let error = "";
-  if (!addressPattern.test(street) && street !== '') {
+
+  if (!addressPattern.test(street)) {
     error = "Ungültiges Straßenformat. Beispiel: 'Musterstraße 123'.";
-  } else if (!postalPattern.test(postalCode) && postalCode !== '') {
+  } else if (!postalPattern.test(postalCode)) {
     error = "Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).";
-  } else if (!cityPattern.test(city) && city !== '') {
+  } else if (!cityPattern.test(city)) {
     error = "Ungültiges Ortsformat. Nur Buchstaben erlaubt.";
   }
 
   setAddressError(error);
   updateErrors("Anschrift", error);
-
-  if (!error) {
-    updatePersonalInfo("Anschrift", `${street}, ${postalCode} ${city}`);
-  }
+  updatePersonalInfo("Anschrift", `${street}, ${postalCode} ${city}`);
 };
-
-
 
   // JSX for rendering the form and handling user inputs
   return (
