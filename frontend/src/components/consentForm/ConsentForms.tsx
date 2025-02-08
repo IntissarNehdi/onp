@@ -78,7 +78,7 @@ const ConsentForms: React.FC = () => {
       const combinedMessage = [missingFieldsMessage, invalidFieldsMessage].filter(msg => msg).join("\n");
       
       alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:\n${combinedMessage}`);
-            return;
+      return;
     }
     const obj = formData;
     generatePDF(obj);
