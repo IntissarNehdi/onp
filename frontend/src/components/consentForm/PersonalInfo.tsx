@@ -125,7 +125,12 @@ const validateSemesterAddress = (street: string, postalCode: string, city: strin
   const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+\s\d{1,6}$/;
   const postalPattern = /^\d{4,10}$/;
   const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
-
+  if(street+postalCode+city==="") {  
+    setSemesterAddressError(errorMessage);
+    updateErrors("Semesteranschrift", errorMessage);
+    updatePersonalInfo("Semesteranschrift", "");
+    return;
+  }
   if (!addressPattern.test(street)) {
     errorMessage = 'Ungültiges Straßenformat. Beispiel: "Musterstraße 123".';
   } else if (!postalPattern.test(postalCode)) {
@@ -146,6 +151,13 @@ const validateAddress = (street: string, postalCode: string, city: string) => {
   const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
 
   let error = "";
+
+  if(street+postalCode+city==="") {  
+    setAddressError(error);
+    updateErrors("Anschrift", error);
+    updatePersonalInfo("Anschrift", "");
+    return;
+  }
 
   if (!addressPattern.test(street)) {
     error = "Ungültiges Straßenformat. Beispiel: 'Musterstraße 123'.";

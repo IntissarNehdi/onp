@@ -56,14 +56,16 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
   
     setSemesterYear(value);
   
-    if (semesterYearPattern.test(value)) {
+    if (value === "") {
+      errorMessage = "";  // Clear the error if the semester year is empty
+    } else if (semesterYearPattern.test(value)) {
       if (semester === "Wintersemester") {
         const [startYear, endYear] = value.split("/").map(Number);
         if (
           (String(endYear).length === 2 && endYear === startYear % 100 + 1) ||
           (String(endYear).length === 4 && endYear === startYear + 1)
         ) {
-          errorMessage = "";
+          errorMessage = "";  // No error for valid Wintersemester
         } else {
           errorMessage = "Ungültige Semesterjahre für das Wintersemester.";
         }
