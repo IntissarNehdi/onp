@@ -1,0 +1,33 @@
+:root {
+    --primary: #0d6efd !important;  /* Dark Blue */
+    --secondary: #498bf0 !important; /* Lighter Blue */
+    --text-color: white !important;
+}
+
+#header {
+    background-color: var(--primary) !important;
+}
+
+.module h2, .module caption {
+    background: var(--secondary) !important;
+    color: var(--text-color) !important;
+}
+
+div.breadcrumbs {
+    background: var(--secondary) !important;
+    color: var(--text-color) !important;
+}
+
+a {
+    color: var(--text-color) !important;
+}
+
+button, input[type="submit"], input[type="button"], input[type="reset"] {
+    background-color: var(--primary) !important;
+    color: white !important;
+    border: none;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: var(--secondary) !important;
+}

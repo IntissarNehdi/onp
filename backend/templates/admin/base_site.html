@@ -1,0 +1,19 @@
+{% extends "admin/base.html" %}
+{% load static %}  <!-- ✅ Ensure this is present at the top -->
+
+{% block extrastyle %}
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/custom_admin.css' %}">
+{% endblock %}
+
+{% block title %}Election Admin Panel{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <img src="{% static 'admin/img/tu_darmstadt_logo.png' %}" alt="TU Darmstadt Logo" style="height: 50px;">
+        Election Management System
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
