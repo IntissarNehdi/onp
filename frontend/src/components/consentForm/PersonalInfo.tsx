@@ -25,25 +25,28 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
   const [city, setCity] = useState('');
   const [semesterAddressError, setSemesterAddressError] = useState('');
 
+  // Handler for first name input
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFirstName(value);
     updatePersonalInfo('Vorname', value); // Pass value to parent component
   };
 
+  // Handler for last name input
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setLastName(value);
     updatePersonalInfo('Zuname', value); // Pass value to parent component
   };
 
+  // Handler for email input
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
     updatePersonalInfo('E-Mail', value); // Pass value to parent component
   };
 
-  // Event handler for updating and validating the matriculation number
+  // Handler for matriculation number input with validation
   const handleMatriculationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     let error = "";
@@ -64,7 +67,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
     updatePersonalInfo("Matrikelnummer", value);
   };
   
-
+  // Handler for birth year input with validation
   const handleBirthYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
     let errorMessage = "";
@@ -83,94 +86,97 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
     updateErrors("Geburtsjahr", errorMessage);
     updatePersonalInfo("Geburtsjahr", value);
   };
-
+  // Handler for street input 
   const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setStreet(value);
     validateAddress(value, postalCode, city);
   };
-  
+  // Handler for postal code input 
   const handlePostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPostalCode(value);
     validateAddress(street, value, city);
   };
-  
+  // Handler for city input 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCity(value);
     validateAddress(street, postalCode, value);
   };
+
+  // Handler for semester street input 
   const handleSemesterStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSemesterStreet(value);
     validateSemesterAddress(value, semesterPostalCode, semesterCity);
   };
-  
+  // Handler for semester postal code input 
   const handleSemesterPostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSemesterPostalCode(value);
     validateSemesterAddress(semesterStreet, value, semesterCity);
   };
-  
+  // Handler for semester city input 
   const handleSemesterCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSemesterCity(value);
     validateSemesterAddress(semesterStreet, semesterPostalCode, value);
   };
 
-const validateSemesterAddress = (street: string, postalCode: string, city: string) => {
-  let errorMessage = "";
+    // Address validation functions for semester addresse
+  const validateSemesterAddress = (street: string, postalCode: string, city: string) => {
+    let errorMessage = "";
 
-  const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+\s\d{1,6}$/;
-  const postalPattern = /^\d{4,10}$/;
-  const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
-  if(street+postalCode+city==="") {  
+    const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+\s\d{1,6}$/;
+    const postalPattern = /^\d{4,10}$/;
+    const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
+    if(street+postalCode+city==="") {  
+      setSemesterAddressError(errorMessage);
+      updateErrors("Semesteranschrift", errorMessage);
+      updatePersonalInfo("Semesteranschrift", "");
+      return;
+    }
+    if (!addressPattern.test(street)) {
+      errorMessage = 'Ungültiges Straßenformat. Beispiel: "Musterstraße 123".';
+    } else if (!postalPattern.test(postalCode)) {
+      errorMessage = "Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).";
+    } else if (!cityPattern.test(city)) {
+      errorMessage = "Ungültiges Ortsformat. Nur Buchstaben erlaubt.";
+    }
+
     setSemesterAddressError(errorMessage);
     updateErrors("Semesteranschrift", errorMessage);
-    updatePersonalInfo("Semesteranschrift", "");
-    return;
-  }
-  if (!addressPattern.test(street)) {
-    errorMessage = 'Ungültiges Straßenformat. Beispiel: "Musterstraße 123".';
-  } else if (!postalPattern.test(postalCode)) {
-    errorMessage = "Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).";
-  } else if (!cityPattern.test(city)) {
-    errorMessage = "Ungültiges Ortsformat. Nur Buchstaben erlaubt.";
-  }
+    updatePersonalInfo("Semesteranschrift", `${street}, ${postalCode} ${city}`);
+  };
 
-  setSemesterAddressError(errorMessage);
-  updateErrors("Semesteranschrift", errorMessage);
-  updatePersonalInfo("Semesteranschrift", `${street}, ${postalCode} ${city}`);
-};
+  // Address validation functions for home addresse
+  const validateAddress = (street: string, postalCode: string, city: string) => {
+    const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/;
+    const postalPattern = /^\d{4,10}$/;
+    const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
 
+    let error = "";
 
-const validateAddress = (street: string, postalCode: string, city: string) => {
-  const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/;
-  const postalPattern = /^\d{4,10}$/;
-  const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
+    if(street+postalCode+city==="") {  
+      setAddressError(error);
+      updateErrors("Anschrift", error);
+      updatePersonalInfo("Anschrift", "");
+      return;
+    }
 
-  let error = "";
+    if (!addressPattern.test(street)) {
+      error = "Ungültiges Straßenformat. Beispiel: 'Musterstraße 123'.";
+    } else if (!postalPattern.test(postalCode)) {
+      error = "Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).";
+    } else if (!cityPattern.test(city)) {
+      error = "Ungültiges Ortsformat. Nur Buchstaben erlaubt.";
+    }
 
-  if(street+postalCode+city==="") {  
     setAddressError(error);
     updateErrors("Anschrift", error);
-    updatePersonalInfo("Anschrift", "");
-    return;
-  }
-
-  if (!addressPattern.test(street)) {
-    error = "Ungültiges Straßenformat. Beispiel: 'Musterstraße 123'.";
-  } else if (!postalPattern.test(postalCode)) {
-    error = "Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).";
-  } else if (!cityPattern.test(city)) {
-    error = "Ungültiges Ortsformat. Nur Buchstaben erlaubt.";
-  }
-
-  setAddressError(error);
-  updateErrors("Anschrift", error);
-  updatePersonalInfo("Anschrift", `${street}, ${postalCode} ${city}`);
-};
+    updatePersonalInfo("Anschrift", `${street}, ${postalCode} ${city}`);
+  };
 
   // JSX for rendering the form and handling user inputs
   return (

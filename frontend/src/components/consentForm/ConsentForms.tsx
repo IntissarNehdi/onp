@@ -4,53 +4,59 @@ import PersonalInfo from './PersonalInfo';  // Importing component for personal 
 import Field from './Field';  // Importing component for form fields section
 import PasswordAndSemester from './PasswordAndSemester';  // Importing component for password and semester section
 import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
-import { generatePDF } from '../PdfFunctions/ConsentFormPDF';
-import DateAndSig from '../ProposalList/DateAndSig';
+import { generatePDF } from '../PdfFunctions/ConsentFormPDF'; // Importing function to generate PDF
+import DateAndSig from '../ProposalList/DateAndSig'; // Importing component for date and signature section
 
+// Defining an interface for form data structure
 export interface ConsentFormInterface {
   "Zuname": string;
   "Vorname": string;
   "Geburtsjahr": number;
   "E-Mail": string;
   "Anschrift": string;
-  "Semesteranschrift":string;
+  "Semesteranschrift": string;
   "Matrikelnummer": number;
   "Studienbereichsbezeichnung:FB Nr./SB": string;
-  "Kennwort":string;
+  "Kennwort": string;
   "für die Wahl im": string;
-  "Semesterjahr":string;
-  "zu":string;
+  "Semesterjahr": string;
+  "zu": string;
   "Hinweis": string;
-  "Darmstadt, den":string;
+  "Darmstadt, den": string;
 }
-// Functional component for the Einverstaendniserklaerung (Consent Form)
+
+// Functional component for the Consent Form
 const ConsentForms: React.FC = () => { 
+  // State to manage form data
   const [formData, setFormData] = useState<ConsentFormInterface>({
     "Zuname": "",
     "Vorname": "",
     "Geburtsjahr": 0,
     "E-Mail": "",
     "Anschrift": "",
-    "Semesteranschrift":"",
+    "Semesteranschrift": "",
     "Matrikelnummer": 0,
     "Studienbereichsbezeichnung:FB Nr./SB": "",
     "Kennwort": "",
     "für die Wahl im": "",
-    "Semesterjahr":"",
-    "zu":"",
+    "Semesterjahr": "",
+    "zu": "",
     "Hinweis": "Rechtsgrundlage für die Erhebung der voran genannten personenbezogenen Daten ist § 16 der Wahlordnung der TU Darmstadt. Die Verarbeitung der Daten durch das Wahlamt sowie den Wahlvorstand erfolgt nach den Vorschriften der Datenschutz-Grundverordnung (DSGVO) und des Hessischen Datenschutz- und Informationsfreiheitsgesetzes (HDSIG). Gemäß § 18 Abs. 10 der Wahlordnung werden die Wahlvorschläge nur mit Name, Vorname und Fach- und Studienbereich bzw. Einrichtung der Bewerber:innen veröffentlicht. Eine Rücknahme der Erklärung ist gemäß § 16 Abs. 6 Satz 3 der Wahlordnung bis zur abschließenden Zulassungsprüfung durch schriftliche Erklärung gegenüber dem Wahlvorstand möglich.",
     "Darmstadt, den": ""
-
   });
+
+  // State to manage validation errors
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  // Function to update the form data when PersonalInfo component changes the input fields
+  // Function to update form data
   const updateData = (field: keyof ConsentFormInterface, value: string) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
   };
+
+  // Function to update error messages
   const updateErrors = (field: string, error: string) => {
     setErrors((prevErrors: any) => ({
       ...prevErrors,
@@ -58,19 +64,21 @@ const ConsentForms: React.FC = () => {
     }));
   };
   
+  // Function to handle form submission and generate PDF
   const handleSaveAsPDF = (e: React.FormEvent) => {
     e.preventDefault();
   
-    // Collect required fields
+    // Required fields that must be filled out
     const requiredFields: (keyof ConsentFormInterface)[] = [
-      "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Semesteranschrift","Anschrift", "Matrikelnummer",
-      "Studienbereichsbezeichnung:FB Nr./SB", "Kennwort","Semesterjahr",
+      "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Semesteranschrift", "Anschrift", "Matrikelnummer",
+      "Studienbereichsbezeichnung:FB Nr./SB", "Kennwort", "Semesterjahr",
     ];
-    // Ensure errors are up-to-date before checking
+    
+    // Filtering out fields with errors
     const currentErrors = Object.entries(errors).filter(([, message]) => message.trim() !== "");
     const falseFields = currentErrors.map(([field]) => field);
 
-    // Check if any required field is empty
+    // Finding empty required fields
     const emptyFields = requiredFields.filter(field => !formData[field]);
     if (emptyFields.length > 0 || currentErrors.length > 0) {
       const missingFieldsMessage = emptyFields.length > 0 ? `Fehlende Felder: ${emptyFields.join(", ")}` : "";
@@ -80,22 +88,24 @@ const ConsentForms: React.FC = () => {
       alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:\n${combinedMessage}`);
       return;
     }
-    const obj = formData;
-    generatePDF(obj);
+    
+    // Generate PDF if all fields are valid
+    generatePDF(formData);
   };
+
   return (
     <form className="proposal-list-container" id="consent-form-content">
-    
+      
       {/* TU Darmstadt logo */}
       <img src={logo} alt="TU_DA Logo" className="top-right-image" />
       <h1 className="title">Einverständniserklärung</h1>
       
       {/* Main form container */}
       <form className="proposal-form">
-        <PersonalInfo updatePersonalInfo={updateData} updateErrors={updateErrors} /> {/* Section for personal information */}
-        <Field updateFbSbField={updateData}/>  {/* Section for additional fields */}
-        <PasswordAndSemester updatePasswordAndSemester={updateData} updateErrors={updateErrors}/>  {/* Section for password and semester info */}
-        <DateAndSig updateDate={updateData}/>
+        <PersonalInfo updatePersonalInfo={updateData} updateErrors={updateErrors} /> {/* Personal information section */}
+        <Field updateFbSbField={updateData}/>  {/* Additional fields section */}
+        <PasswordAndSemester updatePasswordAndSemester={updateData} updateErrors={updateErrors}/>  {/* Password and semester section */}
+        <DateAndSig updateDate={updateData}/>  {/* Date and signature section */}
         
         {/* Legal information section */}
         <div className="Hinweis">
@@ -110,13 +120,12 @@ const ConsentForms: React.FC = () => {
         
         {/* Submit button */}
         <button type="submit" className="submit-button" onClick={handleSaveAsPDF}>
-          Abschicken  {/* Button text */}
+          Abschicken  {/* Button to submit the form and generate PDF */}
         </button>
-      
       </form>
     </form>
   );
 };
 
-// Exporting the component to be used in other parts of the app
+// Exporting the component for use in other parts of the application
 export default ConsentForms;
