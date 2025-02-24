@@ -69,23 +69,36 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
     const formattedDate = `${day}/${month}/${year}`;
     updateAttachement("Darmstadt, den", formattedDate);
   };
-  const getSelectedPhrase = (input: string)=>{
+
+  const getSelectedPhrase = (input: string) => {
+    // Switch case to return specific phrases based on the input type
     switch (input) {
       case 'genderBalance':
+        // Return the gender balance statement
         return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.";
-        case 'employmentStatus':
-          const explanationText = explanation[input] || "Keine Erklärung angegeben.";
-          return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer nicht entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.\nBegründung: " + explanationText;
+        
+      case 'employmentStatus':
+        // Retrieve explanation text if available; otherwise, return a default message
+        const explanationText = explanation[input] || "Keine Erklärung angegeben.";
+        // Return the employment status statement with explanation
+        return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer nicht entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.\nBegründung: " + explanationText;
         
       default:
+        // Return an empty string if the input does not match any case
         return "";
     }
-  }
-  const handlePasswordChange =(e:React.ChangeEvent<HTMLInputElement>)=>{
+  };
+  
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Retrieve the input value
     const value = e.target.value;
+    // Update the password state with the new value
     setKennwort(value);
-    updateAttachement("Kennwort",value);
-  }
+    // Update the attachment with the new password value
+    updateAttachement("Kennwort", value);
+  };
+  
+
   // Render the user interface
   return (
     <div>
@@ -161,7 +174,7 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
           <label htmlFor="date">Darmstadt, den </label>
           <input
             type="date"
-            id="date"
+            id="date2"
             name="date"
             value={date} 
             onChange={handleDateChange} 

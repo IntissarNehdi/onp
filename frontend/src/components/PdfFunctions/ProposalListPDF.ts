@@ -216,9 +216,11 @@ export function generatePDF(form1: any, form2: any): void {
       doc.setFontSize(12);
     }
     else if(key==='Erklärung gemäß § 16 Abs. 2 WahlO'){
+      // Set font to bold for the key
       doc.setFont('Helvetica', "bold");
       const keyWidth = doc.getTextWidth(key);
       const centerX = pageWidth / 2 - keyWidth / 2;
+      // Center the text and draw an underline
       doc.text(key, pageWidth / 2 - doc.getTextWidth(key) / 2, yPosition);
       doc.line(pageWidth / 2 - doc.getTextWidth(key) / 2, yPosition + 1, centerX + keyWidth, yPosition + 1); // Adjust the `+1` for proper spacing
 
@@ -226,9 +228,10 @@ export function generatePDF(form1: any, form2: any): void {
       doc.setFont('Helvetica', "normal");
       const wrappedLines = doc.splitTextToSize(normalValue, doc.internal.pageSize.width - margin * 2);
       
+      // Iterate over wrapped lines to check for page breaks and add text accordingly
       wrappedLines.forEach((line: string) => {
         if (yPosition + lineHeight > pageHeight - margin) {
-          doc.addPage();
+          doc.addPage(); // Add new page if needed
           yPosition = 20;
         }
         doc.text(line, margin, yPosition);
@@ -236,24 +239,28 @@ export function generatePDF(form1: any, form2: any): void {
       });
     }
     else{
+      // Check if the key-value pair exceeds page width and needs wrapping
       if (doc.getTextWidth(boldKey + normalValue) + margin * 2 > doc.internal.pageSize.width) {
         const lines = doc.splitTextToSize(normalValue, doc.internal.pageSize.width - margin * 2 - doc.getTextWidth(boldKey));
         
         if (yPosition + lineHeight > pageHeight - margin) {
-          doc.addPage();
+          doc.addPage(); // Add new page if necessary
           yPosition = 20;
         }
         
+        // Print the key in bold
         doc.setFont('Helvetica', "bold");
         doc.text(boldKey, margin, yPosition);
         
+        // Print the first line of the wrapped value on the same line as the key
         doc.setFont('Helvetica', "normal");
         doc.text(lines[0], margin + doc.getTextWidth(boldKey) + spaceBetweenKeyAndValue, yPosition);
         
+        // Print remaining wrapped lines below
         lines.slice(1).forEach((line: string) => {
           yPosition += lineHeight;
           if (yPosition + lineHeight > pageHeight - margin) {
-            doc.addPage();
+            doc.addPage(); // Add a new page if needed
             yPosition = 20;
           }
           doc.text(line, margin, yPosition);
@@ -261,8 +268,9 @@ export function generatePDF(form1: any, form2: any): void {
         
         yPosition += lineHeight;
       } else {
+        // If the key-value pair fits on one line, print normally
         if (yPosition + lineHeight > pageHeight - margin) {
-          doc.addPage();
+          doc.addPage(); // Add a new page if needed
           yPosition = 20;
         }
         

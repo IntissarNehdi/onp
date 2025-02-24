@@ -1,16 +1,16 @@
-import React, { useState } from 'react'; // Import React and the useState hook from React
+import React, { useEffect, useState } from 'react'; // Import React and the useState hook from React
 import './Forms.css' // Import the associated CSS file for styling
 
 interface CommitteesSelectionProps {
   onSelectionChange?: (input1: string) => void;
+  updateErrors:(field:string,error:string)=>void;
 }
 // Main component to handle the selection of committees and related fields
-const CommitteesSelection: React.FC<CommitteesSelectionProps> = ({ onSelectionChange }) => {
+const CommitteesSelection: React.FC<CommitteesSelectionProps> = ({ onSelectionChange,updateErrors}) => {
   // State to store the selected value from the first dropdown
   const [selectedInput1, setSelectedInput1] = useState<string>('');
   // State to store the selected value from the second dropdown (which depends on the first selection)
   const [selectedInput2, setSelectedInput2] = useState<string>('');
-
   // Predefined options for the Wahlfachschaft (elective subject committees)
   const WAHLFACHSCHAFT_OPTION = [
     { value: "Psychologie", label: "Wahlfachschaft Psychologie" },
@@ -53,14 +53,26 @@ const CommitteesSelection: React.FC<CommitteesSelectionProps> = ({ onSelectionCh
     setSelectedInput2('');
     const label = getLabel(value);
     onSelectionChange?.(value + " " + label); // Pass label along with other values
+    
   };
+
+  // Effect hook to validate selection; ensures selectedInput2 is chosen when selectedInput1 requires it, otherwise updates errors.
+  useEffect(() => {
+    if (!selectedInput1 || ! selectedInput2 && (selectedInput1==="dem Fachbereichsrat" 
+      || selectedInput1 ==="der GemeinsameKommission" || selectedInput1==="des Fachbereichs/Studienbereichs") ) {
+      updateErrors("Gremium", "Bitte wählen");
+    }
+  }, [selectedInput1,selectedInput2]); 
 
   // Function to handle changes in the second select dropdown (depends on the first dropdown selection)
   const handleAdditionalSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setSelectedInput2(value); // Set the selected value for the second dropdown
     onSelectionChange?.(selectedInput1+" "+getLabel(selectedInput1)+": "+ e.target.options[e.target.selectedIndex].text );
+    updateErrors("Gremium","");
   };
+
+  // Function to return the appropriate label based on the given input selection.
   const getLabel = (input: string) => {
     switch (input) {
       case "dem Fachbereichsrat":
@@ -76,8 +88,6 @@ const CommitteesSelection: React.FC<CommitteesSelectionProps> = ({ onSelectionCh
 
   return (
     <section className="form-section">
-      
-
       {/* Container for the first dropdown selection (which committee to vote for) */}
       <div className="select-input-container">
         <label htmlFor="selectField">VORSCHLAGSLISTE für die Wahl zu</label>

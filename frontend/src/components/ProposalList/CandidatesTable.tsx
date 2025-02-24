@@ -55,7 +55,7 @@ const CandidatesTable: React.FC<CandidatesTableProps> = ({ onUpdateCandidates}) 
     onUpdateCandidates(numCandidates, candidates);
   }, [numCandidates, candidates]); // Wird ausgeführt, wenn sich numCandidates oder candidates ändern
 
-  // Funktion zum Hinzufügen eines neuen Kandidaten
+  // Function to add a new candidate
   const handleAddSingleCandidate = () => {
     setCandidates(prevCandidates => {
       const updatedCandidates = [
@@ -67,7 +67,7 @@ const CandidatesTable: React.FC<CandidatesTableProps> = ({ onUpdateCandidates}) 
     });
   };
 
-  // Funktion zum Entfernen eines Kandidaten an einem bestimmten Index
+  // Function to remove a candidate at a specific index
   const handleRemoveCandidate = (index: number) => {
     setCandidates(prevCandidates => {
       const updatedCandidates = prevCandidates.filter((_, i) => i !== index);
@@ -76,13 +76,12 @@ const CandidatesTable: React.FC<CandidatesTableProps> = ({ onUpdateCandidates}) 
     });
   };
 
-  // Funktion zur direkten Änderung der Anzahl der Kandidaten
-  const handleNumCandidatesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+// Function to directly modify the number of candidates
+const handleNumCandidatesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
     if (value === "") {
       setNumCandidates("");
-      setCandidates([]); // Liste leeren
+      setCandidates([]); 
       return;
     }
 

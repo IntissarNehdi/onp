@@ -22,6 +22,7 @@ const DateAndSig: React.FC<DateField> = ({ updateDate }) => {
   return value; 
   });
 
+  // Function to handle date input change, update state, and format the date from YYYY-MM-DD to DD-MM-YYYY.
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       setDate(value);
