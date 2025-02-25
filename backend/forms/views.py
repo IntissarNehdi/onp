@@ -17,6 +17,7 @@ def send_emails(request):
             semesterYear=data.get('semesterYear',"").strip()
             trusteePerson=data.get('trusteePerson',"").strip()
             password=data.get('password',"").strip()
+            semester=data.get('semester',"").strip()
 
             base_url = "http://localhost:3000/consent"  # Base URL for the consent page
 
@@ -38,7 +39,7 @@ def send_emails(request):
                         subject='Hochschulwahlen –Einverständniserklärung zur Teilnahme an Vorschlagsliste erforderlich!',  # Email subject
                         message=f"""Guten Tag {first_name} {last_name},
 
-Sie wurden für die Hochschulwahlen im Sommersemester {semesterYear}
+Sie wurden für die Hochschulwahlen im {semester} {semesterYear}
 von der Vertrauensperson {trusteePerson} der Vorschlagsliste {password} 
 zu {selectedCommittee} als kandidierende Person zu der genannten Vorschlagsliste hinzugefügt.
 Um Ihr Einverständnis zu Ihrer Kandidatur zu erklären, klicken Sie bitte auf den folgenden Link

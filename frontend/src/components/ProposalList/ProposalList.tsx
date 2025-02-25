@@ -200,6 +200,7 @@ const sendEmails = async () => {
     const semesterYear = formData["Semesterjahr"];
     const trusteePerson=formData["Name, Vorname"];
     const password = formData["Kennwort der Liste"];
+    const semester = formData["Hochschulwahlen im"];
 
     // Send a POST request to the backend to trigger the email sending process
     const response = await fetch("http://127.0.0.1:8000/send-emails/", {
@@ -207,7 +208,7 @@ const sendEmails = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ candidates: candidatesData, selectedCommittee, semesterYear, trusteePerson, password }), // Send candidate data and selected committee
+      body: JSON.stringify({ candidates: candidatesData, selectedCommittee, semesterYear, trusteePerson, password, semester }), // Send candidate data and selected committee
     });
 
     // Check if the request was successful
