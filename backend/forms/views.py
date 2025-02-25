@@ -14,6 +14,9 @@ def send_emails(request):
             data = json.loads(request.body.decode("utf-8"))
             candidates = data.get('candidates', [])  # Get the list of candidates
             selectedCommittee = data.get('selectedCommittee', "").strip()  # Get the selected committee
+            semesterYear=data.get('semesterYear',"").strip()
+            trusteePerson=data.get('trusteePerson',"").strip()
+            password=data.get('password',"").strip()
 
             base_url = "http://localhost:3000/consent"  # Base URL for the consent page
 
@@ -33,11 +36,12 @@ def send_emails(request):
                     # Send an email to the candidate
                     send_mail(
                         subject='Bestätigung erforderlich: Teilnahme an der Vorschlagsliste',  # Email subject
-                        message=f"""Hallo {first_name} {last_name},
+                        message=f"""Hallo / Guten Tag {first_name} {last_name},
 
-Sie wurden zur Vorschlagsliste von {selectedCommittee} hinzugefügt.
-
-Um Ihre Teilnahme zu bestätigen, klicken Sie bitte auf den folgenden Link:
+Sie wurden für die Hochschulwahlen im Sommersemester {semesterYear}
+von der Vertrauensperson {trusteePerson} der Vorschlagsliste {password} 
+zu {selectedCommittee} als kandidierende Person zu der genannten Vorschlagsliste hinzugefügt.
+Um Ihr Einverständnis zu Ihrer Kandidatur zu erklären, klicken Sie bitte auf den folgenden Link
 
 {consent_link} 
 
