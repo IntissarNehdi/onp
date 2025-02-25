@@ -36,7 +36,7 @@ def send_emails(request):
                     # Send an email to the candidate
                     send_mail(
                         subject='Hochschulwahlen –Einverständniserklärung zur Teilnahme an Vorschlagsliste erforderlich!',  # Email subject
-                        message=f"""Hallo / Guten Tag {first_name} {last_name},
+                        message=f"""Guten Tag {first_name} {last_name},
 
 Sie wurden für die Hochschulwahlen im Sommersemester {semesterYear}
 von der Vertrauensperson {trusteePerson} der Vorschlagsliste {password} 
