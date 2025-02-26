@@ -23,7 +23,7 @@ const LoginPage: React.FC = () => {
     try {
       const response = await simulateBackendRequest();
       saveToLocalStorage('user', JSON.stringify(response.data));
-      window.location.href = '/consent'; // Redirect to dashboard
+      window.location.href = '/proposal'; // Redirect to dashboard
     } catch (error) {
       setErrorMessage('Verbindung zum Server fehlgeschlagen. Bitte versuchen Sie es später erneut.');
     }
