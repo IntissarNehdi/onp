@@ -19,26 +19,29 @@ import ConsentForms from "./components/consentForm/ConsentForms";
 import ProposalList from "./components/ProposalList/ProposalList";
 import { getFromLocalStorage } from "./utils/storageUtils";
 
-// A component to conditionally render Navbar and Footer
+// Layout component to handle Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
-  const showNavbarFooter = location.pathname !== "/login";
+  // Conditionally display the Navbar, but always show the Footer
+  const showNavbar =
+    location.pathname !== "/login" &&
+    location.pathname !== "/consent" &&
+    location.pathname !== "/attachement" &&
+    location.pathname !== "/proposal";
 
   return (
     <>
-      {showNavbarFooter && (
+      {showNavbar && (
         <Navbar brandName="Hochschulwahl" imageScrPath={imagePath} />
       )}
       {children}
-      {showNavbarFooter && <Footer />}
+      <Footer /> {/* Footer is always displayed */}
     </>
   );
 };
 
 function App() {
-  // Create a function to check if the user is logged in
-
   return (
     <UserProvider>
       <Router>
@@ -54,14 +57,11 @@ function App() {
               element={(getFromLocalStorage('user')) ? <ConsentForms /> : <LoginPage />}
             />
             <Route path="/proposal" element={<ProposalList />} />
-
           </Routes>
         </Layout>
       </Router>
     </UserProvider>
   );
 }
-
-
 
 export default App;

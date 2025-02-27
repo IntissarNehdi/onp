@@ -1,38 +1,26 @@
+
 import React, { useState } from 'react';
 import './Forms.css'; 
-import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 import SemesterSelection from './SemesterSelection'; 
 import CommitteesSelection from './CommitteesSelection'; 
 import TrusteePerson from './TrusteePerson'; 
 import CandidatesTable from './CandidatesTable'; 
 import DateAndSig from './DateAndSig'; 
+import { useNavigate } from 'react-router-dom'; 
+import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 import { generatePDF } from '../PdfFunctions/ProposalListPDF';
 import Attachement from './AttachementForm';
 
-// Interface defining the structure of a proposal list for election forms.
-export interface ProposalListInterface {
-  "Hochschulwahlen im": string;
-  "Semesterjahr": string;
-  "Kennwort der Liste" : string;
-  "VORSCHLAGSLISTE für die Wahl zu":string;
-  "Name, Vorname":string;
-  "FB Nr./SB":string;
-  "Anschrift": string;
-  "E-mail Adresse":string;
-  "Telefonnummer" : string;
-  "Anzahl der Kandidierenden":string;
-  "Kandidierenden" : any[];
-  "Darmstadt, den":string;
-}
-// Interface defining the structure of an attachment for election forms.
-export interface AttachementInterface{
-  "Kennwort":string;
-  "Hinweis":string;
-  "Erklärung gemäß § 16 Abs. 2 WahlO":string;
-  "Darmstadt, den":string;
-}
 // Define the ProposalList functional component
 const ProposalList: React.FC = () => {  
+  const navigate = useNavigate();
+  const nextPage = (event: React.FormEvent) => {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    // Navigate to the 'attachement' page
+    navigate('/attachement');
+  };
+
   // State to manage the list of candidates (not directly used in this snippet)
   const [, setCandidates] = useState<any[]>([]);
   // State to store form data for the proposal list, initialized with empty values
@@ -246,18 +234,18 @@ const handleSaveAndSendEmails = async (e: React.FormEvent) => {
         alt="TU_DA Logo"
         className="top-right-image" // Apply CSS class to the image
       />
-      
+
       {/* Title of the page */}
       <h1 className="title">Vorschlagsliste: </h1>
       <h1 className="title">Statusgruppe der Studierenden</h1>
-      
+
       {/* Form for selecting the semester */}
       <form className='nomination-semester'>
         <label>Hochschulwahlen im</label>
         {/* Include SemesterSelection component for selecting the semester */}
         <SemesterSelection updateSemester={updateData} updateErrors={updateErrors}/>
       </form>
-      
+
       {/* Main form for submitting the proposal list */}
       <form className="proposal-form">
         {/* Include CommitteesSelection component for selecting committees */}
@@ -273,12 +261,12 @@ const handleSaveAndSendEmails = async (e: React.FormEvent) => {
         <Attachement updateAttachement={updateAttachementData}/>
         {/* Submit button to go to the next page */}
         <button type="submit" className="submit-button" onClick={handleSaveAndSendEmails}>
-          Abschicken {/* Button text */}
+          Abschicken
         </button>
       </form>
     </div>
   );
 };
- 
+
 // Export the ProposalList component for use in other parts of the app
 export default ProposalList;

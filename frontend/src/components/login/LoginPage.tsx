@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Initialize navigation
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,10 +22,10 @@ const LoginPage: React.FC = () => {
 
     try {
       const response = await simulateBackendRequest();
-      saveToLocalStorage('user', JSON.stringify(response.data))
-      window.location.href = '/consent'; // Redirect to dashboard
+      saveToLocalStorage('user', JSON.stringify(response.data));
+      window.location.href = '/proposal'; // Redirect to dashboard
     } catch (error) {
-      setErrorMessage("Verbindung zum Server fehlgeschlagen. Bitte versuchen Sie es später erneut.");
+      setErrorMessage('Verbindung zum Server fehlgeschlagen. Bitte versuchen Sie es später erneut.');
     }
 
     setIsSubmitting(false);
@@ -34,19 +34,19 @@ const LoginPage: React.FC = () => {
   const simulateBackendRequest = () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        if (Math.random() > 0.3) {  // 70% chance of success
+        if (Math.random() > 0.3) {
           resolve({
             data: {
               firstName: 'Max',
               lastName: 'Mustermann',
               matriculationNumber: '0123456789',
-              department: 'Informatik'
-            } 
+              department: 'Informatik',
+            },
           });
         } else {
           reject(new Error('Connection failed'));
         }
-      }, 1000);  // Simulate network delay
+      }, 1000); // Simulate network delay
     });
   };
 
@@ -58,53 +58,57 @@ const LoginPage: React.FC = () => {
             <img className="main-logo" src="/idp/images/logo.png" alt="Technische Universität Darmstadt" />
             <h1 className="h3 login-title">Identity Provider der Technischen Universität Darmstadt</h1>
           </header>
-          
+
           <section className="login-form">
             <form onSubmit={handleSubmit}>
               <input type="hidden" name="csrf_token" value="_6400de90d158455e83703d984f59ce2d98d3a340" />
-              
-              <legend className="h5 mb-4">
-                Anmelden bei Hochschulwahlwebseite
-              </legend>
+
+              <legend className="h5 mb-4">Anmelden bei Hochschulwahlwebseite</legend>
 
               <div className="mb-3">
-                <label htmlFor="username" className="form-label">Benutzername</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  id="username" 
+                <label htmlFor="username" className="form-label">
+                  Benutzername
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
-              
+
               <div className="mb-3">
-                <label htmlFor="password" className="form-label">Passwort</label>
-                <input 
-                  type="password" 
-                  className="form-control" 
-                  id="password" 
+                <label htmlFor="password" className="form-label">
+                  Passwort
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 
               <div className="mb-3 form-check">
-                <input 
-                  type="checkbox" 
-                  className="form-check-input" 
-                  id="donotcache" 
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="donotcache"
                   checked={doNotCache}
                   onChange={(e) => setDoNotCache(e.target.checked)}
                 />
-                <label className="form-check-label" htmlFor="donotcache">Anmeldung nicht speichern</label>
+                <label className="form-check-label" htmlFor="donotcache">
+                  Anmeldung nicht speichern
+                </label>
               </div>
 
               <div className="mb-3 form-check">
-                <input 
-                  type="checkbox" 
-                  className="form-check-input" 
-                  id="_shib_idp_revokeConsent" 
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="_shib_idp_revokeConsent"
                   checked={revokeConsent}
                   onChange={(e) => setRevokeConsent(e.target.checked)}
                 />
@@ -114,11 +118,7 @@ const LoginPage: React.FC = () => {
               </div>
 
               <div className="d-grid">
-                <button 
-                  type="submit" 
-                  className="btn btn-danger" 
-                  disabled={isSubmitting}
-                >
+                <button type="submit" className="btn btn-danger" disabled={isSubmitting}>
                   {isSubmitting ? 'Anmeldung läuft, bitte warten...' : 'Anmelden'}
                 </button>
               </div>
@@ -129,6 +129,17 @@ const LoginPage: React.FC = () => {
               </div>
             )}
           </section>
+
+          {/* Zurück zur Homepage button */}
+          <div className="mt-4">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => navigate('/')} // Navigate to the homepage
+            >
+              Zurück zur Homepage
+            </button>
+          </div>
         </main>
         <Sidebar />
       </div>
@@ -137,4 +148,3 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
-

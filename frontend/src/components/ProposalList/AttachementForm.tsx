@@ -1,6 +1,7 @@
 // Import React modules and resources
 import React, { useEffect, useState } from 'react';
-import './Forms.css'; 
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import './Forms.css';
 
 
 
@@ -9,10 +10,8 @@ interface AttachementProps {
 }
 // Main component definition for "Attachement"
 const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
-  // State to manage the selected checkbox (either "genderBalance", "employmentStatus", or "none")
+  const navigate = useNavigate(); // Initialize navigate for navigation
   const [selectedCheckbox, setSelectedCheckbox] = useState<'none' | 'genderBalance' | 'employmentStatus'>('none');
-
-  // State to store the date, initialized to today's date
   const [date, setDate] = useState(() => {
   const today = new Date();
   const value = today.toISOString().split('T')[0];
@@ -98,7 +97,6 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
   };
   
 
-  // Render the user interface
   return (
     <div>
       {/* TU Darmstadt logo */}
@@ -118,20 +116,13 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
           />
         </div>
 
-        {/* Description of requirements as per § 16 Abs. 2 WahlO */}
         <div className="form-section">
           <h3>
             Bei der Aufstellung von Wahlvorschlägen sollen Frauen und Männer entsprechend ihrem
-            jeweiligen Anteil in der jeweiligen Statusgruppe angemessen berücksichtigt werden. Für die Gruppe
-            der wissenschaftlichen Mitglieder sollen zusätzlich unbefristet und befristet Beschäftigte
-            entsprechend ihrem Anteil in der Gruppe angemessen berücksichtigt werden. Eine entsprechende
-            Erklärung, dass diese Anforderungen erfüllt sind oder eine Begründung für die Abweichung ist
-            schriftlich dem Wahlvorschlag beizufügen (§ 16 Abs. 2 WahlO). Die Erklärung wird bei Zulassung des
-            Wahlvorschlages mit der Bekanntmachung der Zulassung veröffentlicht (§ 18 Abs. 10 WahlO).
+            jeweiligen Anteil in der jeweiligen Statusgruppe angemessen berücksichtigt werden...
           </h3>
         </div>
 
-        {/* Checkbox selection and optional text area for justification */}
         <div className="form-section">
           <h2>Erklärung gemäß § 16 Abs. 2 WahlO </h2>
           <div className="sentence">
@@ -141,7 +132,7 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
                 checked={selectedCheckbox === 'genderBalance'}
                 onChange={() => handleCheckboxChange('genderBalance')}
               />
-              Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer entsprechend ihrem  
+              Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer entsprechend ihrem
               jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.
             </label>
           </div>
@@ -152,9 +143,9 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
                 checked={selectedCheckbox === 'employmentStatus'}
                 onChange={() => handleCheckboxChange('employmentStatus')}
               />
-              Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer nicht entsprechend  
+              Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer nicht entsprechend
               ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.
-            </label>    
+            </label>
             {selectedCheckbox === 'employmentStatus' && (
               <textarea
                 name="employmentStatus"
@@ -168,7 +159,6 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
           </div>
         </div>
 
-        {/* Date and signature fields */}
         <section className="signature-section">
           <label htmlFor="date">Darmstadt, den </label>
           <input
@@ -182,13 +172,18 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
         </section>
         <section className="signature-section-attachement">
           <label htmlFor="signature">Unterschrift der Vertrauensperson: </label>
-          <input
-            type="text"
-            id="signature"
-            disabled
-          />
+          <input type="text" id="signature" disabled />
         </section>
       </div>
+
+      {/* Zurück button */}
+      <button
+        type="button"
+        className="back-button"
+        onClick={() => navigate(-1)} // Navigate back to the previous page
+      >
+        Zurück
+      </button>
     </div>
   );
 };
