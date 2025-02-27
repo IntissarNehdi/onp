@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { jsPDF } from 'jspdf';
 import tudaLogo from '../../assets/tuda_logo.jpg';
 

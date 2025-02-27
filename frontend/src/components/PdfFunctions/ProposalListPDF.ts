@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import tudaLogo from '../../assets/tuda_logo.jpg';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function generatePDF(form1: any, form2: any): void {
   const doc = new jsPDF();
   const margin = 10; // Margin for text placement
@@ -112,6 +113,7 @@ export function generatePDF(form1: any, form2: any): void {
     
         // Draw each row with alternate row coloring
         doc.setFont("helvetica", "normal");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         candidates.forEach((candidate: any, index: number) => {
           if (tableY + lineHeight > pageHeight - margin) {
             doc.addPage();

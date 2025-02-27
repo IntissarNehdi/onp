@@ -18,7 +18,6 @@ import Dashboard from "./components/login/Dashboard";
 import ConsentForms from "./components/consentForm/ConsentForms";
 import ProposalList from "./components/ProposalList/ProposalList";
 import { getFromLocalStorage } from "./utils/storageUtils";
-import AttachementForm from "./components/ProposalList/AttachementForm";
 
 // A component to conditionally render Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -54,7 +53,6 @@ function App() {
               path="/consent"
               element={(getFromLocalStorage('user')) ? <ConsentForms /> : <LoginPage />}
             />
-            <Route path="/attachement" element={<AttachementForm />} />
             <Route path="/proposal" element={<ProposalList />} />
 
           </Routes>

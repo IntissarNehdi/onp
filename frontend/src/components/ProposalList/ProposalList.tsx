@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
 import './Forms.css'; 
-<<<<<<< HEAD
-=======
 import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
->>>>>>> origin/electionList
 import SemesterSelection from './SemesterSelection'; 
 import CommitteesSelection from './CommitteesSelection'; 
 import TrusteePerson from './TrusteePerson'; 
 import CandidatesTable from './CandidatesTable'; 
 import DateAndSig from './DateAndSig'; 
-<<<<<<< HEAD
-import { useNavigate } from 'react-router-dom'; 
-import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
-=======
 import { generatePDF } from '../PdfFunctions/ProposalListPDF';
 import Attachement from './AttachementForm';
->>>>>>> origin/electionList
 
 // Interface defining the structure of a proposal list for election forms.
 export interface ProposalListInterface {

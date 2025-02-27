@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import './Forms.css' 
-<<<<<<< HEAD
 import { getFromLocalStorage } from '../../utils/storageUtils';
 import { User } from '../../types/User';
-import { getTUMailFromName } from '../../utils/userUtils';
-=======
 interface TrusteePersonInfo {
   updateTrustee: (field: 'Name, Vorname' | 'FB Nr./SB' | 'Anschrift' | 'E-mail Adresse' | 'Telefonnummer' , value: string) => void;
   updateErrors:(field:string, error:string)=>void;
@@ -23,7 +20,6 @@ const TrusteePerson: React.FC<TrusteePersonInfo> = ({ updateTrustee, updateError
 
   const [phoneNumber, setPhoneNumber] = useState(''); // State for storing the phone number input
   const [errorPhone, setPhoneError] = useState(''); // State for storing the error message related to phone number validation
->>>>>>> origin/electionList
 
 
   // Array of options for Wahlfachschaft (elective faculties)
@@ -182,19 +178,11 @@ const handleEmailAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         <label htmlFor="trusteeName" style={{ textAlign: 'left' }}>
           Vorname {/* Label for trustee name */}
         </label>
-<<<<<<< HEAD
-        <input type="text" value={user?.firstName} id="trusteeName" required disabled/> {/* Input for name */}
-        <label htmlFor="trusteeName" style={{ textAlign: 'left' }}>
-          Nachname{/* Label for trustee name */}
-        </label>
-        <input type="text" value={user?.lastName} id="trusteeName" required disabled/> {/* Input for name */}
-=======
         <input type="text" 
         id="trusteeName" 
         placeholder="Name, Vorname" 
         onChange={handleNameChange}
         required /> {/* Input for name */}
->>>>>>> origin/electionList
 
         {/* Fachbereich/Studienbereich selection dropdown */}
         <label htmlFor="fbSb" style={{ textAlign: 'left' }}>
@@ -248,15 +236,11 @@ const handleEmailAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         <label htmlFor="email" style={{ textAlign: 'left' }} >
           E-mail Adresse
         </label>
-<<<<<<< HEAD
-        <input type="email" id="email" placeholder="E-Mail" required value={getTUMailFromName(user.firstName, user.lastName)} disabled /> {/* Input for email */}
-=======
         <input type="email" 
         id="email" 
         placeholder="E-Mail" 
         onChange={handleEmailAddressChange}
         required /> {/* Input for email */}
->>>>>>> origin/electionList
 
         {/* Phone number input field */}
         <label htmlFor="tel" style={{ textAlign: 'left' }}>

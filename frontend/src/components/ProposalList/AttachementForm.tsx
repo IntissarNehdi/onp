@@ -1,10 +1,6 @@
 // Import React modules and resources
 import React, { useEffect, useState } from 'react';
 import './Forms.css'; 
-<<<<<<< HEAD
-=======
-import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
->>>>>>> origin/electionList
 
 
 
@@ -82,9 +78,9 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
         
       case 'employmentStatus':
         // Retrieve explanation text if available; otherwise, return a default message
-        const explanationText = explanation[input] || "Keine Erklärung angegeben.";
+        { const explanationText = explanation[input] || "Keine Erklärung angegeben.";
         // Return the employment status statement with explanation
-        return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer nicht entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.\nBegründung: " + explanationText;
+        return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer nicht entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.\nBegründung: " + explanationText; }
         
       default:
         // Return an empty string if the input does not match any case
