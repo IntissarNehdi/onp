@@ -36,6 +36,7 @@ body {
 h2 {
   text-align: center;
   text-decoration: underline;
+  font-size: 1.5rem;
 }
 
 /* Styling for label within sentence class */
@@ -56,12 +57,12 @@ label {
   color: #407ff4;
   font-size: 2rem;
   margin-bottom: 1.5rem;
+  margin-top: 5%;
 }
 
 /* Styling for the nomination semester section */
 .nomination-semester {
   text-align: left;
-  margin-top: 5rem;
 }
 
 /* Layout for the proposal form */
@@ -81,15 +82,19 @@ label {
 
 /* Header inside form sections */
 .form-section h3 {
-  font-weight: lighter;
-  border: 2px solid #ccc;
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 0px;
-  line-height: 1.6;
-  background-color: #f9f9f9;
-  color: #333;
-  text-align: left;
+  width: 95%; /* 95% width */
+  max-width: 1000px; /* Max width of 1000px */
+  margin: 2rem auto; /* Centers with margin */
+  padding: 1rem; /* Padding */
+  border: 2px solid #ccc; /* Border styling */
+  border-radius: 0px; /* No border radius */
+  font-size: 1.2rem; /* Font size */
+  line-height: 1.5; /* Line height */
+  background-color: #f9f9f9; /* Light background */
+  color: #333; /* Dark text color */
+  text-align: left; /* Align text to the left */
+  margin-bottom: 1rem; /* Bottom margin */
+  display: block; /* Display as block */
 }
 
 /* Styling for input and textarea elements */
@@ -272,19 +277,33 @@ input[type="checkbox"] {
 /* Signature section layout */
 .signature-section {
   display: flex;
-  align-items: center;
+  align-items: left;
   gap: 10px;
 }
-
+.signature-section-attachement{
+  display: flex;
+  align-items: left;
+  gap: 10px;
+}
 /* Styling for the date input field */
-#date {
+.signature-section #date {
   width: auto;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 1rem;
+  margin-top: 0%;
+  
 }
-
+.signature-section-attachement #date {
+  width: auto;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-top: 0%;
+  
+}
 /* Styling for signature field */
 #signature {
   width: 200px;

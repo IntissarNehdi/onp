@@ -1,62 +1,64 @@
 // Import React modules and resources
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Forms.css'; 
+<<<<<<< HEAD
+=======
+import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
+>>>>>>> origin/electionList
 
+
+
+interface AttachementProps {
+  updateAttachement: (field: "Kennwort" | "Hinweis" |"Erklärung gemäß § 16 Abs. 2 WahlO" | "Darmstadt, den" , value: string) => void;
+}
 // Main component definition for "Attachement"
-const Attachement = () => {
+const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
   // State to manage the selected checkbox (either "genderBalance", "employmentStatus", or "none")
   const [selectedCheckbox, setSelectedCheckbox] = useState<'none' | 'genderBalance' | 'employmentStatus'>('none');
 
   // State to store the date, initialized to today's date
   const [date, setDate] = useState(() => {
-    const today = new Date();
-    return today.toISOString().split('T')[0]; // ISO-formatted date as YYYY-MM-DD
+  const today = new Date();
+  const value = today.toISOString().split('T')[0];
+  // Extract the day, month, and year
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // getMonth() is zero-based
+  const year = today.getFullYear();
+
+  // Format the date as DD/MM/YYYY
+  const formattedDate = `${day}/${month}/${year}`;
+
+  // Update the date with the new format
+  updateAttachement('Darmstadt, den', formattedDate);   
+  return value; // ISO-formatted date as YYYY-MM-DD
   });
- 
-  // State to store the explanation for the selected checkbox
-  const [explanation, setExplanation] = useState({
-    genderBalance: '',
-    employmentStatus: ''
-  });
-  
   // State to store the "Kennwort"
   const [kennwort, setKennwort] = useState('');
-  
+  const [explanation, setExplanation] = useState({
+    genderBalance: "",
+    employmentStatus: "",
+  });
+  useEffect(() => {
+    if (selectedCheckbox !== 'none') {
+      updateAttachement("Erklärung gemäß § 16 Abs. 2 WahlO", getSelectedPhrase(selectedCheckbox));
+    }
+  }, [selectedCheckbox, explanation]);
   // Handler to update the explanation based on textarea input
   const handleExplanationChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setExplanation({
-      ...explanation,
-      [event.target.name]: event.target.value
-    });
+    const { name, value } = event.target;
+    setExplanation((prev) => ({
+      ...prev,
+      [name]: value, // Dynamically update the correct key
+    }));
   };
+  
   
   // Handler to toggle checkbox selection
   const handleCheckboxChange = (checkbox: 'genderBalance' | 'employmentStatus') => {
     setSelectedCheckbox(selectedCheckbox === checkbox ? 'none' : checkbox);
-  };
+    updateAttachement("Erklärung gemäß § 16 Abs. 2 WahlO", getSelectedPhrase(checkbox));
+    };
   
-  // Handler to validate and process the form submission
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent default form behavior
-
-    // Validation before submission
-    if (!kennwort) {
-      alert('Bitte geben Sie das Kennwort ein!');
-      return;
-    }
-    if (selectedCheckbox === 'none') {
-      alert('Bitte wählen Sie eine der Checkboxen aus!');
-      return;
-    }
-    if (!date) {
-      alert('Bitte wählen Sie ein Datum aus!');
-      return;
-    }
-
-    // Log form values to the console
-    console.log('Formular abgesendet', { kennwort, explanation, date });
-  };
-
   // Handler to update the date
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value;
@@ -65,17 +67,50 @@ const Attachement = () => {
     } else {
       alert('Das Datum darf nicht leer sein!');
     }
+    // Convert YYYY-MM-DD to DD-MM-YYYY
+    const [year, month, day] = newDate.split('-');
+    const formattedDate = `${day}/${month}/${year}`;
+    updateAttachement("Darmstadt, den", formattedDate);
   };
+
+  const getSelectedPhrase = (input: string) => {
+    // Switch case to return specific phrases based on the input type
+    switch (input) {
+      case 'genderBalance':
+        // Return the gender balance statement
+        return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.";
+        
+      case 'employmentStatus':
+        // Retrieve explanation text if available; otherwise, return a default message
+        const explanationText = explanation[input] || "Keine Erklärung angegeben.";
+        // Return the employment status statement with explanation
+        return "Bei der Aufstellung des Wahlvorschlages wurden Frauen und Männer nicht entsprechend ihrem jeweiligen Anteil in der Statusgruppe angemessen berücksichtigt.\nBegründung: " + explanationText;
+        
+      default:
+        // Return an empty string if the input does not match any case
+        return "";
+    }
+  };
+  
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Retrieve the input value
+    const value = e.target.value;
+    // Update the password state with the new value
+    setKennwort(value);
+    // Update the attachment with the new password value
+    updateAttachement("Kennwort", value);
+  };
+  
 
   // Render the user interface
   return (
-    <div className="proposal-list-container">
+    <div>
       {/* TU Darmstadt logo */}
       <img src="" alt="TU_DA Logo" className="top-right-image" />
       <h1 className="title">Anlage zur Vorschlagsliste</h1>
 
       {/* Form for user input */}
-      <form onSubmit={handleSubmit} className="proposal-form">
+      <div className="proposal-form">
         {/* Input field for "Kennwort" */}
         <div className="form-section">
           <label>Kennwort:</label>
@@ -83,7 +118,7 @@ const Attachement = () => {
             type="text"
             name="kennwort"
             value={kennwort}
-            onChange={(e) => setKennwort(e.target.value)}
+            onChange={handlePasswordChange}
           />
         </div>
 
@@ -126,8 +161,8 @@ const Attachement = () => {
             </label>    
             {selectedCheckbox === 'employmentStatus' && (
               <textarea
-                name="genderBalance"
-                value={explanation.genderBalance}
+                name="employmentStatus"
+                value={explanation.employmentStatus}
                 onChange={handleExplanationChange}
                 placeholder="Bitte geben Sie Ihre Begründung ein..."
                 rows={4}
@@ -142,14 +177,14 @@ const Attachement = () => {
           <label htmlFor="date">Darmstadt, den </label>
           <input
             type="date"
-            id="date"
+            id="date2"
             name="date"
             value={date} 
             onChange={handleDateChange} 
             required
           />
         </section>
-        <section className="signature-section">
+        <section className="signature-section-attachement">
           <label htmlFor="signature">Unterschrift der Vertrauensperson: </label>
           <input
             type="text"
@@ -157,12 +192,7 @@ const Attachement = () => {
             disabled
           />
         </section>
-
-        {/* Submit button */}
-        <button type="submit" className="submit-button">
-          Abschicken
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

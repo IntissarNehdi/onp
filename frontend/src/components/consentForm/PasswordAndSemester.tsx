@@ -6,15 +6,21 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import './ConsentForms.css';
 
-// Define the functional component 'KennwortSemester'
-const PasswordAndSemester: React.FC = () => {
+// Define interface for component props
+interface PasswordAndSemesterField {
+  updatePasswordAndSemester: (field: 'Kennwort'| 'für die Wahl im'  |'Semesterjahr'| 'zu', value: string) => void;
+  updateErrors: (field: string, error: string) => void;
+}
+
+// Define the functional component 'PasswordAndSemester'
+const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswordAndSemester, updateErrors }) => {
   
   // State variable to store the password entered by the user
   const [listPassword, setListPassword] = useState('');
   
   // State variable to store the selected semester type (Winter or Summer)
-  const [semester, setSemester] = useState("winterSemester");
-  
+  const [semester, setSemester] = useState('Sommersemester');
+
   // State variable to store the semester year entered by the user
   const [semesterYear, setSemesterYear] = useState<string>('');
   
@@ -23,78 +29,83 @@ const PasswordAndSemester: React.FC = () => {
 
   // Event handler to update the semester state when the user selects a new semester type
   const handleSemesterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSemester(event.target.value); // Set the selected semester
+    const value = event.target.value;
+    setSemester(value); // Set the selected semester
     setSemesterYear(""); // Reset the semester year when semester changes
+    setSemesterYearError("");
+  };
+
+  // Event handler to update password field and sync with parent state
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setListPassword(value); // Set the password input
+    updatePasswordAndSemester('Kennwort', value);
   };
   
   // Event handler to validate and update the semester year input
   const handleSemesterYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.trim();
+    let errorMessage = "";
     
-    // Define regular expressions for validating the semester year based on the selected semester
     let semesterYearPattern: RegExp;
     
-    // If the selected semester is "winterSemester"
-    if (semester === "winterSemester") {
-      semesterYearPattern = /^\d{4}\/(\d{2}|\d{4})$/; // Allow year formats like "2024/25" or "2024/2025"
-    } else if (semester === "sommerSemester") {
-      semesterYearPattern = /^\d{4}$/; // Allow only a 4-digit year for summer semester
+    // Set regex pattern based on selected semester type
+    if (semester === "Wintersemester") {
+      semesterYearPattern = /^\d{4}\/(\d{2}|\d{4})$/;
+    } else if (semester === "Sommersemester") {
+      semesterYearPattern = /^\d{4}$/;
     } else {
-      semesterYearPattern = /^\s*$/; // No pattern for empty semester selection
+      semesterYearPattern = /^\s*$/;
     }
-    
-    setSemesterYear(value); // Update the semester year value
-    
-    // Validate the semester year input against the pattern
-    if (semesterYearPattern.test(value)) {
-      // Additional validation for winter semester (check if end year is valid)
-      if (semester === "winterSemester") {
+  
+    setSemesterYear(value);
+  
+    // Validate input based on semester type
+    if (value === "") {
+      errorMessage = "";  // Clear the error if the semester year is empty
+    } else if (semesterYearPattern.test(value)) {
+      if (semester === "Wintersemester") {
         const [startYear, endYear] = value.split("/").map(Number);
         if (
-          (String(endYear).length === 2 && endYear === startYear % 100 + 1) || 
-          (String(endYear).length === 4 && endYear === startYear + 1) 
+          (String(endYear).length === 2 && endYear === startYear % 100 + 1) ||
+          (String(endYear).length === 4 && endYear === startYear + 1)
         ) {
-          setSemesterYearError(""); // Clear error if valid
+          errorMessage = "";  // No error for valid Wintersemester
         } else {
-          setSemesterYearError("Ungültige Semesterjahre für das Wintersemester."); // Show error for invalid year range
+          errorMessage = "Ungültige Semesterjahre für das Wintersemester.";
         }
-      } else {
-        setSemesterYearError(""); // Clear error for summer semester
       }
     } else {
-      // Set an error message if the input doesn't match the expected format
-      setSemesterYearError(
-        semester === "winterSemester"
+      errorMessage =
+        semester === "Wintersemester"
           ? 'Das Semesterjahr muss im Format "YYYY/YY" oder "YYYY/YYYY" für Wintersemester vorliegen.'
-          : 'Das Semesterjahr muss im Format "YYYY" für Sommersemester vorliegen.'
-      );
+          : 'Das Semesterjahr muss im Format "YYYY" für Sommersemester vorliegen.';
     }
+  
+    setSemesterYearError(errorMessage);
+    updatePasswordAndSemester("für die Wahl im", semester);
+    updatePasswordAndSemester("Semesterjahr", value);
+    updateErrors("Semesterjahr", errorMessage);
   };
-  
-  // Static values for conditional input text
-  const selectedInput1: string = "der Universitätssammelung"; 
-  const selectedInput2: string = "CE-Computational Engineering"; 
 
-  // State variables for dynamic text inputs
-  const [input1, setInput1] = useState<string>("");
-  const [input2, setInput2] = useState<string>("");
-  
-  // useEffect hook to update input fields based on the selected input
+  // State variable to store selected committee from URL parameters
+  const [selectedCommittee, setSelectedCommittee] = useState<string>("");
+
   useEffect(() => {
-    setInput1(selectedInput1); // Set input1 to the predefined value
-    
-    // Conditional logic to set input2 based on input1's value
-    if (
-      selectedInput1 === "dem Fachbereichsrat" ||
-      selectedInput1 === "der gemeinsamen Kommision" ||
-      selectedInput1 === "der Fachschaftsrat"
-    ) {
-      setInput2(selectedInput2); // Set input2 if conditions match
-    } else {
-      setInput2(""); // Reset input2 if conditions don't match
-    }
-  }, [selectedInput1, selectedInput2]); // Effect runs when selectedInput1 or selectedInput2 changes
-
+      // Extract committee from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const committee = urlParams.get("committee");
+  
+      setSelectedCommittee(committee || ""); // If empty, remain empty
+  }, []); // Runs only once on component mount
+  
+  useEffect(() => {
+      if (selectedCommittee) {
+          // Update committee selection in parent state when it changes
+          updatePasswordAndSemester("zu", selectedCommittee);
+      }
+  }, [selectedCommittee]); // Runs when selectedCommittee changes
+  
   // JSX return statement to render the component UI
   return(
     <div className="container">
@@ -103,36 +114,35 @@ const PasswordAndSemester: React.FC = () => {
       
       <div className="form-section">
         <div className="centered-container">
-          {/* Label and input field for the password */}
+          {/* Input field for password */}
           <label className="paragraph">Kennwort: (muss mit dem Kennwort auf der Vorschlagsliste übereinstimmen)</label>
           <input
             required
             type="text"
-            value={listPassword} // Bind the value to the listPassword state
-            onChange={(e) => setListPassword(e.target.value)} // Update state on change
-            placeholder="Kennwort eintragen" // Placeholder text
+            value={listPassword}
+            onChange={handlePasswordChange}
+            placeholder="Kennwort eintragen"
           />
         </div>
       </div>
       
-      {/* Radio buttons for selecting semester type (Winter or Summer) */}
+      {/* Radio buttons for semester selection */}
       <div className="horizontal-alignment">
         <label>für die Wahl im: </label>
         <FormControl className="semester-choice" required>
           <RadioGroup
             row
-            aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            value={semester} // Bind the value to the semester state
-            onChange={handleSemesterChange} // Update the state when the semester changes
+            value={semester}
+            onChange={handleSemesterChange}
           >
-            <FormControlLabel value="winterSemester" control={<Radio />} label="Wintersemester" />
-            <FormControlLabel value="sommerSemester" control={<Radio />} label="Sommersemester" />
+            <FormControlLabel value="Wintersemester" control={<Radio />} label="Wintersemester" />
+            <FormControlLabel value="Sommersemester" control={<Radio />} label="Sommersemester" />
           </RadioGroup>
         </FormControl>
       </div>
 
-      {/* Conditional input field for semester year based on the selected semester */}
+      {/* Input field for semester year with validation */}
       {semester && (
         <section className="form-section horizontal-alignment">
           <label htmlFor="semesterYear">Semesterjahr:</label>
@@ -140,26 +150,16 @@ const PasswordAndSemester: React.FC = () => {
             required
             type="text"
             id="semesterYear"
-            value={semesterYear} // Bind the value to the semesterYear state
-            onChange={handleSemesterYearChange} // Handle changes to the semester year input
-            placeholder={semester === "winterSemester" ? "z. B. 2024/25" : "z. B. 2024"} // Placeholder based on semester type
+            value={semesterYear}
+            onChange={handleSemesterYearChange}
+            placeholder={semester === "Wintersemester" ? "z. B. 2024/25" : "z. B. 2024"}
           />
-          {/* Display error message if there is any error */}
-          {semesterYearError && (
-            <p className="error-message">{semesterYearError}</p>
-          )}
+          {semesterYearError && <p className="error-message">{semesterYearError}</p>}
         </section>
       )}
 
-      {/* Conditional label display based on input2 */}
       <div className="horizontal-alignment">
-        {input2 ? (
-          <label>
-            zu {input1} Studienbereich: {input2} einverstanden.
-          </label>
-        ) : (
-          <label>zu {input1} einverstanden.</label>
-        )}
+        <label>zu {selectedCommittee} einverstanden.</label>
       </div>
     </div>
   );

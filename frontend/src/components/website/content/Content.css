@@ -14,8 +14,20 @@ body {
   background-color: white;
 }
 
+<<<<<<< HEAD
 
 
+=======
+/* General Section Styling */
+section {
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* Vertically center content */
+  margin-bottom: 40px;  /* Space between sections */
+}
+>>>>>>> origin/electionList
 
 h1, h2 {
   font-weight: bold;

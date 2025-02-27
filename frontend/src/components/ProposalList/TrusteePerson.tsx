@@ -1,15 +1,30 @@
 import React, { useState } from 'react';
 import './Forms.css' 
+<<<<<<< HEAD
 import { getFromLocalStorage } from '../../utils/storageUtils';
 import { User } from '../../types/User';
 import { getTUMailFromName } from '../../utils/userUtils';
+=======
+interface TrusteePersonInfo {
+  updateTrustee: (field: 'Name, Vorname' | 'FB Nr./SB' | 'Anschrift' | 'E-mail Adresse' | 'Telefonnummer' , value: string) => void;
+  updateErrors:(field:string, error:string)=>void;
+}
+const TrusteePerson: React.FC<TrusteePersonInfo> = ({ updateTrustee, updateErrors}) =>  {
+  const [, setName] = useState<string>(''); // State for storing the name input (not directly used in the component)
+  const [, setEmail] = useState<string>(''); // State for storing the email input (not directly used in the component)
 
-const TrusteePerson = () => {
-  const [selectedFbSb, setSelectedFbSb] = useState<string>(''); // State for selected Fachbereich (FB) or Studienbereich (SB)
-  const [address, setAddress] = useState(''); // State for address input
-  const [addressError, setAddressError] = useState(''); // State for error message related to address validation
-  const [phoneNumber, setPhoneNumber] = useState(''); // State for phone number input
-  const [errorPhone, setPhoneError] = useState(''); // State for error message related to phone number validation
+  const [selectedFbSb, setSelectedFbSb] = useState<string>(''); // State for storing the selected Fachbereich (FB) or Studienbereich (SB)
+
+  const [street, setStreet] = useState(''); // State for storing the street address input
+  const [postalCode, setPostalCode] = useState(''); // State for storing the postal code input
+  const [city, setCity] = useState(''); // State for storing the city input
+
+  const [addressError, setAddressError] = useState(''); // State for storing the error message related to address validation
+
+  const [phoneNumber, setPhoneNumber] = useState(''); // State for storing the phone number input
+  const [errorPhone, setPhoneError] = useState(''); // State for storing the error message related to phone number validation
+>>>>>>> origin/electionList
+
 
   // Array of options for Wahlfachschaft (elective faculties)
   const WAHLFACHSCHAFT_OPTION = [
@@ -51,50 +66,106 @@ const TrusteePerson = () => {
 
   // Function to handle the change in Fachbereich/Studienbereich selection
   const handleFbSbChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedFbSb(e.target.value); 
+    const value = e.target.value;
+    setSelectedFbSb(value); 
+    updateTrustee("FB Nr./SB",e.target.options[e.target.selectedIndex].text);
   };
 
-  // Function to handle the change in address input and validate the format
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Function to handle changes in the street input field
+const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    setStreet(value);
+    validateAddress(value, postalCode, city); // Validate address with updated street value
+};
 
-    // Regular expression pattern for validating the address
-    const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}, \d{4,10} [A-Za-zÄäÖöÜüß]+(?:, [A-Za-zÄäÖöÜüß0-9\s]+)?$/;
+// Function to handle changes in the postal code input field
+const handlePostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPostalCode(value);
+    validateAddress(street, value, city); // Validate address with updated postal code
+};
 
-    setAddress(value); 
+// Function to handle changes in the city input field
+const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCity(value);
+    validateAddress(street, postalCode, value); // Validate address with updated city value
+};
 
-    // If the address matches the pattern, clear error; otherwise, show error message
-    if (addressPattern.test(value)) {
-        setAddressError(''); 
-    } else {
-        setAddressError(
-            'Die Anschrift muss im Format "Straßenname Hausnummer, PLZ Wohnort, Zusatz(optional)" vorliegen.'
-        );
+// Function to validate the address input (street, postal code, city)
+const validateAddress = (street: string, postalCode: string, city: string) => {
+    const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/; // Pattern for street validation (e.g., "Musterstraße 123")
+    const postalPattern = /^\d{4,10}$/; // Pattern for postal code validation (4-10 digits)
+    const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/; // Pattern for city validation (letters only)
+
+    let error = "";
+
+    // If all address fields are empty, clear the error and reset the trustee's address field
+    if (street + postalCode + city === "") {  
+        setAddressError(error);
+        updateErrors("Anschrift", error);
+        updateTrustee("Anschrift", "");
+        return;
     }
+
+    // Validate the street, postal code, and city fields based on their respective patterns
+    if (!addressPattern.test(street)) {
+        error = "Ungültiges Straßenformat. Beispiel: 'Musterstraße 123'.";
+    } else if (!postalPattern.test(postalCode)) {
+        error = "Ungültiges Postleitzahlformat. Nur Zahlen erlaubt (4-10 Stellen).";
+    } else if (!cityPattern.test(city)) {
+        error = "Ungültiges Ortsformat. Nur Buchstaben erlaubt.";
+    }
+
+    // Update error states and the trustee's address field
+    setAddressError(error);
+    updateErrors("Anschrift", error);
+    updateTrustee("Anschrift", `${street}, ${postalCode} ${city}`);
+};
+
+// Function to handle changes in the name input field
+const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setName(value);
+    updateTrustee("Name, Vorname", value); // Update trustee's name field
+};
+
+// Function to handle changes in the email address input field
+const handleEmailAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    updateTrustee("E-mail Adresse", value); // Update trustee's email field
 };
 
   // Function to handle the change in phone number input and validate the format
   const handlePhoneNumberChange = (e: { target: { value: any } }) => {
     let input = e.target.value;
-
+    let errorMessage = ""; 
+  
     // Allow only numbers, spaces, and specific characters like +, -, and ()
     input = input.replace(/[^0-9+\-\s()]/g, '');
-
+  
     setPhoneNumber(input); 
-
+    updateTrustee("Telefonnummer", input);
+  
     // Validate phone number length and format
     if (input.length < 7 || !/^\+?[0-9\s\-()]+$/.test(input)) {
-      setPhoneError('Bitte geben Sie eine gültige Telefonnummer ein.'); 
-    } else {
-      setPhoneError(''); 
+      errorMessage = 'Bitte geben Sie eine gültige Telefonnummer ein.';  // Set the error message
     }
+  
+    setPhoneError(errorMessage); 
+    updateErrors("Telefonnummer", errorMessage);
   };
+  
 
   // Function to validate phone number when input loses focus
   const validatePhoneNumberOnBlur = () => {
+    let errorMessage="";
     if (phoneNumber && phoneNumber.length < 7) {
-      setPhoneError('Eine Telefonnummer muss mindestens 7 Zeichen lang sein.'); 
+      errorMessage = 'Eine Telefonnummer muss mindestens 7 Zeichen lang sein.';
     }
+    setPhoneError(errorMessage);
+    updateErrors("Telefonnummer", errorMessage);
   };
   const user = JSON.parse(getFromLocalStorage('user') as string) as User;
 
@@ -111,11 +182,19 @@ const TrusteePerson = () => {
         <label htmlFor="trusteeName" style={{ textAlign: 'left' }}>
           Vorname {/* Label for trustee name */}
         </label>
+<<<<<<< HEAD
         <input type="text" value={user?.firstName} id="trusteeName" required disabled/> {/* Input for name */}
         <label htmlFor="trusteeName" style={{ textAlign: 'left' }}>
           Nachname{/* Label for trustee name */}
         </label>
         <input type="text" value={user?.lastName} id="trusteeName" required disabled/> {/* Input for name */}
+=======
+        <input type="text" 
+        id="trusteeName" 
+        placeholder="Name, Vorname" 
+        onChange={handleNameChange}
+        required /> {/* Input for name */}
+>>>>>>> origin/electionList
 
         {/* Fachbereich/Studienbereich selection dropdown */}
         <label htmlFor="fbSb" style={{ textAlign: 'left' }}>
@@ -142,12 +221,26 @@ const TrusteePerson = () => {
           Anschrift
         </label>
         <input
-          required
-          type="text"
-          value={address}
-          onChange={handleAddressChange} 
-          placeholder="Straßenname Hausnummer, PLZ Wohnort" 
-        />
+            required
+            type="text"
+            value={street} // Bind the value to semesterAddress state
+            onChange={handleStreetChange} // Update semester address on input change
+            placeholder="Straßenname Hausnummer" 
+          />
+          <input
+            required
+            type="text"
+            value={postalCode} // Bind the value to semesterAddress state
+            onChange={handlePostalCodeChange} // Update semester address on input change
+            placeholder="PLZ" 
+          />
+          <input
+            required
+            type="text"
+            value={city} // Bind the value to semesterAddress state
+            onChange={handleCityChange} // Update semester address on input change
+            placeholder="Wohnort" 
+          />
         {/* Displaying error message if the address format is invalid */}
         {addressError && <p className="error-message">{addressError}</p>}
 
@@ -155,7 +248,15 @@ const TrusteePerson = () => {
         <label htmlFor="email" style={{ textAlign: 'left' }} >
           E-mail Adresse
         </label>
+<<<<<<< HEAD
         <input type="email" id="email" placeholder="E-Mail" required value={getTUMailFromName(user.firstName, user.lastName)} disabled /> {/* Input for email */}
+=======
+        <input type="email" 
+        id="email" 
+        placeholder="E-Mail" 
+        onChange={handleEmailAddressChange}
+        required /> {/* Input for email */}
+>>>>>>> origin/electionList
 
         {/* Phone number input field */}
         <label htmlFor="tel" style={{ textAlign: 'left' }}>

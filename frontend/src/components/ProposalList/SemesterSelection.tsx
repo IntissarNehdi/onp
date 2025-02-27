@@ -6,59 +6,78 @@ import {
   Radio
 } from '@mui/material';
 import './Forms.css' 
-
-const SemesterSelection: React.FC = () => {
+interface PasswordAndSemesterField {
+  updateSemester: (field: 'Hochschulwahlen im' | 'Semesterjahr' | 'Kennwort der Liste' , value: string) => void;
+  updateErrors: (field:string, error:string)=>void;
+}
+const SemesterSelection: React.FC<PasswordAndSemesterField> = ({ updateSemester, updateErrors }) =>  {
   // State variables for storing the selected semester, semester year, and error messages
-  const [semester, setSemester] = useState<string>('winterSemester'); // Default semester is winter semester
+  const [, setPassword] = useState<string>(''); // Default semester is winter semester
+  const [semester, setSemester] = useState<string>('Sommersemester'); // Default semester is winter semester
   const [semesterYear, setSemesterYear] = useState<string>(''); // Default empty value for semester year
   const [semesterYearError, setSemesterYearError] = useState<string>(''); // Default empty error message
 
   // Function to handle change in semester selection
   const handleSemesterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSemester(event.target.value); 
+    const value = event.target.value;
+    setSemester(value); 
+    updateSemester("Hochschulwahlen im",value);
+    setSemesterYearError("");
   };
 
-  // Function to handle changes in the semester year input field
-  const handleSemesterYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value; 
+// Method to handle password input change
+const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const value = e.target.value; // Retrieve the input value
+  setPassword(value); // Update the password state
+  updateSemester("Kennwort der Liste", value); // Update the corresponding field in the form data
+};
 
-    let semesterYearPattern: RegExp; 
+// Function to handle changes in the semester year input field
+const handleSemesterYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const value = e.target.value.trim(); // Remove leading and trailing spaces
+  let errorMessage = ""; // Initialize error message
 
-    // Set the regex pattern depending on the selected semester
-    if (semester === "winterSemester") {
-        semesterYearPattern = /^\d{4}\/(\d{2}|\d{4})$/; 
-    } else if (semester === "sommerSemester") {
-        semesterYearPattern = /^\d{4}$/; 
-    } else {
-        semesterYearPattern = /^\s*$/; 
-    }
+  let semesterYearPattern: RegExp;
 
-    setSemesterYear(value); // Update the semester year state with the current value
+  // Determine the expected format based on the selected semester type
+  if (semester === "Wintersemester") {
+      semesterYearPattern = /^\d{4}\/(\d{2}|\d{4})$/; // Format: YYYY/YY or YYYY/YYYY
+  } else if (semester === "Sommersemester") {
+      semesterYearPattern = /^\d{4}$/; // Format: YYYY
+  } else {
+      semesterYearPattern = /^\s*$/; // Allow empty input
+  }
 
-    // Check if the entered semester year matches the expected pattern
-    if (semesterYearPattern.test(value)) {
-        if (semester === "winterSemester") {
-            const [startYear, endYear] = value.split("/").map(Number); 
+  setSemesterYear(value); // Update the semester year state
 
-            if (
-                (String(endYear).length === 2 && endYear === startYear % 100 + 1) || 
-                (String(endYear).length === 4 && endYear === startYear + 1) 
-            ) {
-                setSemesterYearError(""); 
-            } else {
-                setSemesterYearError("Ungültige Semesterjahre für das Wintersemester."); 
-            }
-        } else {
-            setSemesterYearError(""); 
-        }
-    } else {
-        // Set the error message if the semester year doesn't match the expected pattern
-        setSemesterYearError(
-            semester === "winterSemester"
-                ? 'Das Semesterjahr muss im Format "YYYY/YY" oder "YYYY/YYYY" für Wintersemester vorliegen.'
-                : 'Das Semesterjahr muss im Format "YYYY" für Sommersemester vorliegen.'
-        );
-    }
+  // Validate the semester year input
+  if (value === "") {
+      errorMessage = "";  // Clear the error if the field is empty
+  } else if (semesterYearPattern.test(value)) {
+      if (semester === "Wintersemester") {
+          // Split the input into start and end years and convert them to numbers
+          const [startYear, endYear] = value.split("/").map(Number);
+          if (
+              (String(endYear).length === 2 && endYear === startYear % 100 + 1) ||
+              (String(endYear).length === 4 && endYear === startYear + 1)
+          ) {
+              errorMessage = "";  // No error if the Wintersemester year is valid
+          } else {
+              errorMessage = "Ungültige Semesterjahre für das Wintersemester."; // Error if the year format is incorrect
+          }
+      }
+  } else {
+      // Set the appropriate error message for invalid input formats
+      errorMessage =
+          semester === "Wintersemester"
+              ? 'Das Semesterjahr muss im Format "YYYY/YY" oder "YYYY/YYYY" für Wintersemester vorliegen.'
+              : 'Das Semesterjahr muss im Format "YYYY" für Sommersemester vorliegen.';
+  }
+
+  setSemesterYearError(errorMessage); // Update the error state
+  updateSemester("Hochschulwahlen im", semester); // Update the selected semester
+  updateSemester("Semesterjahr", value); // Update the semester year
+  updateErrors("Semesterjahr", errorMessage); // Store the validation error
 };
 
   return (
@@ -72,26 +91,35 @@ const SemesterSelection: React.FC = () => {
           value={semester} 
           onChange={handleSemesterChange} 
         >
-          <FormControlLabel value="winterSemester" control={<Radio />} label="Wintersemester" />
-          <FormControlLabel value="sommerSemester" control={<Radio />} label="Sommersemester" />
+          <FormControlLabel value="Wintersemester" control={<Radio />} label="Wintersemester" />
+          <FormControlLabel value="Sommersemester" control={<Radio />} label="Sommersemester" />
         </RadioGroup>
       </FormControl>
 
       {/* Input field for entering the semester year */}
-      <section className="form-section horizontal-alignment">
+      <section className="form-section-horizontal-alignment">
         <label htmlFor="semesterYear">Semesterjahr:</label>
         <input
           type="text"
           id="semesterYear"
           value={semesterYear} 
           onChange={handleSemesterYearChange} 
-          placeholder={semester === "winterSemester" ? "z. B. 2024/25" : "z. B. 2024"} 
+          placeholder={semester === "Wintersemester" ? "z. B. 2024/25" : "z. B. 2024"} 
           required 
         />
         {/* Displaying the error message if there is any validation error */}
         {semesterYearError && (
           <p className="error-message">{semesterYearError}</p>
         )}
+      </section>
+      {/* Section for entering the password of the list */}
+      <section className="form-section">
+        <label htmlFor="listPassword">Kennwort der Liste:</label>
+        <input type="text" 
+        id="listPassword" 
+        placeholder="Kennwort eintragen" 
+        onChange={handlePasswordChange}
+        required/>
       </section>
     </div>
   );

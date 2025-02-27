@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import './ConsentForms.css';
 
+interface FbSbField {
+  updateFbSbField: (field: 'Studienbereichsbezeichnung:FB Nr./SB', value: string) => void;
+}
 // Define a functional component 'Fields' using React.FC (TypeScript-specific type for functional components)
-const Field: React.FC = () => {
+const Field: React.FC<FbSbField> = ({ updateFbSbField }) => {
   // Define an array of options for Wahlfachschaft (elective faculty options)
   const WAHLFACHSCHAFT_OPTION = [
     { value: "Psychologie", label: "Wahlfachschaft Psychologie" },
@@ -47,8 +50,14 @@ const Field: React.FC = () => {
   // Function to handle changes in the dropdown selection
   const handleFbSbChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     // Update the state with the selected value
-    setSelectedFbSb(e.target.value);
+    const value = e.target.value;
+    setSelectedFbSb(value);
+    const selectedOption = allOptions.find(option => option.value === value);
+    const label = selectedOption ? selectedOption.label : '';
+    updateFbSbField('Studienbereichsbezeichnung:FB Nr./SB', label);
   };
+  
+  
 
   // Return JSX to render the form with a dropdown for selecting an option
   return(

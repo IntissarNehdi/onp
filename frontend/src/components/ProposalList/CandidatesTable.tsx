@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // Import React and the useState hook from React
+import React, { useEffect, useState } from 'react'; // Import React and the useState hook from React
 import './Forms.css' // Import the associated CSS file for styling
 
 // Array holding the available FB/SB candidates for selection
@@ -22,57 +22,89 @@ const FB_SB_CANDIDATE = [
   { value: "20", label: "20" }
 ];
 
+interface CandidatesTableProps {
+  onUpdateCandidates: (numCandidates: string, candidates: any[]) => void; // Prop to notify the parent component
+}
 // Main component to display and manage the candidates table
-const CandidatesTable = () => {
+const CandidatesTable: React.FC<CandidatesTableProps> = ({ onUpdateCandidates}) => {
   // State to manage the list of candidates (each candidate is an object with specific fields)
   const [candidates, setCandidates] = useState<any[]>([]);
-
   // State to manage the number of candidates to be added
-  const [numCandidates, setNumCandidates] = useState<number>(0);
+  const [numCandidates, setNumCandidates] = useState<string>("");
+  const handleCandidateChange = (index: number, field: string, value: string) => {
+    // Create a copy of the candidates list to modify
+    const newCandidates = [...candidates];
+    newCandidates[index][field] = value; // Update the specific field for the candidate
+  
+    // Validate the birth year to ensure it's in YYYY format (4 digits)
+    if (field === 'birthYear' && value!=="" ) {
+      const isValid = value === "" || /^\d{4}$/.test(value);
+      const newValidBirthYears = [...validBirthYears];
+      newValidBirthYears[index] = isValid; // Update the validity state for this candidate
+      setValidBirthYears(newValidBirthYears); // Update validity state
+    }
+  
+    setCandidates(newCandidates); // Update candidates state
+    onUpdateCandidates(numCandidates,newCandidates);
+  
+  };
 
-  // Function to handle the addition of a new candidate row
+  
+  // useEffect, um sicherzustellen, dass onUpdateCandidates nur nach Aktualisierung von State aufgerufen wird
+  useEffect(() => {
+    onUpdateCandidates(numCandidates, candidates);
+  }, [numCandidates, candidates]); // Wird ausgeführt, wenn sich numCandidates oder candidates ändern
+
+  // Function to add a new candidate
   const handleAddSingleCandidate = () => {
-    // Adds a new candidate object with empty fields to the candidates list
-    setCandidates([...candidates, { lastName: '', firstName: '', birthYear: '', fbSb: '' }]);
-    // Increments the number of candidates
-    setNumCandidates(numCandidates + 1);
+    setCandidates(prevCandidates => {
+      const updatedCandidates = [
+        ...prevCandidates,
+        { lastName: "", firstName: "", birthYear: "", fbSb: "" }
+      ];
+      setNumCandidates(updatedCandidates.length.toString()); // Anzahl basierend auf neuer Liste setzen
+      return updatedCandidates;
+    });
   };
 
-  // Function to handle the removal of a candidate at a specific index
+  // Function to remove a candidate at a specific index
   const handleRemoveCandidate = (index: number) => {
-    // Filters out the candidate at the specified index
-    const updatedCandidates = candidates.filter((_, i) => i !== index);
-    // Updates the candidates state with the remaining candidates
-    setCandidates(updatedCandidates);
-    // Updates the number of candidates state after removal
-    setNumCandidates(updatedCandidates.length);
+    setCandidates(prevCandidates => {
+      const updatedCandidates = prevCandidates.filter((_, i) => i !== index);
+      setNumCandidates(updatedCandidates.length > 0 ? updatedCandidates.length.toString() : "");
+      return updatedCandidates;
+    });
   };
 
-  // Function to handle changes to the number of candidates
-  const handleNumCandidatesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+// Function to directly modify the number of candidates
+const handleNumCandidatesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const numberValue = parseInt(value, 10);
-    
-    // Ensures that the input value is a number (or empty)
-    if (/^\d*$/.test(value)) {
-      setNumCandidates(isNaN(numberValue) ? 0 : numberValue);
+    if (value === "") {
+      setNumCandidates("");
+      setCandidates([]); 
+      return;
+    }
 
-      // If the number of candidates is reduced, slice the array
-      if (numberValue < candidates.length) {
-        setCandidates(candidates.slice(0, numberValue));
-      } else {
-        // Otherwise, add empty candidate objects to match the new number
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const newCandidates = Array.from({ length: numberValue - candidates.length }, (_) => ({
-          lastName: '',
-          firstName: '',
-          birthYear: '',
-          fbSb: ''
-        }));
-        setCandidates([...candidates, ...newCandidates]);
-      }
+    const numberValue = parseInt(value, 10);
+    if (!isNaN(numberValue) && numberValue >= 0) {
+      setNumCandidates(value);
+
+      setCandidates(prevCandidates => {
+        if (numberValue < prevCandidates.length) {
+          return prevCandidates.slice(0, numberValue);
+        } else {
+          const newCandidates = Array.from({ length: numberValue - prevCandidates.length }, () => ({
+            lastName: "",
+            firstName: "",
+            birthYear: "",
+            fbSb: ""
+          }));
+          return [...prevCandidates, ...newCandidates];
+        }
+      });
     }
   };
+  
 
   // State to track the validity of birth year input for each candidate
   const [validBirthYears, setValidBirthYears] = useState<boolean[]>([]);
@@ -80,20 +112,6 @@ const CandidatesTable = () => {
   // State to track which input field is focused (for styling/validation feedback)
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
-  // Function to handle changes in any of the candidate's fields (last name, first name, etc.)
-  const handleCandidateChange = (index: number, field: string, value: string) => {
-    // Create a copy of the candidates list to modify
-    const newCandidates = [...candidates];
-    newCandidates[index][field] = value; // Update the specific field for the candidate
-
-    // Validate the birth year to ensure it's in YYYY format (4 digits)
-    const isValid = /^\d{4}$/.test(value);
-    const newValidBirthYears = [...validBirthYears];
-    newValidBirthYears[index] = isValid; // Update the validity state for this candidate
-
-    setCandidates(newCandidates); // Update candidates state
-    setValidBirthYears(newValidBirthYears); // Update validity state
-  };
 
   // Function to set the focused index when an input field is focused
   const handleFocus = (index: number) => {
@@ -112,16 +130,16 @@ const CandidatesTable = () => {
         <label htmlFor="numCandidates">Anzahl der Kandidierenden:</label>
         <input
           required
-          type="text"
+          type="number"
           id="numCandidates"
-          value={numCandidates === 0 ? '' : numCandidates.toString()} // Display number or empty if 0
+          value={numCandidates === "" ? '' : numCandidates.toString()} // Display number or empty if 0
           onChange={handleNumCandidatesChange} // Handle change in number of candidates
           placeholder="Anzahl der Kandidierenden"
         />
       </section>
 
       {/* Render table if there are candidates to display */}
-      {numCandidates > 0 && candidates.length > 0 && (
+      {numCandidates !== "" && candidates.length > 0 && (
         <section className="form-section">
           <label>Als Bewerber/Bewerberinnen werden vorgeschlagen:</label>
           <table className="candidates-table">
