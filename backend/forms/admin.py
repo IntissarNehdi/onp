@@ -1,5 +1,8 @@
 from django.contrib import admin
 from .models import ElectionOffice, TrustedPerson, NominationList, Candidate, Consent
+from django.urls import reverse
+from django.utils.html import format_html
+
 
 admin.site.site_header = "Election Management Admin"
 admin.site.site_title = "Election Admin Portal"
@@ -30,6 +33,12 @@ class CandidateAdmin(admin.ModelAdmin):
 
 @admin.register(Consent)
 class ConsentAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'committee', 'semester', 'semester_year', 'candidate')
+    list_display = ('first_name', 'last_name', 'committee', 'semester', 'semester_year')
     search_fields = ('first_name', 'last_name', 'committee', 'semester_year')
     list_filter = ('semester', 'committee', 'semester_year')
+
+    change_form_template = "admin/backend/consent/change_form.html"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        return urls  # Keeping it simple since no custom views are added for now

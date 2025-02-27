@@ -4,6 +4,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Consent, NominationList
 from .serializers import ConsentSerializer, NominationListSerializer
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+
+
+def download_consent_pdf(request, consent_id):
+    return None
+
 
 # Handles HTTP POST requests to create a new Consent record
 class ConsentView(APIView):
