@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Forms.css' 
 import { getFromLocalStorage } from '../../utils/storageUtils';
 import { User } from '../../types/User';
+import { getTUMailFromName } from '../../utils/userUtils';
 interface TrusteePersonInfo {
   updateTrustee: (field: 'Name, Vorname' | 'FB Nr./SB' | 'Anschrift' | 'E-mail Adresse' | 'Telefonnummer' , value: string) => void;
   updateErrors:(field:string, error:string)=>void;
@@ -178,9 +179,11 @@ const handleEmailAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         <label htmlFor="trusteeName" style={{ textAlign: 'left' }}>
           Vorname {/* Label for trustee name */}
         </label>
-        <input type="text" 
+        <input type="text"
+        disabled 
         id="trusteeName" 
         placeholder="Name, Vorname" 
+        value={`${user.lastName}, ${user.firstName}`}
         onChange={handleNameChange}
         required /> {/* Input for name */}
 
@@ -233,10 +236,12 @@ const handleEmailAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         {addressError && <p className="error-message">{addressError}</p>}
 
         {/* Email input field */}
-        <label htmlFor="email" style={{ textAlign: 'left' }} >
+        <label htmlFor="email" style={{ textAlign: 'left' }}>
           E-mail Adresse
         </label>
         <input type="email" 
+        disabled
+        value={getTUMailFromName(user.firstName, user.lastName, true)}
         id="email" 
         placeholder="E-Mail" 
         onChange={handleEmailAddressChange}

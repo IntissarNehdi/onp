@@ -54,7 +54,7 @@ function App() {
             {/* Conditional rendering of ConsentForms with isLoggedIn check */}
             <Route
               path="/consent"
-              element={(getFromLocalStorage('user')) ? <ConsentForms /> : <LoginPage />}
+              element={<ConsentForms />}
             />
             <Route path="/proposal" element={<ProposalList />} />
           </Routes>

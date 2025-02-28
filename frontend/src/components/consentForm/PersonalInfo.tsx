@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // Importing necessary modules from React and the CSS file
 import React, { useState } from "react";
 import "./ConsentForms.css";
@@ -27,6 +28,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
   const [postalCode, setPostalCode] = useState('');
   const [city, setCity] = useState('');
   const [semesterAddressError, setSemesterAddressError] = useState('');
+  const user = JSON.parse(getFromLocalStorage("user"));
 
   // Handler for first name input
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -189,92 +191,31 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
       <label className='ich'>Ich,</label>
       
       <div className="form-row">
+      <div className="form-section">
+          <label>Vorname:</label>
+          <input
+          disabled
+            required
+            type="text"
+            value={user.firstName} // Bind the value to lastName state
+            onChange={handleFirstNameChange} // Update last name on input change
+            placeholder="Name eintragen" 
+          />
+        </div>
         {/* Section for last name input */}
         <div className="form-section">
           <label>Zuname:</label>
           <input
+          disabled
             required
             type="text"
-            value={lastName} // Bind the value to lastName state
+            value={user.lastName} // Bind the value to lastName state
             onChange={handleLastNameChange} // Update last name on input change
             placeholder="Name eintragen" 
           />
         </div>
 
-        <div className="form-row">
-          {/* Section for birth year input */}
-          <div className="form-section">
-            <label>Geburtsjahr:</label>
-            <input
-              required
-              type="text"
-              value={birthYear} // Bind the value to birthYear state
-              onChange={handleBirthYearChange} // Update birth year on input change
-              placeholder="Geburtsjahr eintragen"
-            />
-            {/* Display error message if birthYearError exists */}
-            {birthYearError && (
-              <p className="error-message">{birthYearError}</p>
-            )}
-          </div>
 
-          {/* Section for email input */}
-          <div className="form-section">
-            <label>E-Mail:</label>
-            <input
-              required
-              disabled
-              type="email"
-              value={user?getTUMailFromName(user.firstName, user.lastName):'Please Login'} // Bind the value to email state
-              placeholder="E-Mail eintragen"
-            />
-          </div>
-        </div>
-
-        <div className="form-row">
-          {/* Section for address input */}
-          <div className="form-section">
-            <label>Anschrift:</label>
-            <input
-              required
-              type="text"
-              value={address} // Bind the value to address state
-              onChange={handleAddressChange} // Update address on input change
-              placeholder="Straßenname Hausnummer, PLZ Wohnort"
-            />
-            {/* Display error message if addressError exists */}
-            {addressError && <p className="error-message">{addressError}</p>}
-          </div>
-
-          {/* Section for semester address input */}
-          <div className="form-section">
-            <label>Semesteranschrift:</label>
-            <input
-              required
-              type="text"
-              value={semesterAddress} // Bind the value to semesterAddress state
-              onChange={handleSemesterAddressChange} // Update semester address on input change
-              placeholder="Straßenname Hausnummer, PLZ Wohnort"
-            />
-            {/* Display error message if semesterAddressError exists */}
-            {semesterAddressError && (
-              <p className="error-message">{semesterAddressError}</p>
-            )}
-          </div>
-        </div>
-
-        {/* Section for matriculation number input */}
-        <div className="form-section">
-          <label>Matrikelnummer:</label>
-          <input
-            disabled
-            required
-            type="text"
-            value={firstName} // Bind the value to firstName state
-            onChange={handleFirstNameChange} // Update first name on input change
-            placeholder="Vorname eintragen" 
-          />
-        </div>
       </div>
 
       <div className="form-row">
@@ -298,9 +239,10 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
         <div className="form-section">
           <label>E-Mail:</label>
           <input
+          disabled
             required
             type="email"
-            value={email} // Bind the value to email state
+            value={getTUMailFromName(user.firstName, user.lastName, true)} // Bind the value to email state
             onChange={handleEmailChange} // Update email on input change
             placeholder="E-Mail eintragen"
           />
@@ -373,9 +315,10 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
       <div className="form-section">
         <label>Matrikelnummer:</label>
         <input
+        disabled
           required
           type="text"
-          value={matriculationNumber} // Bind the value to matriculationNumber state
+          value={user.matriculationNumber} // Bind the value to matriculationNumber state
           onChange={handleMatriculationChange} // Update matriculation number on input change
           placeholder="Matrikelnummer eintragen" 
         />

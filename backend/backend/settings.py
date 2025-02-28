@@ -152,7 +152,7 @@ import os
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY', default=None)
+SECRET_KEY = "SECRET_KEY"
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

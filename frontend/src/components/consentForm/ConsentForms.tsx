@@ -1,4 +1,5 @@
-import React, { useState } from 'react';  // Importing React and useState hook
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from 'react';  // Importing React and useState hook
 import './ConsentForms.css';  // Importing custom styles
 import PersonalInfo from './PersonalInfo';  // Importing component for personal information section
 import Field from './Field';  // Importing component for form fields section
@@ -6,6 +7,9 @@ import PasswordAndSemester from './PasswordAndSemester';  // Importing component
 import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 import { generatePDF } from '../PdfFunctions/ConsentFormPDF'; // Importing function to generate PDF
 import DateAndSig from '../ProposalList/DateAndSig'; // Importing component for date and signature section
+import { useNavigate } from 'react-router-dom';
+import { getFromLocalStorage } from '../../utils/storageUtils';
+import { getTUMailFromName } from '../../utils/userUtils';
 
 // Defining an interface for form data structure
 export interface ConsentFormInterface {
@@ -27,15 +31,23 @@ export interface ConsentFormInterface {
 
 // Functional component for the Consent Form
 const ConsentForms: React.FC = () => { 
+  const navigate = useNavigate();
+  const login = JSON.parse(getFromLocalStorage('user')); // Replace this with actual state or context value
+  console.log(login);
+  useEffect(() => {
+    if (login == null) {
+      navigate("/login", {state : {from: "/consent"}});
+    }
+  }, [login, navigate]);
   // State to manage form data
   const [formData, setFormData] = useState<ConsentFormInterface>({
-    "Zuname": "",
-    "Vorname": "",
+    "Zuname": login.lastName ,
+    "Vorname": login.firstName ,
     "Geburtsjahr": 0,
-    "E-Mail": "",
+    "E-Mail": getTUMailFromName(login.firstName, login.lastName, true),
     "Anschrift": "",
     "Semesteranschrift": "",
-    "Matrikelnummer": 0,
+    "Matrikelnummer": login.matriculationNumber,
     "Studienbereichsbezeichnung:FB Nr./SB": "",
     "Kennwort": "",
     "für die Wahl im": "",

@@ -124,7 +124,7 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
         </div>
 
         <div className="form-section">
-          <h2>Erklärung gemäß § 16 Abs. 2 WahlO </h2>
+          <h2>Erklärung gemäß § 16 Abs. 2 WahlO</h2>
           <div className="sentence">
             <label>
               <input

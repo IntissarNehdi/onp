@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Forms.css'; 
 import SemesterSelection from './SemesterSelection'; 
 import CommitteesSelection from './CommitteesSelection'; 
@@ -10,10 +10,19 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
 import { generatePDF } from '../PdfFunctions/ProposalListPDF';
 import Attachement from './AttachementForm';
+import { getFromLocalStorage } from '../../utils/storageUtils';
+import { getTUMailFromName } from '../../utils/userUtils';
 
 // Define the ProposalList functional component
 const ProposalList: React.FC = () => {  
   const navigate = useNavigate();
+  const login = JSON.parse(getFromLocalStorage('user')); // Replace this with actual state or context value
+  console.log(login);
+  useEffect(() => {
+    if (login == null) {
+      navigate("/login", {state : {from: "/proposal"}});
+    }
+  }, [login, navigate]);
   const nextPage = (event: React.FormEvent) => {
     event.preventDefault(); // Prevent default form submission behavior
 
@@ -29,10 +38,10 @@ const ProposalList: React.FC = () => {
       "Semesterjahr": "",
       "Kennwort der Liste" : "",
       "VORSCHLAGSLISTE für die Wahl zu":"",
-      "Name, Vorname":"",
+      "Name, Vorname":`${login.lastName}, ${login.firstName}`,
       "FB Nr./SB":"",
       "Anschrift":"",
-      "E-mail Adresse":"",
+      "E-mail Adresse":getTUMailFromName(login.firstName, login.lastName, true),
       "Telefonnummer":"",
       "Anzahl der Kandidierenden":"",
       "Kandidierenden":[],
@@ -231,7 +240,6 @@ const handleSaveAndSendEmails = async (e: React.FormEvent) => {
       {/* Display TU_DA logo at the top right of the container */}
       <img
         src={logo}
-        alt="TU_DA Logo"
         className="top-right-image" // Apply CSS class to the image
       />
 

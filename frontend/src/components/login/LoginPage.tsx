@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import './LoginPage.css';
 import { saveToLocalStorage } from '../../utils/storageUtils';
+import { useLocation } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -12,6 +13,8 @@ const LoginPage: React.FC = () => {
   const [revokeConsent, setRevokeConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const location = useLocation();
+  const fromPage = location.state?.from || "Unknown";
 
   const navigate = useNavigate(); // Initialize navigation
 
@@ -23,7 +26,7 @@ const LoginPage: React.FC = () => {
     try {
       const response = await simulateBackendRequest();
       saveToLocalStorage('user', JSON.stringify(response.data));
-      window.location.href = '/proposal'; // Redirect to dashboard
+      window.location.href = fromPage; // Redirect to dashboard
     } catch (error) {
       setErrorMessage('Verbindung zum Server fehlgeschlagen. Bitte versuchen Sie es später erneut.');
     }
