@@ -179,13 +179,16 @@ const handleSaveAsPDF = (e: React.FormEvent) => {
   if (candidateErrors.length > 0) {
     combinedMessage += `Unvollständige Kandidaten: ${candidateErrors.join(", ")}\n`;
   }
+  if (formData['Kennwort der Liste'] !== attachementFormData['Kennwort']) {
+    combinedMessage += "Kennwort stimmt nicht überein.\n";
+}
 
   // If errors are found, display an alert and return to prevent PDF generation and email sending
   if (combinedMessage) {
     alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:\n${combinedMessage}`);
     return false; // Wenn Fehler vorhanden sind, breche den Prozess ab
   }
-
+ 
   // If no errors are found, proceed with PDF generation
   generatePDF(formData, attachementFormData);
 
