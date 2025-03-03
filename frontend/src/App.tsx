@@ -17,7 +17,6 @@ import imagePath from "./assets/logotu.png";
 import Dashboard from "./components/login/Dashboard";
 import ConsentForms from "./components/consentForm/ConsentForms";
 import ProposalList from "./components/ProposalList/ProposalList";
-import { getFromLocalStorage } from "./utils/storageUtils";
 
 // Layout component to handle Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -50,8 +49,6 @@ function App() {
             <Route path="/" element={<Content />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            
-            {/* Conditional rendering of ConsentForms with isLoggedIn check */}
             <Route
               path="/consent"
               element={<ConsentForms />}

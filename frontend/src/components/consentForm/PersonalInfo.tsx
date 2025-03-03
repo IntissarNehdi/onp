@@ -13,12 +13,8 @@ interface PersonalInfoProps {
 // Define the functional component 'PersonalInfos'
 const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateErrors }) => {
   // State variables to manage user inputs for personal information
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [birthYear, setBirthYear] = useState('');
   const [birthYearError, setBirthYearError] = useState('');
-  const [email, setEmail] = useState('');
-  const [matriculationNumber, setMatriculationNumber] = useState('');
   const [matriculationError, setMatriculationError] = useState('');
   const [addressError, setAddressError] = useState('');
   const [semesterStreet, setSemesterStreet] = useState('');
@@ -30,48 +26,6 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
   const [semesterAddressError, setSemesterAddressError] = useState('');
   const user = JSON.parse(getFromLocalStorage("user"));
 
-  // Handler for first name input
-  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setFirstName(value);
-    updatePersonalInfo('Vorname', value); // Pass value to parent component
-  };
-
-  // Handler for last name input
-  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setLastName(value);
-    updatePersonalInfo('Zuname', value); // Pass value to parent component
-  };
-
-  // Handler for email input
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setEmail(value);
-    updatePersonalInfo('E-Mail', value); // Pass value to parent component
-  };
-
-  // Handler for matriculation number input with validation
-  const handleMatriculationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    let error = "";
-  
-    if (value === "") {
-      setMatriculationNumber(value);
-    } else if (/^\d*$/.test(value)) {
-      setMatriculationNumber(value);
-      if (value.length !== 7) {
-        error = "Die Matrikelnummer muss genau 7 Ziffern enthalten.";
-      }
-    } else {
-      error = "Die Matrikelnummer darf nur Ziffern enthalten.";
-    }
-  
-    setMatriculationError(error);
-    updateErrors("Matrikelnummer", error);
-    updatePersonalInfo("Matrikelnummer", value);
-  };
-  
   // Handler for birth year input with validation
   const handleBirthYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
@@ -197,8 +151,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
           disabled
             required
             type="text"
-            value={user.firstName} // Bind the value to lastName state
-            onChange={handleFirstNameChange} // Update last name on input change
+            value={user ? user.firstName : ""} // Bind the value to lastName state
             placeholder="Name eintragen" 
           />
         </div>
@@ -209,8 +162,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
           disabled
             required
             type="text"
-            value={user.lastName} // Bind the value to lastName state
-            onChange={handleLastNameChange} // Update last name on input change
+            value={user ? user.lastName : ""} // Bind the value to lastName state
             placeholder="Name eintragen" 
           />
         </div>
@@ -242,8 +194,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
           disabled
             required
             type="email"
-            value={getTUMailFromName(user.firstName, user.lastName, true)} // Bind the value to email state
-            onChange={handleEmailChange} // Update email on input change
+            value={user ? getTUMailFromName(user.firstName, user.lastName, true): ""} // Bind the value to email state
             placeholder="E-Mail eintragen"
           />
         </div>
@@ -318,8 +269,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
         disabled
           required
           type="text"
-          value={user.matriculationNumber} // Bind the value to matriculationNumber state
-          onChange={handleMatriculationChange} // Update matriculation number on input change
+          value={user ? user.matriculationNumber : ""} // Bind the value to matriculationNumber state
           placeholder="Matrikelnummer eintragen" 
         />
         {/* Display error message if matriculationError exists */}

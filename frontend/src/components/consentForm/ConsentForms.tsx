@@ -32,22 +32,23 @@ export interface ConsentFormInterface {
 // Functional component for the Consent Form
 const ConsentForms: React.FC = () => { 
   const navigate = useNavigate();
-  const login = JSON.parse(getFromLocalStorage('user')); // Replace this with actual state or context value
-  console.log(login);
+  const user = JSON.parse(getFromLocalStorage('user')); // Replace this with actual state or context value
+  console.log(user);
   useEffect(() => {
-    if (login == null) {
+    if (user == null) {
+      console.log("navigate")
       navigate("/login", {state : {from: "/consent"}});
     }
-  }, [login, navigate]);
+  }, [user, navigate]);
   // State to manage form data
   const [formData, setFormData] = useState<ConsentFormInterface>({
-    "Zuname": login.lastName ,
-    "Vorname": login.firstName ,
+    "Zuname": user ? user.lastName : "" ,
+    "Vorname": user ? user.firstName : "" ,
     "Geburtsjahr": 0,
-    "E-Mail": getTUMailFromName(login.firstName, login.lastName, true),
+    "E-Mail": user ? getTUMailFromName(user.firstName, user.lastName, true): "",
     "Anschrift": "",
     "Semesteranschrift": "",
-    "Matrikelnummer": login.matriculationNumber,
+    "Matrikelnummer": user ? user.matriculationNumber : "",
     "Studienbereichsbezeichnung:FB Nr./SB": "",
     "Kennwort": "",
     "für die Wahl im": "",
@@ -104,7 +105,6 @@ const ConsentForms: React.FC = () => {
     // Generate PDF if all fields are valid
     generatePDF(formData);
   };
-
   return (
     <form className="proposal-list-container" id="consent-form-content">
       

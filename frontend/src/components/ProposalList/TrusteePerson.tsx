@@ -183,7 +183,7 @@ const handleEmailAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         disabled 
         id="trusteeName" 
         placeholder="Name, Vorname" 
-        value={`${user.lastName}, ${user.firstName}`}
+        value={user ? `${user.lastName}, ${user.firstName}` : ""}
         onChange={handleNameChange}
         required /> {/* Input for name */}
 
@@ -241,7 +241,7 @@ const handleEmailAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         </label>
         <input type="email" 
         disabled
-        value={getTUMailFromName(user.firstName, user.lastName, true)}
+        value={user ? getTUMailFromName(user.firstName, user.lastName, true) : ""}
         id="email" 
         placeholder="E-Mail" 
         onChange={handleEmailAddressChange}
