@@ -15,8 +15,6 @@ interface PasswordAndSemesterField {
 // Define the functional component 'PasswordAndSemester'
 const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswordAndSemester, updateErrors }) => {
   
-  // State variable to store the password entered by the user
-  const [listPassword, setListPassword] = useState('');
   
   // State variable to store the selected semester type (Winter or Summer)
   const [semester, setSemester] = useState('Sommersemester');
@@ -35,12 +33,7 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
     setSemesterYearError("");
   };
 
-  // Event handler to update password field and sync with parent state
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setListPassword(value); // Set the password input
-    updatePasswordAndSemester('Kennwort', value);
-  };
+ 
   
   // Event handler to validate and update the semester year input
   const handleSemesterYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,13 +83,16 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
 
   // State variable to store selected committee from URL parameters
   const [selectedCommittee, setSelectedCommittee] = useState<string>("");
+  const [password,setPassword]=useState<string>("");
 
   useEffect(() => {
       // Extract committee from URL parameters
       const urlParams = new URLSearchParams(window.location.search);
       const committee = urlParams.get("committee");
+      const password = urlParams.get("password");
   
       setSelectedCommittee(committee || ""); // If empty, remain empty
+      setPassword(password||""); // If empty, remain empty
   }, []); // Runs only once on component mount
   
   useEffect(() => {
@@ -104,8 +100,15 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
           // Update committee selection in parent state when it changes
           updatePasswordAndSemester("zu", selectedCommittee);
       }
-  }, [selectedCommittee]); // Runs when selectedCommittee changes
+  }, [selectedCommittee]); // Runs when selectedCommittee change
   
+  useEffect(() => {
+    if(password){
+      // Update password in parent state when it changes
+      updatePasswordAndSemester("Kennwort",password);
+    }
+  }, [password]); // Runs when password change
+
   // JSX return statement to render the component UI
   return(
     <div className="container">
@@ -119,9 +122,8 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
           <input
             required
             type="text"
-            value={listPassword}
-            onChange={handlePasswordChange}
-            placeholder="Kennwort eintragen"
+            value={password}
+            disabled
           />
         </div>
       </div>

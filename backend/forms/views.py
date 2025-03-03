@@ -39,12 +39,12 @@ def send_emails(request):
                     email = f"{first_name.lower()}.{last_name.lower()}@stud.tu-darmstadt.de"
 
                     # Construct the query parameters for the consent link
-                    query_params = urlencode({'committee': selectedCommittee})
+                    query_params = urlencode({'committee': selectedCommittee,'password':password})
                     consent_link = f"{base_url}?{query_params}"  # Create the full consent link
 
                     # Send an email to the candidate
                     send_mail(
-                        subject='Hochschulwahlen –Einverständniserklärung zur Teilnahme an Vorschlagsliste erforderlich!',  # Email subject
+                        subject='Bestätigung erforderlich: Teilnahme an der Vorschlagsliste.',  # Email subject
                         message=f"""Guten Tag {first_name} {last_name},
 
 Sie wurden für die Hochschulwahlen im {semester} {semesterYear}

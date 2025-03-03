@@ -113,6 +113,7 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
             name="kennwort"
             value={kennwort}
             onChange={handlePasswordChange}
+            placeholder='Kennwort eintragen'
           />
         </div>
 

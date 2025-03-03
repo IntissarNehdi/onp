@@ -136,11 +136,16 @@ const handleNumCandidatesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           onChange={handleNumCandidatesChange} // Handle change in number of candidates
           placeholder="Anzahl der Kandidierenden"
         />
+
       </section>
 
       {/* Render table if there are candidates to display */}
       {numCandidates !== "" && candidates.length > 0 && (
         <section className="form-section">
+          <p style={{ color: "red" }}>Wichtiger Hinweis: Die Angaben „Vorname“ und „Nachname“ der Kandidierenden 
+          müssen identisch sein mit den hinterlegten TUCaN-Daten, damit die Kandidierenden
+          eine Benachrichtigung zu ihrer Nominierung per E-Mail erhalten. 
+          Kontaktieren Sie im Zweifelsfall die kandierende Person.</p>
           <label>Als Bewerber/Bewerberinnen werden vorgeschlagen:</label>
           <table className="candidates-table">
             <thead>
