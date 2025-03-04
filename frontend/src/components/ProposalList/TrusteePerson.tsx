@@ -15,7 +15,10 @@ const TrusteePerson: React.FC<TrusteePersonInfo> = ({ updateTrustee, updateError
 
   const [street, setStreet] = useState(''); // State for storing the street address input
   const [postalCode, setPostalCode] = useState(''); // State for storing the postal code input
+
   const [city, setCity] = useState(''); // State for storing the city input
+  const [additionalInfo, setAdditionalInfo] = useState(''); // State for storing the Additional address information input
+
 
   const [addressError, setAddressError] = useState(''); // State for storing the error message related to address validation
 
@@ -231,6 +234,12 @@ const handleEmailAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             value={city} // Bind the value to semesterAddress state
             onChange={handleCityChange} // Update semester address on input change
             placeholder="Wohnort" 
+          />
+          <input
+            type="text"
+            value={additionalInfo} 
+            onChange={handleAdditionalInfo} 
+            placeholder="Addresszusatz" 
           />
         {/* Displaying error message if the address format is invalid */}
         {addressError && <p className="error-message">{addressError}</p>}
