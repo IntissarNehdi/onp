@@ -23,6 +23,8 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
   const [street, setStreet] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [city, setCity] = useState('');
+  const [additionalInfo, setAdditionalInfo] = useState('');
+  const [semesterAdditionalInfo, setSemesterAdditionalInfo] = useState('');
   const [semesterAddressError, setSemesterAddressError] = useState('');
   const user = JSON.parse(getFromLocalStorage("user"));
 
@@ -63,7 +65,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
     setCity(value);
     validateAddress(street, postalCode, value);
   };
-
+    // Handler for additional info
+  const handleAdditionalInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAdditionalInfo(value);
+    validateAddress(street, postalCode, city, value);
+  };  
   // Handler for semester street input 
   const handleSemesterStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -82,7 +89,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
     setSemesterCity(value);
     validateSemesterAddress(semesterStreet, semesterPostalCode, value);
   };
-
+  // Handler for semester additional info input
+  const handleSemesterAdditionalInfo=(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const value = e.target.value;
+    setSemesterAdditionalInfo(value);
+    validateSemesterAddress(semesterStreet, semesterPostalCode, semesterCity, value);
+  }
     // Address validation functions for semester addresse
   const validateSemesterAddress = (street: string, postalCode: string, city: string) => {
     let errorMessage = "";
@@ -225,6 +237,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
             onChange={handleCityChange} // Update semester address on input change
             placeholder="Wohnort" 
           />
+          <input
+            type="text"
+            value={additionalInfo} 
+            onChange={handleAdditionalInfo} 
+            placeholder="Adresszusatz" 
+          />
           {/* Display error message if addressError exists */}
           {addressError && (
             <p className="error-message">{addressError}</p>
@@ -254,6 +272,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
             value={semesterCity} // Bind the value to semesterAddress state
             onChange={handleSemesterCityChange} // Update semester address on input change
             placeholder="Wohnort" 
+          />
+          <input
+            type="text"
+            value={semesterAdditionalInfo} 
+            onChange={handleSemesterAdditionalInfo} 
+            placeholder="Adresszusatz" 
           />
           {/* Display error message if semesterAddressError exists */}
           {semesterAddressError && (
