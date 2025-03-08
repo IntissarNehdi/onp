@@ -54,7 +54,7 @@ class NominationList(models.Model):
     list_password = models.CharField(max_length=255) # Kennwort der Liste
     number_of_candidates = models.IntegerField()
     date = models.DateField()
-    committee_fb_sb_wf = models.TextField(blank=True, null=True) # Berücksichtigung des Anteils mit Begründung falls nicht berücksichtigt
+    consideration_justification = models.TextField(blank=True, null=True) # Berücksichtigung des Anteils mit Begründung falls nicht berücksichtigt
     #consideration = models.CharField(max_length=1, choices=SHARE_CHOICES) # Berücksichtigung des Anteils
     #justification = models.TextField(blank=True, null=True) # Begründung falls nicht berücksichtigt
     
@@ -107,10 +107,6 @@ class Consent(models.Model):
     semester_year = models.CharField(max_length=10)
     committee = models.CharField(max_length=255, blank=True, null=True) # Gremium
     date = models.DateField()
-
-    # Meta-Einschränkungen
-    class Meta:
-        unique_together = ('matr_number', 'committee', 'semester_year')
 
     def __str__(self):
 	    return self.first_name + ' ' + self.last_name + ' ' + self.committee + ' ' + self.semester_year
