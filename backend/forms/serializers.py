@@ -1,12 +1,6 @@
 from rest_framework import serializers
 from .models import Consent, NominationList, Candidate, TrustedPerson, ElectionOffice
 
-# Serialize and deserialize data between Python objects and JSON format
-# A serializer performs the following:
-# - Field validation: Ensures data integrity (e.g., names are not empty, emails are valid).
-# - Data conversion: Converts JSON or HTML form data into Python objects and vice versa.
-# - Error handling: Returns validation errors for invalid data.
-
 class TrustedPersonSerializer(serializers.ModelSerializer):
     """
     Serializer for the TrustedPerson model.
@@ -77,35 +71,23 @@ class NominationListSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """
         Custom creation method to handle nested data.
-
-        Steps:
-        1. Extract `trusted_person` data and either retrieve an existing TrustedPerson 
-           instance or create a new one using `get_or_create`.
-        2. Extract `candidates` data (if provided) and temporarily remove it from the 
-           validated data to process separately.
-        3. Create the `NominationList` object and associate it with the retrieved or 
-           newly created `TrustedPerson`.
-        4. Iterate over the candidates, link them to the created `NominationList`, and 
-           save them to the database.
         """        
         # Extract and handle TrustedPerson data
         trusted_person_data = validated_data.pop('trusted_person')
 
         # Check if the TrustedPerson exists or create a new one
-        trusted_person, created = TrustedPerson.objects.get_or_create(
-            first_name=trusted_person_data['first_name'],
-            last_name=trusted_person_data['last_name'],
-            fb_sb=trusted_person_data['fb_sb'],
+        trusted_person = TrustedPerson.objects.filter(
+            name=trusted_person_data['name'],
+            fb_sb_wf=trusted_person_data['fb_sb_wf'],
             email=trusted_person_data['email'],
-            defaults={
-                "address_zip": trusted_person_data['address_zip'],
-                "address_city": trusted_person_data['address_city'],
-                "address_street": trusted_person_data['address_street'],
-                "address_additional": trusted_person_data.get('address_additional', ''),
-                "phone": trusted_person_data['phone']
-            }
-        )
- 
+            address=trusted_person_data['address'],
+            phone=trusted_person_data['phone']
+        ).first()
+
+        # Falls keine exakte Übereinstimmung existiert, erstelle eine neue TrustedPerson
+        if not trusted_person:
+            trusted_person = TrustedPerson.objects.create(**trusted_person_data)
+
         # Extract and handle candidates data
         candidates_data = validated_data.pop('candidates', [])  
         

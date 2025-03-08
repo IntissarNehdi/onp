@@ -83,20 +83,6 @@ def download_consent_pdf(request, consent_id):
 
 # Handles HTTP POST requests to create a new Consent record
 class ConsentView(APIView):
-    """
-    API view for managing Consent records.
-
-    Methods:
-        - post: Accepts data from the client to create a new Consent entry 
-          by validating and saving it through the ConsentSerializer.
-
-    Workflow:
-        1. The POST request sends data to this view.
-        2. Data is validated through the ConsentSerializer.
-        3. If valid, the data is saved, and the created object is returned with 
-           a 201 CREATED status.
-        4. If invalid, validation errors are returned with a 400 BAD REQUEST status.
-    """
     def post(self, request):
         # Initialize the serializer with the request data
         serializer = ConsentSerializer(data= request.data) # Process the incoming form data
@@ -107,26 +93,6 @@ class ConsentView(APIView):
 
 # Handles HTTP POST requests to create a new NominationList record
 class NominationListView(APIView):
-    """
-    API view for managing NominationList records and their related objects.
-
-    Methods:
-        - post: Accepts data from the client to create a new NominationList entry,
-          including nested TrustedPerson and Candidate objects.
-
-    Workflow:
-        1. The POST request sends data to this view, including:
-           - NominationList details
-           - TrustedPerson data
-           - Candidate data (optional)
-        2. Data is validated through the NominationListSerializer, which also 
-           handles nested TrustedPerson and Candidate objects.
-        3. If valid, the entire structure is saved:
-           - NominationList
-           - TrustedPerson (linked to the NominationList)
-           - Candidates (linked to the NominationList)
-        4. If invalid, validation errors are returned with a 400 BAD REQUEST status.
-    """
     def post(self, request):
         serializer = NominationListSerializer(data = request.data)
         if serializer.is_valid():
