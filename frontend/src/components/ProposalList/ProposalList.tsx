@@ -12,6 +12,21 @@ import { generatePDF } from '../PdfFunctions/ProposalListPDF';
 import Attachement from './AttachementForm';
 import { getFromLocalStorage } from '../../utils/storageUtils';
 import { getTUMailFromName } from '../../utils/userUtils';
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.withCredentials = true;
+
+const client = axios.create({
+  baseURL: "http://127.0.0.1:8000",
+});
+
+// Converts a date string for backend storage
+const formatDateForBackend = (dateStr: string) => {
+  const parts = dateStr.split("/");
+  return `${parts[2]}-${parts[1]}-${parts[0]}`;  // YYYY-MM-DD
+};
 
 // Define the ProposalList functional component
 const ProposalList: React.FC = () => {  
@@ -100,7 +115,92 @@ const handleSelectionChange = (input: string) => {
   })); 
 };
 
+// Function to validate required fields
+const validateForm = (formData: any, attachementFormData: any, errors: any): { isValid: boolean, message: string } => {
+  // Define required fields for the proposal list and attachments
+  const proposalListRequiredFields: (keyof ProposalListInterface)[] = [
+    "Semesterjahr", "Kennwort der Liste", "Name, Vorname", "FB Nr./SB",
+    "Anschrift", "E-mail Adresse", "Telefonnummer", "Anzahl der Kandidierenden"
+  ];
 
+  const attachementRequiredFields: (keyof AttachementInterface)[] = [
+    "Kennwort"
+  ];
+
+  // Retrieve errors from the current form data
+  const currentErrors = Object.entries(errors).filter(([, message]) => message.trim() !== "");
+
+  // Separate incorrect fields and specific selected field errors
+  const falseFields = currentErrors
+    .map(([field]) => field)
+    .filter((field) => field !== "Gremium" && field !== "Geburtsjahr");
+
+  const selectedFieldsErrors = currentErrors
+    .map(([field]) => field)
+    .filter((field) => field === "Gremium");
+
+  // Check birth year for each candidate (must follow the YYYY format)
+  const geburtsjahrErrors: string[] = [];
+  formData["Kandidierenden"].forEach((candidate, index) => {
+    if (candidate.birthYear && !/^\d{4}$/.test(candidate.birthYear)) {
+      geburtsjahrErrors.push(`Kandidat ${index + 1}`);
+    }
+  });
+
+  // Check candidates for missing or empty fields
+  const candidateErrors: string[] = [];
+  formData["Kandidierenden"].forEach((candidate, index) => {
+    if (!candidate.lastName || !candidate.firstName || !candidate.birthYear || !candidate.fbSb) {
+      candidateErrors.push(`Kandidat ${index + 1}`);
+    }
+  });
+
+  // Check if any required fields are empty (proposal list and attachments)
+  const emptyFields = [
+    ...proposalListRequiredFields.filter(field => !formData[field]),
+    ...attachementRequiredFields.filter(field => !attachementFormData[field])
+  ];
+
+  // Construct the error message
+  let combinedMessage = "";
+
+  // Add missing fields to the message
+  if (emptyFields.length > 0) {
+    combinedMessage += `Fehlende Felder: ${emptyFields.join(", ")}\n`;
+  }
+
+  // Add incorrect fields to the message
+  if (falseFields.length > 0) {
+    combinedMessage += `Fehlerhafte Felder: ${falseFields.join(", ")}\n`;
+  }
+
+  // Add "Gremium" field error to the message
+  if (selectedFieldsErrors.length > 0) {
+    combinedMessage += "Bitte wählen Sie das Gremium aus\n";
+  }
+
+  // Add birth year errors to the message
+  if (geburtsjahrErrors.length > 0) {
+    combinedMessage += `Ungültige Geburtsjahre: ${geburtsjahrErrors.join(", ")}\n`;
+  }
+
+  // Add candidate-related errors to the message
+  if (candidateErrors.length > 0) {
+    combinedMessage += `Unvollständige Kandidaten: ${candidateErrors.join(", ")}\n`;
+  }
+  if (formData['Kennwort der Liste'] !== attachementFormData['Kennwort']) {
+    combinedMessage += "Kennwort stimmt nicht überein.\n";
+}
+
+  // If errors are found, display an alert and return 
+  if (combinedMessage) {
+    return { isValid: false, message: `Bitte füllen Sie alle erforderlichen Felder korrekt aus:\n${combinedMessage}` };
+  }
+
+  return { isValid: true, message: "" };; // No errors found, continue the process
+}
+
+/* OLD METHOD FOR SAVING AS PDF 
 // Method to save the PDF
 const handleSaveAsPDF = (e: React.FormEvent) => {
   e.preventDefault();
@@ -185,12 +285,27 @@ const handleSaveAsPDF = (e: React.FormEvent) => {
     alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:\n${combinedMessage}`);
     return false; // Wenn Fehler vorhanden sind, breche den Prozess ab
   }
- 
   // If no errors are found, proceed with PDF generation
   generatePDF(formData, attachementFormData);
 
   return true; // No errors found, continue the process
 }
+*/
+
+// Method to save the form as PDF
+const handleSaveAsPDF = (e: React.FormEvent): boolean => {
+  e.preventDefault();
+
+  // Validate the form data before saving
+  const validationResult = validateForm(formData, attachementFormData, errors);
+  if (!validationResult.isValid) {
+    alert(validationResult.message);  // diplay errors if found
+    return false; 
+  }
+  //If no errors are found, proceed with PDF generation
+  generatePDF(formData, attachementFormData);
+  return true;
+};
 
 // Method to send emails
 const sendEmails = async () => {
@@ -226,7 +341,7 @@ const sendEmails = async () => {
 
 // Method to save the PDF and send emails (combined)
 const handleSaveAndSendEmails = async (e: React.FormEvent) => {
-  e.preventDefault(); // Prevent default form submission behavior
+  e.preventDefault(); 
 
   // First, validate the form and save the PDF
   const isFormValid = handleSaveAsPDF(e);
@@ -237,6 +352,60 @@ const handleSaveAndSendEmails = async (e: React.FormEvent) => {
   }
 };
 
+// Handles saving the form data to the database
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault(); 
+
+  // first validate the form 
+  const validationResult = validateForm(formData, attachementFormData, errors);
+  if (!validationResult.isValid) {
+    alert(validationResult.message);  
+    return; 
+  }
+
+  // Rename object properties to match the Django model
+  const requestData = {
+    semester: formData["für die Wahl im"] === "Wintersemester"? "WS": formData["für die Wahl im"] === "Sommersemester"? "SS": null,  
+    semester_year: formData["Semesterjahr"],
+    committee_fb_sb_wf: formData["VORSCHLAGSLISTE für die Wahl zu"], // Might need further subdivision
+    list_password: formData["Kennwort der Liste"],
+    number_of_candidates: Number(formData["Anzahl der Kandidierenden"]),
+    date: formatDateForBackend(formData["Darmstadt, den"]), 
+    consideration_justification: attachementFormData["Erklärung gemäß § 16 Abs. 2 WahlO"], // Might need further subdivision
+    trusted_person: {
+      name: formData["Name, Vorname"],
+      fb_sb_wf: formData["FB Nr./SB"],
+      email: formData["E-mail Adresse"],
+      address: formData["Anschrift"],
+      phone: formData["Telefonnummer"],
+    },
+    candidates: formData["Kandidierenden"].map((candidate: any) => ({
+      first_name: candidate.firstName,
+      last_name: candidate.lastName,
+      birth_year: Number(candidate.birthYear),
+      fb_sb: candidate.fb_sb,
+    })),
+  };
+  try {
+    debugger;
+    const response = await client.post("/nomination-list/", requestData);
+    console.log('Erfolgreich gesendet:', response.data);
+    alert("Formular erfolgreich gesendet!");
+    await handleSaveAndSendEmails(e);
+  } 
+  catch (error: any) {
+    if (error.response) {
+      console.error('Fehler vom Server:', error.response.data);
+      alert(`Fehler beim Senden: ${JSON.stringify(error.response.data)}`);
+    } else if (error.request) {
+      console.error('Keine Antwort vom Server:', error.request); // Netzwerkproblem
+      alert("Keine Antwort vom Server erhalten.");
+    } else {
+      console.error('Fehler beim Senden der Anfrage:', error.message);
+      alert("Fehler beim Senden. Bitte versuchen Sie es erneut.");
+    }
+  }
+};
 
   return (
     <div className="proposal-list-container"> {/* Container for the proposal list */}
@@ -271,7 +440,7 @@ const handleSaveAndSendEmails = async (e: React.FormEvent) => {
         <DateAndSig updateDate={updateData}/>
         <Attachement updateAttachement={updateAttachementData}/>
         {/* Submit button to go to the next page */}
-        <button type="submit" className="submit-button" onClick={handleSaveAndSendEmails}>
+        <button type="submit" className="submit-button" onClick={handleSubmit}>
           Abschicken
         </button>
       </form>
