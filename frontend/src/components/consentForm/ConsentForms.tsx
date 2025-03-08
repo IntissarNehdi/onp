@@ -98,7 +98,7 @@ const ConsentForms: React.FC = () => {
     // Required fields that must be filled out
     const requiredFields: (keyof ConsentFormInterface)[] = [
       "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Semesteranschrift", "Anschrift", 
-      "Matrikelnummer", "Studienbereichsbezeichnung:FB Nr./SB", "Semesterjahr", "Kennwort"
+      "Matrikelnummer", "Studienbereichsbezeichnung:FB Nr./SB", "Semesterjahr"
     ];
   
     // Filtering out fields with errors
@@ -154,7 +154,11 @@ const ConsentForms: React.FC = () => {
     } catch (error: any) {
       if (error.response) {
         console.error('Fehler vom Server:', error.response.data);
-        alert(`Fehler beim Senden: ${JSON.stringify(error.response.data)}`);
+        // Extract the error message
+        let errorMessage = error.response.data.non_field_errors 
+            ? error.response.data.non_field_errors.join("\n") 
+            : JSON.stringify(error.response.data);
+        alert(`Fehler beim Senden: ${errorMessage}`);
       } else if (error.request) {
         console.error('Keine Antwort vom Server:', error.request);
         alert("Keine Antwort vom Server erhalten.");
