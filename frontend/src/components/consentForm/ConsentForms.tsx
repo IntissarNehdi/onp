@@ -10,6 +10,20 @@ import DateAndSig from '../ProposalList/DateAndSig'; // Importing component for 
 import { useNavigate } from 'react-router-dom';
 import { getFromLocalStorage } from '../../utils/storageUtils';
 import { getTUMailFromName } from '../../utils/userUtils';
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.withCredentials = true;
+
+const client = axios.create({
+  baseURL: "http://127.0.0.1:8000",
+});
+// Converts a date string for backend storage
+const formatDateForBackend = (dateStr: string) => {
+  const parts = dateStr.split("/");
+  return `${parts[2]}-${parts[1]}-${parts[0]}`;  // YYYY-MM-DD
+};
 
 // Defining an interface for form data structure
 export interface ConsentFormInterface {
@@ -40,6 +54,7 @@ const ConsentForms: React.FC = () => {
       navigate("/login", {state : {from: "/consent"}});
     }
   }, [user, navigate]);
+
   // State to manage form data
   const [formData, setFormData] = useState<ConsentFormInterface>({
     "Zuname": user ? user.lastName : "" ,
@@ -77,34 +92,91 @@ const ConsentForms: React.FC = () => {
     }));
   };
   
+  // Function to validate required fields
+  const validateForm = (formData: ConsentFormInterface, errors: { [key: string]: string }) => {
+    // Required fields that must be filled out
+    const requiredFields: (keyof ConsentFormInterface)[] = [
+      "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Semesteranschrift", "Anschrift", 
+      "Matrikelnummer", "Studienbereichsbezeichnung:FB Nr./SB", "Semesterjahr", "Kennwort"
+    ];
+  
+    // Filtering out fields with errors
+    const currentErrors = Object.entries(errors).filter(([, message]) => message.trim() !== "");
+    const falseFields = currentErrors.map(([field]) => field);
+  
+    // Finding empty required fields
+    const emptyFields = requiredFields.filter(field => !formData[field]);
+  
+    if (emptyFields.length > 0 || falseFields.length > 0) {
+      const missingFieldsMessage = emptyFields.length > 0 ? `Fehlende Felder: ${emptyFields.join(", ")}` : "";
+      const invalidFieldsMessage = falseFields.length > 0 ? `Fehlerhafte Felder: ${falseFields.join(", ")}` : "";
+      const combinedMessage = [missingFieldsMessage, invalidFieldsMessage].filter(msg => msg).join("\n");
+  
+      return { isValid: false, message: combinedMessage };
+    }
+  
+    return { isValid: true, message: "" };
+  };
+
+  // Handles saving the form data to the database 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate the form data before submission
+    const validation = validateForm(formData, errors);
+    if (!validation.isValid) {
+      alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:\n${validation.message}`);
+      return;
+    }
+    // Rename object properties to match the Django model
+    const requestData = {
+      first_name: formData["Vorname"],
+      last_name: formData["Zuname"],
+      birth_year: Number(formData["Geburtsjahr"]),
+      email: formData["E-Mail"],
+      matr_number: Number(formData["Matrikelnummer"]),
+      address: formData["Anschrift"], // Might need further subdivision
+      semester_address: formData["Semesteranschrift"], // Same for semester address
+      list_password: formData["Kennwort"],  
+      fb_sb_label: formData["Studienbereichsbezeichnung:FB Nr./SB"],
+      semester: formData["für die Wahl im"] === "Wintersemester"? "WS": formData["für die Wahl im"] === "Sommersemester"? "SS": null,  
+      semester_year: formData["Semesterjahr"],  
+      committee: formData["zu"],  
+      date: formatDateForBackend(formData["Darmstadt, den"]), // Should be formatted as `YYYY-MM-DD`
+    };
+    try {
+      debugger;
+      const response = await client.post("/consent/", requestData);
+      console.log('Erfolgreich gesendet:', response.data);
+      alert("Formular erfolgreich gesendet!");
+      generatePDF(formData);
+    } catch (error: any) {
+      if (error.response) {
+        console.error('Fehler vom Server:', error.response.data);
+        alert(`Fehler beim Senden: ${JSON.stringify(error.response.data)}`);
+      } else if (error.request) {
+        console.error('Keine Antwort vom Server:', error.request);
+        alert("Keine Antwort vom Server erhalten.");
+      } else {
+        console.error('Fehler beim Senden der Anfrage:', error.message);
+        alert("Fehler beim Senden. Bitte versuchen Sie es erneut.");
+      }
+    }
+  };
+  /* OLD METHOD FOR PDF
   // Function to handle form submission and generate PDF
   const handleSaveAsPDF = (e: React.FormEvent) => {
     e.preventDefault();
   
-    // Required fields that must be filled out
-    const requiredFields: (keyof ConsentFormInterface)[] = [
-      "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Semesteranschrift", "Anschrift", "Matrikelnummer",
-      "Studienbereichsbezeichnung:FB Nr./SB", "Kennwort", "Semesterjahr",
-    ];
-    
-    // Filtering out fields with errors
-    const currentErrors = Object.entries(errors).filter(([, message]) => message.trim() !== "");
-    const falseFields = currentErrors.map(([field]) => field);
-
-    // Finding empty required fields
-    const emptyFields = requiredFields.filter(field => !formData[field]);
-    if (emptyFields.length > 0 || currentErrors.length > 0) {
-      const missingFieldsMessage = emptyFields.length > 0 ? `Fehlende Felder: ${emptyFields.join(", ")}` : "";
-      const invalidFieldsMessage = falseFields.length > 0 ? `Fehlerhafte Felder: ${falseFields.join(", ")}` : "";
-      const combinedMessage = [missingFieldsMessage, invalidFieldsMessage].filter(msg => msg).join("\n");
-      
-      alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:\n${combinedMessage}`);
+    const validation = validateForm(formData, errors);
+    if (!validation.isValid) {
+      alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:\n${validation.message}`);
       return;
     }
-    
     // Generate PDF if all fields are valid
     generatePDF(formData);
   };
+  */
   return (
     <form className="proposal-list-container" id="consent-form-content">
       
@@ -131,7 +203,7 @@ const ConsentForms: React.FC = () => {
         </div>
         
         {/* Submit button */}
-        <button type="submit" className="submit-button" onClick={handleSaveAsPDF}>
+        <button type="submit" className="submit-button" onClick={handleSubmit}>
           Abschicken  {/* Button to submit the form and generate PDF */}
         </button>
       </form>
