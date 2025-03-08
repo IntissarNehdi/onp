@@ -17,8 +17,9 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: "http://127.0.0.1:8000/api/forms/",
 });
+
 // Converts a date string for backend storage
 const formatDateForBackend = (dateStr: string) => {
   const parts = dateStr.split("/");
@@ -51,7 +52,7 @@ const ConsentForms: React.FC = () => {
   useEffect(() => {
     if (user == null) {
       console.log("navigate")
-      navigate("/login", {state : {from: "/consent"}});
+      navigate("/login", {state : {from: "consent"}});
     }
   }, [user, navigate]);
 
@@ -145,8 +146,8 @@ const ConsentForms: React.FC = () => {
       date: formatDateForBackend(formData["Darmstadt, den"]), // Should be formatted as `YYYY-MM-DD`
     };
     try {
-      debugger;
-      const response = await client.post("/consent/", requestData);
+      console.log(requestData)
+      const response = await client.post("consent/", requestData);
       console.log('Erfolgreich gesendet:', response.data);
       alert("Formular erfolgreich gesendet!");
       generatePDF(formData);

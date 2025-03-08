@@ -24,6 +24,8 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
   
   // State variable to store error messages for the semester year input
   const [semesterYearError, setSemesterYearError] = useState('');
+  const [password, setPassword] = useState('');
+
 
   // Event handler to update the semester state when the user selects a new semester type
   const handleSemesterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +34,11 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
     setSemesterYear(""); // Reset the semester year when semester changes
     setSemesterYearError("");
   };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setPassword(value); // Set the selected semester
+  }
 
  
   
@@ -83,7 +90,6 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
 
   // State variable to store selected committee from URL parameters
   const [selectedCommittee, setSelectedCommittee] = useState<string>("");
-  const [password,setPassword]=useState<string>("");
 
   useEffect(() => {
       // Extract committee from URL parameters
@@ -123,7 +129,7 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
             required
             type="text"
             value={password}
-            disabled
+            onChange={handlePasswordChange}
           />
         </div>
       </div>

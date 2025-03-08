@@ -19,7 +19,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: "http://127.0.0.1:8000/api/forms/",
 });
 
 // Converts a date string for backend storage
@@ -365,7 +365,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   // Rename object properties to match the Django model
   const requestData = {
-    semester: formData["für die Wahl im"] === "Wintersemester"? "WS": formData["für die Wahl im"] === "Sommersemester"? "SS": null,  
+    semester: formData["Hochschulwahlen im"] === "Wintersemester"? "WS": formData["Hochschulwahlen im"] === "Sommersemester"? "SS": null,  
     semester_year: formData["Semesterjahr"],
     committee_fb_sb_wf: formData["VORSCHLAGSLISTE für die Wahl zu"], // Might need further subdivision
     list_password: formData["Kennwort der Liste"],
@@ -383,11 +383,11 @@ const handleSubmit = async (e: React.FormEvent) => {
       first_name: candidate.firstName,
       last_name: candidate.lastName,
       birth_year: Number(candidate.birthYear),
-      fb_sb: candidate.fb_sb,
+      fb_sb: candidate.fbSb
     })),
   };
   try {
-    debugger;
+    console.log(formData["Hochschulwahlen im"])
     const response = await client.post("/nomination-list/", requestData);
     console.log('Erfolgreich gesendet:', response.data);
     alert("Formular erfolgreich gesendet!");

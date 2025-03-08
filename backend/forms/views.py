@@ -12,13 +12,14 @@ from .serializers import ConsentSerializer, NominationListSerializer
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
-@csrf_exempt
 def send_emails(request):
     # Handle POST requests for sending emails
     if request.method == 'POST':
         try:
-            # Parse the JSON request body
+            # Parse the JSONw request body
             data = json.loads(request.body.decode("utf-8"))
             candidates = data.get('candidates', [])  # Get the list of candidates
             selectedCommittee = data.get('selectedCommittee', "").strip()  # Get the selected committee
@@ -82,14 +83,15 @@ def download_consent_pdf(request, consent_id):
 
 
 # Handles HTTP POST requests to create a new Consent record
+@method_decorator(csrf_exempt, name='dispatch')
+
 class ConsentView(APIView):
     def post(self, request):
-        # Initialize the serializer with the request data
-        serializer = ConsentSerializer(data= request.data) # Process the incoming form data
-        if serializer.is_valid():  # Check if the data is valid
+        serializer = ConsentSerializer(data=request.data)
+        if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Handles HTTP POST requests to create a new NominationList record
 class NominationListView(APIView):

@@ -225,7 +225,7 @@ const handleNumCandidatesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                     {/* Dropdown to select FB/SB */}
                     <select
                       value={candidates[index].fbSb}
-                      onChange={(e) => handleCandidateChange(index, 'fbSb', e.target.value)}
+                      onChange={(e) => {handleCandidateChange(index, 'fbSb', e.target.value);}}
                       required
                     >
                       <option value="" disabled>
