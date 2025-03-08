@@ -15,20 +15,20 @@ class ElectionOfficeAdmin(admin.ModelAdmin):
 
 @admin.register(TrustedPerson)
 class TrustedPersonAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'email', 'phone', 'fb_sb')
-    search_fields = ('first_name', 'last_name', 'email', 'fb_sb')
-    list_filter = ('fb_sb',)
+    list_display = ('name', 'email', 'phone', 'fb_sb_wf')
+    search_fields = ('name', 'email', 'fb_sb_wf')
+    list_filter = ('fb_sb_wf',)
 
 @admin.register(NominationList)
 class NominationListAdmin(admin.ModelAdmin):
-    list_display = ('semester', 'semester_year', 'committee', 'trusted_person', 'number_of_candidates')
-    search_fields = ('semester', 'semester_year', 'committee')
-    list_filter = ('semester', 'committee', 'election_office')
+    list_display = ('semester', 'semester_year', 'committee_fb_sb_wf', 'trusted_person', 'number_of_candidates')
+    search_fields = ('semester', 'semester_year', 'committee_fb_sb_wf')
+    list_filter = ('semester', 'committee_fb_sb_wf', 'election_office')
 
 @admin.register(Candidate)
 class CandidateAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'birth_year', 'fb_sb', 'matr_number', 'nomination_list')
-    search_fields = ('first_name', 'last_name', 'matr_number')
+    list_display = ('first_name', 'last_name', 'birth_year', 'fb_sb', 'nomination_list')
+    search_fields = ('first_name', 'last_name')
     list_filter = ('fb_sb', 'nomination_list')
 
 @admin.register(Consent)
