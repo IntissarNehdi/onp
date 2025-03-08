@@ -40,8 +40,8 @@ class ConsentSerializer(serializers.ModelSerializer):
             semester_year=data['semester_year']
         ).exists():
             raise serializers.ValidationError(
-                "This candidate has already submitted consent for this nomination context."
-            )
+                "Eine Einverständniserklärung mit dieser Matrikelnummer, diesem Gremium und diesem Semesterjahr wurde bereits eingereicht. Bitte prüfen Sie Ihre Eingabe."
+        )
         return data
 
     def create(self, validated_data):
