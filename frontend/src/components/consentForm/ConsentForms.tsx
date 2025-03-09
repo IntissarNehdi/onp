@@ -98,7 +98,7 @@ const ConsentForms: React.FC = () => {
     // Required fields that must be filled out
     const requiredFields: (keyof ConsentFormInterface)[] = [
       "Zuname", "Vorname", "Geburtsjahr", "E-Mail", "Semesteranschrift", "Anschrift", 
-      "Matrikelnummer", "Studienbereichsbezeichnung:FB Nr./SB", "Semesterjahr"
+      "Matrikelnummer", "Studienbereichsbezeichnung:FB Nr./SB", "Semesterjahr", "Kennwort"
     ];
   
     // Filtering out fields with errors
