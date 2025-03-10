@@ -22,7 +22,9 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
   const [semesterCity, setSemesterCity] = useState('');
   const [street, setStreet] = useState('');
   const [postalCode, setPostalCode] = useState('');
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState('');  
+  const [additionalInfo, setAdditionalInfo] = useState('');
+  const [semesterAdditionalInfo, setSemesterAdditionalInfo] = useState('');
   const [semesterAddressError, setSemesterAddressError] = useState('');
 
   // Handler for first name input
@@ -90,42 +92,54 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
   const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setStreet(value);
-    validateAddress(value, postalCode, city);
+    validateAddress(value, postalCode, city, additionalInfo);
   };
   // Handler for postal code input 
   const handlePostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPostalCode(value);
-    validateAddress(street, value, city);
+    validateAddress(street, value, city, additionalInfo);
   };
   // Handler for city input 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCity(value);
-    validateAddress(street, postalCode, value);
+    validateAddress(street, postalCode, value, additionalInfo);
   };
+  // Handler for additional info
+  const handleAdditionalInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAdditionalInfo(value);
+    validateAddress(street, postalCode, city, value);
+  };  
 
   // Handler for semester street input 
   const handleSemesterStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSemesterStreet(value);
-    validateSemesterAddress(value, semesterPostalCode, semesterCity);
+    validateSemesterAddress(value, semesterPostalCode, semesterCity,additionalInfo);
   };
   // Handler for semester postal code input 
   const handleSemesterPostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSemesterPostalCode(value);
-    validateSemesterAddress(semesterStreet, value, semesterCity);
+    validateSemesterAddress(semesterStreet, value, semesterCity,additionalInfo);
   };
   // Handler for semester city input 
   const handleSemesterCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSemesterCity(value);
-    validateSemesterAddress(semesterStreet, semesterPostalCode, value);
+    validateSemesterAddress(semesterStreet, semesterPostalCode, value,additionalInfo);
   };
+  // Handler for semester additional info input
+  const handleSemesterAdditionalInfo=(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const value = e.target.value;
+    setSemesterAdditionalInfo(value);
+    validateSemesterAddress(semesterStreet, semesterPostalCode, semesterCity, value);
+  }
 
     // Address validation functions for semester addresse
-  const validateSemesterAddress = (street: string, postalCode: string, city: string) => {
+  const validateSemesterAddress = (street: string, postalCode: string, city: string, additionalInfo:string) => {
     let errorMessage = "";
 
     const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+\s\d{1,6}$/;
@@ -147,11 +161,11 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
 
     setSemesterAddressError(errorMessage);
     updateErrors("Semesteranschrift", errorMessage);
-    updatePersonalInfo("Semesteranschrift", `${street}, ${postalCode} ${city}`);
+    updatePersonalInfo("Semesteranschrift", `${street}, ${postalCode} ${city} ${additionalInfo}`);
   };
 
   // Address validation functions for home addresse
-  const validateAddress = (street: string, postalCode: string, city: string) => {
+  const validateAddress = (street: string, postalCode: string, city: string, additionalInfo:string) => {
     const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/;
     const postalPattern = /^\d{4,10}$/;
     const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/;
@@ -175,7 +189,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
 
     setAddressError(error);
     updateErrors("Anschrift", error);
-    updatePersonalInfo("Anschrift", `${street}, ${postalCode} ${city}`);
+    updatePersonalInfo("Anschrift", `${street}, ${postalCode} ${city} ${additionalInfo}`);
   };
 
   // JSX for rendering the form and handling user inputs
@@ -266,6 +280,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
             onChange={handleCityChange} // Update semester address on input change
             placeholder="Wohnort" 
           />
+          <input
+            type="text"
+            value={additionalInfo} 
+            onChange={handleAdditionalInfo} 
+            placeholder="Adresszusatz" 
+          />
           {/* Display error message if addressError exists */}
           {addressError && (
             <p className="error-message">{addressError}</p>
@@ -295,6 +315,12 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
             value={semesterCity} // Bind the value to semesterAddress state
             onChange={handleSemesterCityChange} // Update semester address on input change
             placeholder="Wohnort" 
+          />
+          <input
+            type="text"
+            value={semesterAdditionalInfo} 
+            onChange={handleSemesterAdditionalInfo} 
+            placeholder="Adresszusatz" 
           />
           {/* Display error message if semesterAddressError exists */}
           {semesterAddressError && (

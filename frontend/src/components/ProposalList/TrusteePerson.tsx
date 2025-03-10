@@ -13,6 +13,7 @@ const TrusteePerson: React.FC<TrusteePersonInfo> = ({ updateTrustee, updateError
   const [street, setStreet] = useState(''); // State for storing the street address input
   const [postalCode, setPostalCode] = useState(''); // State for storing the postal code input
   const [city, setCity] = useState(''); // State for storing the city input
+  const [additionalInfo, setAdditionalInfo] = useState(''); // State for storing the Additional address information input
 
   const [addressError, setAddressError] = useState(''); // State for storing the error message related to address validation
 
@@ -69,25 +70,31 @@ const TrusteePerson: React.FC<TrusteePersonInfo> = ({ updateTrustee, updateError
 const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setStreet(value);
-    validateAddress(value, postalCode, city); // Validate address with updated street value
+    validateAddress(value, postalCode, city, additionalInfo); // Validate address with updated street value
 };
 
 // Function to handle changes in the postal code input field
 const handlePostalCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPostalCode(value);
-    validateAddress(street, value, city); // Validate address with updated postal code
+    validateAddress(street, value, city, additionalInfo); // Validate address with updated postal code
 };
 
 // Function to handle changes in the city input field
 const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setCity(value);
-    validateAddress(street, postalCode, value); // Validate address with updated city value
+    validateAddress(street, postalCode, value, additionalInfo); // Validate address with updated city value
+};
+// Function to handle changes in the city input field
+const handleAdditionalInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const value = e.target.value;
+  setAdditionalInfo(value);
+  validateAddress(street, postalCode, city, value); // Validate address with updated city value
 };
 
 // Function to validate the address input (street, postal code, city)
-const validateAddress = (street: string, postalCode: string, city: string) => {
+const validateAddress = (street: string, postalCode: string, city: string, additionalInfo:string) => {
     const addressPattern = /^[A-Za-zÄäÖöÜüß\s]+ \d{1,6}$/; // Pattern for street validation (e.g., "Musterstraße 123")
     const postalPattern = /^\d{4,10}$/; // Pattern for postal code validation (4-10 digits)
     const cityPattern = /^[A-Za-zÄäÖöÜüß\s]+$/; // Pattern for city validation (letters only)
@@ -114,7 +121,7 @@ const validateAddress = (street: string, postalCode: string, city: string) => {
     // Update error states and the trustee's address field
     setAddressError(error);
     updateErrors("Anschrift", error);
-    updateTrustee("Anschrift", `${street}, ${postalCode} ${city}`);
+    updateTrustee("Anschrift", `${street}, ${postalCode} ${city} ${additionalInfo}`);
 };
 
 // Function to handle changes in the name input field
@@ -225,6 +232,12 @@ const handleEmailAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             value={city} // Bind the value to semesterAddress state
             onChange={handleCityChange} // Update semester address on input change
             placeholder="Wohnort" 
+          />
+          <input
+            type="text"
+            value={additionalInfo} 
+            onChange={handleAdditionalInfo} 
+            placeholder="Addresszusatz" 
           />
         {/* Displaying error message if the address format is invalid */}
         {addressError && <p className="error-message">{addressError}</p>}
