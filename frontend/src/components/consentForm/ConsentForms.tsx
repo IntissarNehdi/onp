@@ -61,7 +61,7 @@ const ConsentForms: React.FC = () => {
     "Zuname": user ? user.lastName : "" ,
     "Vorname": user ? user.firstName : "" ,
     "Geburtsjahr": 0,
-    "E-Mail": user ? getTUMailFromName(user.firstName, user.lastName, true): "",
+    "E-Mail": "imad.khaya@stud.tu-darmstadt.de",
     "Anschrift": "",
     "Semesteranschrift": "",
     "Matrikelnummer": user ? user.matriculationNumber : "",

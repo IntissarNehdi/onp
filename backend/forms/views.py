@@ -15,6 +15,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
+@csrf_exempt
 def send_emails(request):
     # Handle POST requests for sending emails
     if request.method == 'POST':

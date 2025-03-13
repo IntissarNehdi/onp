@@ -5,18 +5,21 @@ import tudaLogo from '../../assets/tuda_logo.jpg';
 // Define the function to generate PDF from an object
 export function generatePDF(obj: any): void {
   const doc = new jsPDF();
+  let counter = 0;
   const margin = 10; // Margin for text placement
   const lineHeight = 10; // Space between lines
   const pageWidth = doc.internal.pageSize.width; // Width of the page
   const pageHeight = doc.internal.pageSize.height; // Height of the page
-  let yPosition = 20; // Starting Y position
-
+  let yPosition = 50; // Starting Y position
+  
   const logoSrc = tudaLogo;
-  const logoWidth = 50; // Set the desired width for the logo
-  const logoHeight = 20; // Set the desired height for the logo
-  const logoX = pageWidth - margin - logoWidth + 5; // Position logo at right margin
-  const logoY = 5; // Position logo near the top
+  const logoWidth = 37.5; // Set the desired width for the logo
+  const logoHeight = 15; // Set the desired height for the logo
+  const logoX = (pageWidth - logoWidth) / 2; // Center the logo horizontally
+  const logoY = 10; // Position logo near the top
+  
   doc.addImage(logoSrc, 'JPEG', logoX, logoY, logoWidth, logoHeight);
+  
 
   // Title settings
   const title = 'Einverständniserklärung';
@@ -25,7 +28,7 @@ export function generatePDF(obj: any): void {
   doc.setFontSize(titleFontSize); // Set font size
   doc.setTextColor(64, 127, 244); // Set color to blue (RGB: 0, 0, 255)
   const titleX = pageWidth / 2; // Middle of the page width
-  const titleY = logoY + logoHeight; // Position below the logo
+  const titleY = logoY + logoHeight + 10; // Position below the logo
   doc.text(title, titleX, titleY, { align: 'center' });
 
   // Reset text configurations after the title
@@ -84,24 +87,7 @@ export function generatePDF(obj: any): void {
       // Update yPosition to below the rectangle after printing the Hinweis
       yPosition = currentY + 10; // Add some padding below the rectangle
       doc.setFontSize(12);
-    }else if (key === 'Vorname' || key === 'E-Mail') {
-      // For "Vorname" or "Email", print on the same line
-      const xPosition = pageWidth/2; // Set the xPosition for these keys
-    
-      yPosition-=lineHeight;
-      
-      checkAndAddPage(); // Ensure space before writing the key-value pair
-
-      // Write the key in bold at the default margin
-      doc.setFont('helvetica', 'bold');
-      doc.text(keyText, xPosition, yPosition);
-
-      // Write the value at xPosition 105
-      doc.setFont('helvetica', 'normal');
-      doc.text(valueText, xPosition+doc.getTextWidth(keyText)+spaceBetweenKeyAndValue, yPosition);
-      yPosition+=lineHeight;
-
-    } 
+    }
     else if(key==='Kennwort'){
       checkAndAddPage(); // Ensure space before writing the key-value pair
       // Write the key in bold at the default margin
@@ -132,7 +118,7 @@ export function generatePDF(obj: any): void {
           if (index < valueLines.length) {
             const valueLine = valueLines[index];
             doc.setFont('helvetica', 'normal');
-            doc.text(valueLine, margin + doc.getTextWidth(keyLine) + spaceBetweenKeyAndValue, yPosition);
+            doc.text(valueLine, margin + doc.getTextWidth(keyLine) + 2, yPosition);
           }
 
           yPosition += lineHeight;
@@ -146,9 +132,10 @@ export function generatePDF(obj: any): void {
         doc.text(keyText, margin, yPosition);
 
         doc.setFont('helvetica', 'normal');
-        doc.text(valueText, margin + doc.getTextWidth(keyText) + spaceBetweenKeyAndValue, yPosition);
+        doc.text(valueText, margin + doc.getTextWidth(keyText) + 2 + counter, yPosition);
 
         yPosition += lineHeight;
+        counter+=0.5;
       }
     }
 
@@ -167,17 +154,19 @@ export function generatePDF(obj: any): void {
 
   
   // Draw the signature box
-  const signatureWidth = 80;
   const signatureHeight = 20;
-  const signatureX = margin;
   if (yPosition + lineHeight + signatureHeight > pageHeight - margin) {
     doc.addPage(); // Add a new page
     yPosition = 20; // Reset Y position on the new page
   }
-  const signatureY = yPosition; // Adjust position slightly below the "Eigenhändige Unterschrift" text
+  const signatureWidth = 190; // Same width as Django
+  const signatureY = yPosition + 5; // Adjust position above text
   
-  doc.rect(signatureX, signatureY, signatureWidth, signatureHeight);
-  doc.text('Eigenhändige Unterschrift', margin, signatureY + signatureHeight + 5);
+  // Draw a line instead of a box
+  doc.line(margin, signatureY, margin + signatureWidth, signatureY);
+  
+  doc.text('Eigenhändige Unterschrift', margin, signatureY + 5);
+  
 
   // Save the generated PDF
   doc.save('Einverständniserklärung.pdf');

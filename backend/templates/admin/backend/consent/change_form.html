@@ -3,6 +3,8 @@
 {% block object-tools %}
     {{ block.super }}
     <li>
-        <a class="button" href="#" style="margin-left: 10px;">Download as PDF</a>
+        <a class="button" href="{% url 'admin:consent_download_pdf' object_id=original.pk %}" style="margin-left: 10px;">
+            Download as PDF
+        </a>
     </li>
 {% endblock %}

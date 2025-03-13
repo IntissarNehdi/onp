@@ -318,7 +318,7 @@ const sendEmails = async () => {
     const semester = formData["Hochschulwahlen im"];
 
     // Send a POST request to the backend to trigger the email sending process
-    const response = await fetch("http://127.0.0.1:8000/send-emails/", {
+    const response = await fetch("http://127.0.0.1:8000/api/send-emails/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -194,7 +194,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ updatePersonalInfo,updateEr
           disabled
             required
             type="email"
-            value={user ? getTUMailFromName(user.firstName, user.lastName, true): ""} // Bind the value to email state
+            value={user ? getTUMailFromName("imad", "khaya", true): ""} // Bind the value to email state
             placeholder="E-Mail eintragen"
           />
         </div>
