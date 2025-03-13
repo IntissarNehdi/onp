@@ -9,7 +9,6 @@ import { generatePDF } from '../PdfFunctions/ConsentFormPDF'; // Importing funct
 import DateAndSig from '../ProposalList/DateAndSig'; // Importing component for date and signature section
 import { useNavigate } from 'react-router-dom';
 import { getFromLocalStorage } from '../../utils/storageUtils';
-import { getTUMailFromName } from '../../utils/userUtils';
 import axios from 'axios';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -154,7 +153,11 @@ const ConsentForms: React.FC = () => {
     } catch (error: any) {
       if (error.response) {
         console.error('Fehler vom Server:', error.response.data);
-        alert(`Fehler beim Senden: ${JSON.stringify(error.response.data)}`);
+        // Extract the error message
+        let errorMessage = error.response.data.non_field_errors 
+        ? error.response.data.non_field_errors.join("\n") 
+        : JSON.stringify(error.response.data);
+        alert(`Fehler beim Senden: ${errorMessage}}`);
       } else if (error.request) {
         console.error('Keine Antwort vom Server:', error.request);
         alert("Keine Antwort vom Server erhalten.");
@@ -164,20 +167,6 @@ const ConsentForms: React.FC = () => {
       }
     }
   };
-  /* OLD METHOD FOR PDF
-  // Function to handle form submission and generate PDF
-  const handleSaveAsPDF = (e: React.FormEvent) => {
-    e.preventDefault();
-  
-    const validation = validateForm(formData, errors);
-    if (!validation.isValid) {
-      alert(`Bitte füllen Sie alle erforderlichen Felder korrekt aus:\n${validation.message}`);
-      return;
-    }
-    // Generate PDF if all fields are valid
-    generatePDF(formData);
-  };
-  */
   return (
     <form className="proposal-list-container" id="consent-form-content">
       

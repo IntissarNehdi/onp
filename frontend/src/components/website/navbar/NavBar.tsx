@@ -1,7 +1,5 @@
-import React from 'react';
 import './NavBar.css';
 import { useNavigate } from 'react-router-dom';
-import imagePath from './assets/logotu.png';
 
 interface NavBarProps {
   brandName: string;

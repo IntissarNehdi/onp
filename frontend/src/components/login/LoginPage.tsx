@@ -58,7 +58,7 @@ const LoginPage: React.FC = () => {
       <div className="row">
         <main className="col-md-9">
           <header className="login-header">
-            <img className="main-logo" src="/idp/images/logo.png" alt="Technische Universität Darmstadt" />
+            <img className="main-logo" src="/src/assets/tuda_logo.jpg" alt="Technische Universität Darmstadt" />
             <h1 className="h3 login-title">Identity Provider der Technischen Universität Darmstadt</h1>
           </header>
 
@@ -94,34 +94,39 @@ const LoginPage: React.FC = () => {
                 />
               </div>
 
-              <div className="mb-3 form-check">
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }} className="mb-3">
                 <input
                   type="checkbox"
-                  className="form-check-input"
                   id="donotcache"
                   checked={doNotCache}
                   onChange={(e) => setDoNotCache(e.target.checked)}
                 />
-                <label className="form-check-label" htmlFor="donotcache">
+                <label htmlFor="donotcache">
                   Anmeldung nicht speichern
                 </label>
               </div>
 
-              <div className="mb-3 form-check">
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }} className="mb-3">
                 <input
                   type="checkbox"
-                  className="form-check-input"
                   id="_shib_idp_revokeConsent"
                   checked={revokeConsent}
                   onChange={(e) => setRevokeConsent(e.target.checked)}
+                  style={{ marginRight: "8px" }} 
                 />
-                <label className="form-check-label" htmlFor="_shib_idp_revokeConsent">
+                <label htmlFor="_shib_idp_revokeConsent" style={{ flex: "1", wordWrap: "break-word", maxWidth: "calc(100% - 30px)" }}>
                   Die zu übermittelnden Informationen anzeigen, damit ich die Weitergabe gegebenenfalls ablehnen kann.
                 </label>
               </div>
 
+
               <div className="d-grid">
-                <button type="submit" className="btn btn-danger" disabled={isSubmitting}>
+                <button type="submit" className="btn" disabled={isSubmitting}
+                style={{
+                  backgroundColor: '#407ff4', 
+                  color: 'white' 
+                }} 
+                >
                   {isSubmitting ? 'Anmeldung läuft, bitte warten...' : 'Anmelden'}
                 </button>
               </div>
@@ -139,6 +144,7 @@ const LoginPage: React.FC = () => {
               type="button"
               className="btn btn-secondary"
               onClick={() => navigate('/')} // Navigate to the homepage
+              
             >
               Zurück zur Homepage
             </button>

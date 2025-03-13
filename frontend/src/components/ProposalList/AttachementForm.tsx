@@ -100,7 +100,6 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
   return (
     <div>
       {/* TU Darmstadt logo */}
-      <img src="" alt="TU_DA Logo" className="top-right-image" />
       <h1 className="title">Anlage zur Vorschlagsliste</h1>
 
       {/* Form for user input */}
@@ -119,8 +118,14 @@ const Attachement: React.FC<AttachementProps> = ({ updateAttachement }) => {
 
         <div className="form-section">
           <h3>
-            Bei der Aufstellung von Wahlvorschlägen sollen Frauen und Männer entsprechend ihrem
-            jeweiligen Anteil in der jeweiligen Statusgruppe angemessen berücksichtigt werden...
+          Bei der Aufstellung von Wahlvorschlägen sollen Frauen und Männer entsprechend 
+          ihrem jeweiligen Anteil in der jeweiligen Statusgruppe angemessen berücksichtigt werden.
+           Für die Gruppe der wissenschaftlichen Mitglieder sollen zusätzlich unbefristet und befristet
+            Beschäftigte entsprechend ihrem Anteil in der Gruppe angemessen berücksichtigt werden. 
+            Eine entsprechende Erklärung, dass diese Anforderungen erfüllt sind oder eine Begründung
+             für die Abweichung ist schriftlich dem Wahlvorschlag beizufügen (§ 16 Abs. 2 WahlO). 
+             Die Erklärung wird bei Zulassung des Wahlvorschlages mit der Bekanntmachung der Zulassung 
+             veröffentlicht (§ 18 Abs. 10 WahlO).
           </h3>
         </div>
 

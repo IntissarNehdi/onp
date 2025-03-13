@@ -13,10 +13,10 @@ export function generatePDF(obj: any): void {
   let yPosition = 50; // Starting Y position
   
   const logoSrc = tudaLogo;
-  const logoWidth = 37.5; // Set the desired width for the logo
-  const logoHeight = 15; // Set the desired height for the logo
-  const logoX = (pageWidth - logoWidth) / 2; // Center the logo horizontally
-  const logoY = 10; // Position logo near the top
+  const logoWidth = 50; // Set the desired width for the logo
+  const logoHeight = 20; // Set the desired height for the logo
+  const logoX = pageWidth - margin - logoWidth + 5; // Position logo at right margin
+  const logoY = 5; // Position logo near the top
   
   doc.addImage(logoSrc, 'JPEG', logoX, logoY, logoWidth, logoHeight);
   
@@ -28,7 +28,7 @@ export function generatePDF(obj: any): void {
   doc.setFontSize(titleFontSize); // Set font size
   doc.setTextColor(64, 127, 244); // Set color to blue (RGB: 0, 0, 255)
   const titleX = pageWidth / 2; // Middle of the page width
-  const titleY = logoY + logoHeight + 10; // Position below the logo
+  const titleY = logoY + logoHeight - 3; // Position below the logo
   doc.text(title, titleX, titleY, { align: 'center' });
 
   // Reset text configurations after the title

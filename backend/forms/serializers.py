@@ -36,11 +36,11 @@ class ConsentSerializer(serializers.ModelSerializer):
         if Consent.objects.filter(
             matr_number=data['matr_number'],
             committee=data['committee'],
-            semester=data['semester'],
+            fb_sb_label=data['fb_sb_label'],
             semester_year=data['semester_year']
         ).exists():
             raise serializers.ValidationError(
-                "This candidate has already submitted consent for this nomination context."
+                "Eine Einverständniserklärung mit dieser Matrikelnummer, diesem Gremium und diesem Semesterjahr wurde bereits eingereicht. Bitte prüfen Sie Ihre Eingabe."
             )
         return data
 

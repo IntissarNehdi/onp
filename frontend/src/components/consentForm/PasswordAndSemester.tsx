@@ -130,6 +130,7 @@ const PasswordAndSemester: React.FC<PasswordAndSemesterField> = ({ updatePasswor
             type="text"
             value={password}
             onChange={handlePasswordChange}
+            disabled
           />
         </div>
       </div>

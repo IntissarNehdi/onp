@@ -38,12 +38,6 @@ const ProposalList: React.FC = () => {
       navigate("/login", {state : {from: "/proposal"}});
     }
   }, [login, navigate]);
-  const nextPage = (event: React.FormEvent) => {
-    event.preventDefault(); // Prevent default form submission behavior
-
-    // Navigate to the 'attachement' page
-    navigate('/attachement');
-  };
 
   // State to manage the list of candidates (not directly used in this snippet)
   const [, setCandidates] = useState<any[]>([]);

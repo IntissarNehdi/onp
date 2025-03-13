@@ -359,6 +359,23 @@ select {
 }
 
 /* Styling for add another candidate button */
-.add-another-candidate{
+.add-another-candidate {
   width: 100%;
+  background-color: #407ff4;
+  color: white; 
+  border: none; 
+  padding: 10px 20px;
+  text-align: center; 
+  font-size: 16px; 
+  cursor: pointer; 
+}
+
+.add-another-candidate:hover {
+  background-color: #365eab; 
+}
+
+.back-button{
+  background-color: #407ff4;
+  color: white;
+
 }
