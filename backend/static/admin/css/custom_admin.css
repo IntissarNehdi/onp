@@ -18,9 +18,6 @@ div.breadcrumbs {
     color: var(--text-color) !important;
 }
 
-a {
-    color: var(--text-color) !important;
-}
 
 button, input[type="submit"], input[type="button"], input[type="reset"] {
     background-color: var(--primary) !important;
