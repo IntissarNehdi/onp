@@ -13,7 +13,41 @@
         <img src="{% static 'admin/img/tu_darmstadt_logo.png' %}" alt="TU Darmstadt Logo" style="height: 50px;">
         Election Management System
     </a>
-</h1>
+    <style>
+      tr {
+          background-color: black !important;
+      }
+      div.module {
+        background-color: white !important;
+        color: white !important;
+      }
+
+      div.module > h2 {
+        background-color:#498bf0 !important;  /* Dark Blue */;
+      }
+
+      div.module > h3 {
+        color: whitesmoke !important;
+      }
+      span.mini.quiet {
+        color: whitesmoke !important;
+      }
+      nav.changelist-filter {
+        background-color: grey !important;
+      }
+
+      #changelist-filter {
+        background: #0d0d0d !important;
+      }
+
+      div.text {
+        background-color:#498bf0 !important;  /* Dark Blue */;
+      }
+
+      #changelist-filter li.selected{
+        background: #0d0d0d !important;
+      }
+  </style></h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}

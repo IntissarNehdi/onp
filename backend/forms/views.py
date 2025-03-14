@@ -11,6 +11,7 @@ from .models import Consent, NominationList
 from .serializers import ConsentSerializer, NominationListSerializer
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from .services import download_pdf
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -79,9 +80,6 @@ Ihr Wahlteam
 
 
 
-def download_consent_pdf(request, consent_id):
-    return None
-
 
 # Handles HTTP POST requests to create a new Consent record
 @method_decorator(csrf_exempt, name='dispatch')
@@ -90,8 +88,8 @@ class ConsentView(APIView):
     def post(self, request):
         serializer = ConsentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            consent = serializer.save()  # Save and get the Consent instance
+            return download_pdf(consent, request, consent.id)  # Call download_pdf correctly
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Handles HTTP POST requests to create a new NominationList record

@@ -10,7 +10,7 @@ function Navbar({ brandName, imageScrPath }: NavBarProps) {
   const navigate = useNavigate(); 
 
   const handleLoginClick = () => {
-    navigate('/login');
+    navigate('/proposal');
   };
 
   return (

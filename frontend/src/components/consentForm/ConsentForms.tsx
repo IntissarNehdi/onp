@@ -5,7 +5,6 @@ import PersonalInfo from './PersonalInfo';  // Importing component for personal 
 import Field from './Field';  // Importing component for form fields section
 import PasswordAndSemester from './PasswordAndSemester';  // Importing component for password and semester section
 import logo from '../../assets/tuda_logo.jpg';  // Importing logo image
-import { generatePDF } from '../PdfFunctions/ConsentFormPDF'; // Importing function to generate PDF
 import DateAndSig from '../ProposalList/DateAndSig'; // Importing component for date and signature section
 import { useNavigate } from 'react-router-dom';
 import { getFromLocalStorage } from '../../utils/storageUtils';
@@ -146,23 +145,31 @@ const ConsentForms: React.FC = () => {
     };
     try {
       console.log(requestData)
-      const response = await client.post("consent/", requestData);
-      console.log('Erfolgreich gesendet:', response.data);
+      const response = await client.post("consent/", requestData, {responseType: 'blob'});
+      const blob = response.data
+      if (response.status != 200) {
+        console.log("400")
+      }
+      const fileReader = new FileReader();
+      fileReader.onload = function () {
+        if (fileReader.result && typeof fileReader.result === 'string') {          
+          const link = document.createElement('a');
+          link.href = fileReader.result; // This is the Blob URL
+          link.download = `Einverständniserklärung_${requestData.matr_number}.pdf`; // Set the filename for download
+          link.click(); // Programmatically trigger the download
+          }
+      };
+
+      fileReader.readAsDataURL(blob);
       alert("Formular erfolgreich gesendet!");
-      generatePDF(formData);
-    } catch (error: any) {
+    } 
+    
+    catch (error: any) {
       if (error.response) {
-        console.error('Fehler vom Server:', error.response.data);
-        // Extract the error message
-        let errorMessage = error.response.data.non_field_errors 
-        ? error.response.data.non_field_errors.join("\n") 
-        : JSON.stringify(error.response.data);
-        alert(`Fehler beim Senden: ${errorMessage}}`);
+        alert("Fehler beim Senden: Eine Einverständniserklärung mit dieser Matrikelnummer, diesem Gremium und diesem Semesterjahr wurde bereits eingereicht. Bitte prüfen Sie Ihre Eingabe.");
       } else if (error.request) {
-        console.error('Keine Antwort vom Server:', error.request);
         alert("Keine Antwort vom Server erhalten.");
       } else {
-        console.error('Fehler beim Senden der Anfrage:', error.message);
         alert("Fehler beim Senden. Bitte versuchen Sie es erneut.");
       }
     }

@@ -34,6 +34,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 DEBUG = True
 
 ALLOWED_HOSTS = []
+USE_DARK_MODE = True  # Always enable dark mode in Django Admin
 
 
 # Application definition

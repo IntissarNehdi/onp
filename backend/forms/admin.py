@@ -6,6 +6,7 @@ from django.contrib import admin
 from .models import ElectionOffice, TrustedPerson, NominationList, Candidate, Consent
 from django.urls import reverse
 from django.utils.html import format_html
+from .services import download_pdf
 
 
 admin.site.site_header = "Election Management Admin"
@@ -16,6 +17,11 @@ admin.site.index_title = "Welcome to the Election Admin Panel"
 class ElectionOfficeAdmin(admin.ModelAdmin):
     list_display = ('tu_id',)  # Show the unique ID
     search_fields = ('tu_id',)  # Add a search bar
+
+    def each_context(self, request):
+        context = super().each_context(request)
+        context['custom_admin_css'] = 'admin/css/custom_admin.css'
+        return context
 
 @admin.register(TrustedPerson)
 class TrustedPersonAdmin(admin.ModelAdmin):
@@ -46,24 +52,9 @@ class ConsentAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
-            path('<int:object_id>/download-pdf/', self.admin_site.admin_view(self.download_pdf), name='consent_download_pdf'),
+            path('<int:object_id>/download-pdf/', self.admin_site.admin_view(self.download_pdf), name='consent_pdf'),
         ]
         return custom_urls + urls
 
     def download_pdf(self, request, object_id):
-        consent = self.get_object(request, object_id)
-        print(consent)
-        if not consent:
-            return HttpResponse("Consent not found.", status=404)
-
-        # Render the template with the context
-        html_string = render_to_string("pdfs/consent_template.html", {"consent": consent})
-
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="consent_{consent.id}.pdf"'
-
-        # Convert HTML to PDF
-        pisa_status = pisa.CreatePDF(html_string, dest=response)
-        if pisa_status.err:
-            return HttpResponse("Error generating PDF", status=500)
-        return response
+        return download_pdf(self.get_object(request, object_id), request, object_id)
