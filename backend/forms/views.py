@@ -11,6 +11,9 @@ from .models import Consent, NominationList
 from .serializers import ConsentSerializer, NominationListSerializer
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
+from .services import create_consent_pdf, create_nomination_pdf
+from django.http import StreamingHttpResponse
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -82,7 +85,7 @@ Ihr Wahlteam
 def download_consent_pdf(request, consent_id):
     return None
 
-
+from reportlab.pdfgen import canvas
 # Handles HTTP POST requests to create a new Consent record
 @method_decorator(csrf_exempt, name='dispatch')
 
@@ -91,15 +94,24 @@ class ConsentView(APIView):
         serializer = ConsentSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            pdf_buffer = create_consent_pdf(serializer.data)
+            pdf_buffer.seek(0)
+            response = HttpResponse(pdf_buffer, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="Einverstaendniserklaerung.pdf"'
+            return response
+
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 # Handles HTTP POST requests to create a new NominationList record
 class NominationListView(APIView):
     def post(self, request):
         serializer = NominationListSerializer(data = request.data)
         if serializer.is_valid():
-            serializer.save() 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            serializer.save()
+            pdf_buffer = create_nomination_pdf(serializer.data)
+            pdf_buffer.seek(0)
+            response = HttpResponse(pdf_buffer, content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="Einverstaendniserklaerung.pdf"'
+            return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

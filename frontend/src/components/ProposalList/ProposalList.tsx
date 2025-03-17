@@ -303,7 +303,6 @@ const handleSaveAsPDF = (e: React.FormEvent): boolean => {
     return false; 
   }
   //If no errors are found, proceed with PDF generation
-  generatePDF(formData, attachementFormData);
   return true;
 };
 
@@ -342,14 +341,8 @@ const sendEmails = async () => {
 // Method to save the PDF and send emails (combined)
 const handleSaveAndSendEmails = async (e: React.FormEvent) => {
   e.preventDefault(); 
-
-  // First, validate the form and save the PDF
-  const isFormValid = handleSaveAsPDF(e);
-
   // If the form is valid (no errors found), proceed to send emails
-  if (isFormValid) {
     await sendEmails(); // Call the email sending function
-  }
 };
 
 // Handles saving the form data to the database
@@ -387,11 +380,22 @@ const handleSubmit = async (e: React.FormEvent) => {
     })),
   };
   try {
-    console.log(formData["Hochschulwahlen im"])
-    const response = await client.post("/nomination-list/", requestData);
-    console.log('Erfolgreich gesendet:', response.data);
-    alert("Formular erfolgreich gesendet!");
-    await handleSaveAndSendEmails(e);
+    const isFormValid = handleSaveAsPDF(e);    
+    if (isFormValid){
+      const response = await client.post("/nomination-list/", requestData, {responseType: "blob"});
+      console.log('Erfolgreich gesendet:', response.data);
+      alert("Formular erfolgreich gesendet!");
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Einverstaendniserklaerung.pdf";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a)
+      await handleSaveAndSendEmails(e);
+    }
   } 
   catch (error: any) {
     if (error.response) {

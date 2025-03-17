@@ -147,10 +147,24 @@ const ConsentForms: React.FC = () => {
     };
     try {
       console.log(requestData)
-      const response = await client.post("consent/", requestData);
-      console.log('Erfolgreich gesendet:', response.data);
+      const response = await client.post("consent/", requestData, {
+        responseType: "blob"
+      });
+      if (response.data.size === 0) {
+        console.error("Received an empty PDF file.");
+        return;
+      }
+      console.log(response.data)
       alert("Formular erfolgreich gesendet!");
-      generatePDF(formData);
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Einverstaendniserklaerung.pdf";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a)
     } catch (error: any) {
       if (error.response) {
         console.error('Fehler vom Server:', error.response.data);
